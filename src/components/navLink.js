@@ -8,7 +8,7 @@ const NavLink = ({ label, path, targetSegment }) => {
     <Link
       className={`${
         activeSegment === targetSegment ? 'text-blue-500' : 'text-white'
-      } block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0`}
+      } block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 hover:text-blue-700`}
       href={path}>
       {label}
     </Link>
