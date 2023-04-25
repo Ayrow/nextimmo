@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import BasicHouseSearch from './BasicHouseSearch';
 
 const Hero = () => {
   return (
@@ -11,7 +10,7 @@ const Hero = () => {
             <h1 className='max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-white'>
               Nextimmo: Nouvelle agence immobilière !
             </h1>
-            <p className='max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl text-gray-400'>
+            <p className='max-w-2xl mb-6 font-light lg:mb-8 md:text-lg lg:text-xl text-gray-400'>
               Retrouver nos listings mis à jour fréquemment. <br />
               Vous y trouverez forcément la future maison de vos rêves!
             </p>
@@ -40,12 +39,11 @@ const Hero = () => {
             <Image
               src='/house_hero.svg'
               alt='house under a magnifying glass'
-              width='1920'
-              height='1080'
+              width='500'
+              height='500'
             />
           </div>
         </div>
-        <BasicHouseSearch />
       </div>
     </section>
   );
