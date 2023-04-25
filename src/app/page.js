@@ -8,7 +8,7 @@ export default function Home() {
       <Hero />
       <section class=' bg-sky-950 w-full py-8 px-4 lg:py-16 lg:px-6 sm:text-lg flex flex-col items-center'>
         <h2 class='mb-4 text-4xl font-bold text-white'>
-          Find your next home :
+          Trouvez votre future maison :
         </h2>
         <BasicHouseSearch />
       </section>
