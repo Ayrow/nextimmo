@@ -6,6 +6,7 @@ import { signInWithGoogle, signInWithEmail } from '@/firebase/signin';
 
 const handleSubmit = (e) => {
   e.preventDefault();
+  signInWithEmail('test@hello.fr', '1234');
 };
 
 const Signin = () => {
