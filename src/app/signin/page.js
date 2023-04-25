@@ -2,6 +2,11 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { signInWithGoogle, signInWithEmail } from '@/firebase/signin';
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+};
 
 const Signin = () => {
   return (
@@ -12,7 +17,7 @@ const Signin = () => {
         </h2>
         <div className='w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700'>
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
-            <form className='space-y-4 md:space-y-6' action='#'>
+            <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
               <div>
                 <label
                   for='email'
@@ -68,7 +73,7 @@ const Signin = () => {
               </div>
               <button
                 type='submit'
-                className='w-full  focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800'>
+                className='w-full focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800'>
                 Sign in
               </button>
               <p className='text-sm font-light text-gray-400'>
@@ -84,6 +89,7 @@ const Signin = () => {
             <div class='px-6 sm:px-0 max-w-sm'>
               <button
                 type='button'
+                onClick={() => signInWithGoogle()}
                 class='text-white w-full bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-[#4285F4]/55 mr-2 mb-2'>
                 <div className='flex w-full justify-center'>
                   <svg
