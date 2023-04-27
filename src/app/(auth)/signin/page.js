@@ -4,14 +4,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { signInWithGoogle, signInWithEmail } from '@/firebase/signin';
 import { useUserContext } from '@/context/user/userContext';
+import { useAppContext } from '@/context/app/appContext';
+import Alert from '@/components/Alert';
 
 const Signin = () => {
   const { handleChange, email, password } = useUserContext();
+  const { displayAlert, showAlert } = useAppContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (email && password) {
+
+    if (!email || !password) {
+      displayAlert({ type: 'error', msg: 'Email or password is missing' });
+    } else {
       signInWithEmail('test@hello.fr', '1234');
+      displayAlert({ type: 'success', msg: 'Successful login !' });
     }
   };
 
@@ -22,6 +29,7 @@ const Signin = () => {
           Sign in to your account
         </h2>
         <div className='w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700'>
+          {showAlert && <Alert />}
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
             <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
               <div>

@@ -5,9 +5,11 @@ import Image from 'next/image';
 import { signInWithGoogle } from '@/firebase/signin';
 import signUpWithEmail from '@/firebase/signup';
 import { useUserContext } from '@/context/user/userContext';
+import { useAppContext } from '@/context/app/appContext';
 
 const Signin = () => {
   const { handleChange, email, password, confirmPassword } = useUserContext();
+  const { displayAlert, showAlert } = useAppContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,6 +27,7 @@ const Signin = () => {
           Create a new account
         </h2>
         <div className='w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700'>
+          {showAlert && <Alert />}
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
             <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
               <div>

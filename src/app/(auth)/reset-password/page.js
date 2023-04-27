@@ -15,6 +15,10 @@ const Signin = () => {
     e.preventDefault();
     if (email) {
       sendPasswordReset(email);
+      displayAlert({
+        type: 'success',
+        msg: 'Reset password email has been sent',
+      });
     } else {
       displayAlert({ type: 'error', msg: 'Email is missing' });
     }
