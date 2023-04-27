@@ -13,7 +13,7 @@ const Signin = () => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert('the password do not match.');
-    } else if (email || password || confirmPassword) {
+    } else if (email && password && confirmPassword) {
       signUpWithEmail(email, password);
     }
   };

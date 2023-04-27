@@ -10,7 +10,7 @@ const Signin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (email || password) {
+    if (email && password) {
       signInWithEmail('test@hello.fr', '1234');
     }
   };
