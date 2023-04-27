@@ -3,10 +3,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { signInWithGoogle, signInWithEmail } from '@/firebase/signin';
+import signUpWithEmail from '@/firebase/signup';
 
 const handleSubmit = (e) => {
   e.preventDefault();
-  signInWithEmail('test@hello.fr', '1234');
+  signUpWithEmail();
 };
 
 const Signin = () => {

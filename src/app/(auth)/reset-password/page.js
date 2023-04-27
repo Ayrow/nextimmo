@@ -3,13 +3,20 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import sendPasswordReset from '@/firebase/passwordReset';
-
-const handleSubmit = (email) => {
-  e.preventDefault();
-  sendPasswordReset(email);
-};
+import { useUserContext } from '@/context/user/userContext';
 
 const Signin = () => {
+  const { handleChange, email } = useUserContext();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (email) {
+      sendPasswordReset(email);
+    } else {
+      alert('email is missing');
+    }
+  };
+
   return (
     <section className=' bg-gray-900'>
       <div className='flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0'>
@@ -18,9 +25,7 @@ const Signin = () => {
         </h2>
         <div className='w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700'>
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
-            <form
-              className='space-y-4 md:space-y-6'
-              onSubmit={() => handleSubmit()}>
+            <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
               <div>
                 <label
                   for='email'
@@ -30,7 +35,8 @@ const Signin = () => {
                 <input
                   type='email'
                   name='email'
-                  id='email'
+                  value={email}
+                  onChange={(e) => handleChange(e)}
                   className='sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                   placeholder='name@company.com'
                   require='true'
