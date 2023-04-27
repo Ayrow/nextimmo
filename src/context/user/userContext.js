@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useReducer } from 'react';
 import userReducer from './userReducer';
-import { HANDLE_CHANGE } from '../actions.js';
+import { HANDLE_CHANGE, CLEAR_FORM } from '../actions.js';
 
 const UserContext = createContext();
 
@@ -21,8 +21,12 @@ const UserProvider = ({ children }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
   };
 
+  const clearForm = () => {
+    dispatch({ type: CLEAR_FORM });
+  };
+
   return (
-    <UserContext.Provider value={{ ...state, handleChange }}>
+    <UserContext.Provider value={{ ...state, handleChange, clearForm }}>
       {children}
     </UserContext.Provider>
   );

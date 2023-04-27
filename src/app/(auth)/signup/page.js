@@ -9,7 +9,8 @@ import { useAppContext } from '@/context/app/appContext';
 import Alert from '@/components/Alert';
 
 const Signin = () => {
-  const { handleChange, email, password, confirmPassword } = useUserContext();
+  const { handleChange, email, password, confirmPassword, clearForm } =
+    useUserContext();
   const { displayAlert, showAlert } = useAppContext();
 
   const handleSubmit = (e) => {
@@ -21,6 +22,7 @@ const Signin = () => {
     } else {
       signUpWithEmail(email, password);
       displayAlert({ type: 'success', msg: 'Successfully registered' });
+      clearForm();
     }
   };
 

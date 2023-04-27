@@ -8,7 +8,7 @@ import { useAppContext } from '@/context/app/appContext';
 import Alert from '@/components/Alert';
 
 const Signin = () => {
-  const { handleChange, email, password } = useUserContext();
+  const { handleChange, email, password, clearForm } = useUserContext();
   const { displayAlert, showAlert } = useAppContext();
 
   const handleSubmit = (e) => {
@@ -18,6 +18,7 @@ const Signin = () => {
       displayAlert({ type: 'error', msg: 'Email or password is missing' });
     } else {
       signInWithEmail('test@hello.fr', '1234');
+      clearForm();
       displayAlert({ type: 'success', msg: 'Successful login !' });
     }
   };
