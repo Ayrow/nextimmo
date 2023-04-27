@@ -6,6 +6,7 @@ import { signInWithGoogle } from '@/firebase/signin';
 import signUpWithEmail from '@/firebase/signup';
 import { useUserContext } from '@/context/user/userContext';
 import { useAppContext } from '@/context/app/appContext';
+import Alert from '@/components/Alert';
 
 const Signin = () => {
   const { handleChange, email, password, confirmPassword } = useUserContext();
@@ -13,10 +14,13 @@ const Signin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('the password do not match.');
-    } else if (email && password && confirmPassword) {
+    if (!email && !password && !confirmPassword) {
+      displayAlert({ type: 'error', msg: 'Please complete all fields' });
+    } else if (password !== confirmPassword) {
+      displayAlert({ type: 'error', msg: 'Passwords do not match' });
+    } else {
       signUpWithEmail(email, password);
+      displayAlert({ type: 'success', msg: 'Successfully registered' });
     }
   };
 
