@@ -5,11 +5,8 @@ const signUpWithEmail = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    await addDoc(collection(db, 'users'), {
-      uid: user.uid,
-      name,
-      authProvider: 'local',
-      email,
+    user.updateProfile({ role: 'user' }).then(() => {
+      console.log('User role added successfully');
     });
   } catch (err) {
     console.error(err);
