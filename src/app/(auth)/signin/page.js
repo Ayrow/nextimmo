@@ -66,11 +66,11 @@ const Signin = () => {
                     </label>
                   </div>
                 </div>
-                <button
-                  type='button'
+                <Link
+                  href='/reset-password'
                   className='text-sm font-medium hover:underline text-primary-500'>
                   Forgot password?
-                </button>
+                </Link>
               </div>
               <button
                 type='submit'
