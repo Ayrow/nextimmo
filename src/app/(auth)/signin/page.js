@@ -3,13 +3,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { signInWithGoogle, signInWithEmail } from '@/firebase/signin';
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  signInWithEmail('test@hello.fr', '1234');
-};
+import { useUserContext } from '@/context/user/userContext';
 
 const Signin = () => {
+  const { handleChange, email, password } = useUserContext();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (email || password) {
+      signInWithEmail('test@hello.fr', '1234');
+    }
+  };
+
   return (
     <section className=' bg-gray-900'>
       <div className='flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0'>
@@ -29,6 +34,8 @@ const Signin = () => {
                   type='email'
                   name='email'
                   id='email'
+                  value={email}
+                  onChange={(e) => handleChange(e)}
                   className='sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                   placeholder='name@company.com'
                   require='true'
@@ -43,7 +50,8 @@ const Signin = () => {
                 <input
                   type='password'
                   name='password'
-                  id='password'
+                  value={password}
+                  onChange={(e) => handleChange(e)}
                   placeholder='••••••••'
                   className='border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                   require='true'

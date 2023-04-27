@@ -2,15 +2,22 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { signInWithGoogle, signInWithEmail } from '@/firebase/signin';
+import { signInWithGoogle } from '@/firebase/signin';
 import signUpWithEmail from '@/firebase/signup';
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  signUpWithEmail();
-};
+import { useUserContext } from '@/context/user/userContext';
 
 const Signin = () => {
+  const { handleChange, email, password, confirmPassword } = useUserContext();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert('the password do not match.');
+    } else if (email || password || confirmPassword) {
+      signUpWithEmail(email, password);
+    }
+  };
+
   return (
     <section className=' bg-gray-900'>
       <div className='flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0'>
@@ -29,7 +36,8 @@ const Signin = () => {
                 <input
                   type='email'
                   name='email'
-                  id='email'
+                  value={email}
+                  onChange={(e) => handleChange(e)}
                   className='sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                   placeholder='name@company.com'
                   require='true'
@@ -44,7 +52,8 @@ const Signin = () => {
                 <input
                   type='password'
                   name='password'
-                  id='password'
+                  value={password}
+                  onChange={(e) => handleChange(e)}
                   placeholder='••••••••'
                   className='border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                   require='true'
@@ -58,8 +67,9 @@ const Signin = () => {
                 </label>
                 <input
                   type='password'
-                  name='password'
-                  id='password'
+                  name='confirmPassword'
+                  value={confirmPassword}
+                  onChange={(e) => handleChange(e)}
                   placeholder='••••••••'
                   className='border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                   require='true'
@@ -80,14 +90,14 @@ const Signin = () => {
               </p>
             </form>
 
-            <div class='px-6 sm:px-0 max-w-sm'>
+            <div className='px-6 sm:px-0 max-w-sm'>
               <button
                 type='button'
                 onClick={() => signInWithGoogle()}
-                class='text-white w-full bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-[#4285F4]/55 mr-2 mb-2'>
+                className='text-white w-full bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-[#4285F4]/55 mr-2 mb-2'>
                 <div className='flex w-full justify-center'>
                   <svg
-                    class='mr-2 -ml-1 w-4 h-4'
+                    className='mr-2 -ml-1 w-4 h-4'
                     aria-hidden='true'
                     focusable='false'
                     data-prefix='fab'

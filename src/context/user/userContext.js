@@ -8,7 +8,6 @@ const UserContext = createContext();
 
 const initialUserState = {
   email: '',
-  username: '',
   password: '',
   confirmPassword: '',
 };
