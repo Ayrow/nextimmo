@@ -1,11 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useUserContext } from '@/context/user/userContext';
-import { useAppContext } from '@/context/app/appContext';
-import Alert from '@/components/Alert';
+import { useUserContext } from '../../../context/user/userContext';
+import { useAppContext } from '../../..//context/app/appContext';
+import Alert from '../../../components/Alert';
+import { useRouter } from 'next/navigation';
 
 const Signin = () => {
+  const router = useRouter();
+
   const {
     handleChange,
     email,
@@ -13,18 +16,18 @@ const Signin = () => {
     clearForm,
     connectWithGoogle,
     signInWithEmail,
-  } = useUserContext();
+  } = useUserContext() || {};
+
   const { displayAlert, showAlert } = useAppContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!email || !password) {
       displayAlert({ type: 'error', msg: 'Email or password is missing' });
     } else {
       signInWithEmail(email, password);
       clearForm();
-      displayAlert({ type: 'success', msg: 'Successful login !' });
+      //  router.push('/');
     }
   };
 

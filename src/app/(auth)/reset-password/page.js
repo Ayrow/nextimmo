@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import Alert from '@/components/Alert';
 import { useUserContext } from '@/context/user/userContext';
 import { useAppContext } from '@/context/app/appContext';

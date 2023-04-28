@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 import userReducer from './userReducer';
 import {
   HANDLE_CHANGE,
@@ -9,7 +9,7 @@ import {
   CLEAR_USER,
 } from '../actions.js';
 import { useAppContext } from '../app/appContext';
-import { auth } from '@/firebase/config';
+import { auth } from '../../firebase/config';
 import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
@@ -48,12 +48,12 @@ const UserProvider = ({ children }) => {
         email,
         password
       );
+
       if (result) {
+        let username = email;
         const res = await fetch('/api/user', {
           method: 'POST',
-          body: JSON.stringify({
-            email,
-          }),
+          body: JSON.stringify({ email, username }),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -65,7 +65,10 @@ const UserProvider = ({ children }) => {
           msg: 'Your account has been created: welcome!',
         });
       }
+      console.log('user', user);
+      console.log('auth.currentUser', auth.currentUser);
     } catch (error) {
+      alert(error);
       displayAlert({
         type: 'error',
         msg: 'Failed to register with email and password',
@@ -94,7 +97,7 @@ const UserProvider = ({ children }) => {
         const data = await res.json();
         dispatch({ type: SETUP_USER, payload: data });
       } else {
-        await fetch('/api/user', {
+        const res = await fetch('/api/user', {
           method: 'GET',
           body: JSON.stringify({ email }),
           headers: {
@@ -119,20 +122,28 @@ const UserProvider = ({ children }) => {
   const signInWithEmail = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      await fetch('/api/user', {
+      const res = await fetch(`/api/user?email=${email}`, {
         method: 'GET',
-        body: JSON.stringify({ email }),
         headers: {
           'Content-Type': 'application/json',
         },
       });
       const data = await res.json();
-      dispatch({ type: SETUP_USER, payload: data });
-      displayAlert({
-        type: 'success',
-        msg: 'You are signed in!',
-      });
+      console.log('data', data);
+      if (data) {
+        dispatch({ type: SETUP_USER, payload: data });
+        displayAlert({
+          type: 'success',
+          msg: 'You are signed in!',
+        });
+      } else {
+        displayAlert({
+          type: 'error',
+          msg: 'Failed to signin with email and password',
+        });
+      }
     } catch (error) {
+      alert(error);
       displayAlert({
         type: 'error',
         msg: 'Failed to signin with email and password',

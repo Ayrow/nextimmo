@@ -17,10 +17,28 @@ export async function POST(request) {
 
   const user = await User.create({ email, username, role });
 
-  if (!user.username || user.username == '') {
-    user.username = user.email;
-    user.save();
+  if (user) {
+    return new Response(user);
+  } else {
+    throw new Error('No user found');
+  }
+}
+
+export async function GET(request) {
+  await connectDB();
+  const { searchParams } = new URL(request.url);
+  const email = searchParams.get('email');
+
+  if (!email) {
+    throw new Error('Email is missing');
   }
 
-  return new Response(user);
+  const user = await User.findOne({ email });
+  if (user) {
+    const responseJson = JSON.stringify(user);
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const response = new Response(responseJson, { headers });
+
+    return response;
+  }
 }

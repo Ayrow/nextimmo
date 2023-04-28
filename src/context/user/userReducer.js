@@ -1,4 +1,4 @@
-import { CLEAR_FORM, HANDLE_CHANGE, SETUP_USER } from '../actions';
+import { CLEAR_FORM, CLEAR_USER, HANDLE_CHANGE, SETUP_USER } from '../actions';
 
 const userReducer = (state, action) => {
   switch (action.type) {

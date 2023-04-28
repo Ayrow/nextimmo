@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useUserContext } from '@/context/user/userContext';
-import { useAppContext } from '@/context/app/appContext';
-import Alert from '@/components/Alert';
+import { useUserContext } from '../../../context/user/userContext';
+import { useAppContext } from '../../../context/app/appContext';
+import Alert from '../../../components/Alert';
 
 const Signin = () => {
   const {
@@ -23,6 +23,11 @@ const Signin = () => {
       displayAlert({ type: 'error', msg: 'Please complete all fields' });
     } else if (password !== confirmPassword) {
       displayAlert({ type: 'error', msg: 'Passwords do not match' });
+    } else if (password.length < 6) {
+      displayAlert({
+        type: 'error',
+        msg: 'Password must be at least 6 characters.',
+      });
     } else {
       registerUserWithEmail(email, password);
       displayAlert({ type: 'success', msg: 'Successfully registered' });
