@@ -4,11 +4,8 @@ import Link from 'next/link';
 import { useUserContext } from '../../../context/user/userContext';
 import { useAppContext } from '../../..//context/app/appContext';
 import Alert from '../../../components/Alert';
-import { useRouter } from 'next/navigation';
 
 const Signin = () => {
-  const router = useRouter();
-
   const {
     handleChange,
     email,
@@ -27,7 +24,6 @@ const Signin = () => {
     } else {
       signInWithEmail(email, password);
       clearForm();
-      //  router.push('/');
     }
   };
 

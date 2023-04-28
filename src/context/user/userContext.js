@@ -18,6 +18,8 @@ import {
   signOut,
 } from 'firebase/auth';
 
+import { useRouter } from 'next/navigation';
+
 const UserContext = createContext();
 
 const initialUserState = {
@@ -28,6 +30,7 @@ const initialUserState = {
 };
 
 const UserProvider = ({ children }) => {
+  const router = useRouter();
   const [state, dispatch] = useReducer(userReducer, initialUserState);
   const { displayAlert } = useAppContext();
 
@@ -64,9 +67,8 @@ const UserProvider = ({ children }) => {
           type: 'success',
           msg: 'Your account has been created: welcome!',
         });
+        router.push('/');
       }
-      console.log('user', user);
-      console.log('auth.currentUser', auth.currentUser);
     } catch (error) {
       alert(error);
       displayAlert({
@@ -96,6 +98,7 @@ const UserProvider = ({ children }) => {
         });
         const data = await res.json();
         dispatch({ type: SETUP_USER, payload: data });
+        router.push('/');
       } else {
         const res = await fetch('/api/user', {
           method: 'GET',
@@ -136,6 +139,7 @@ const UserProvider = ({ children }) => {
           type: 'success',
           msg: 'You are signed in!',
         });
+        router.push('/');
       } else {
         displayAlert({
           type: 'error',
