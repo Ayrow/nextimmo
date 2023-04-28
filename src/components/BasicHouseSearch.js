@@ -3,9 +3,7 @@ import React from 'react';
 const BasicHouseSearch = () => {
   return (
     <form className='flex items-center px-10'>
-      <label for='simple-search' className='sr-only'>
-        Search
-      </label>
+      <label className='sr-only'>Search</label>
       <div className='relative flex'>
         <div>
           <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>

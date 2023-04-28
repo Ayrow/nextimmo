@@ -35,9 +35,7 @@ const Signin = () => {
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
             <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
               <div>
-                <label
-                  htmlFor='email'
-                  className='block mb-2 text-sm font-medium text-white'>
+                <label className='block mb-2 text-sm font-medium text-white'>
                   Your email
                 </label>
                 <input

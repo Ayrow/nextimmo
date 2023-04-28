@@ -9,6 +9,18 @@ export default async function handler(req, res) {
       break;
 
     case 'POST':
+      const { email } = req.body;
+
+      if (!email) {
+        throw new Error('please provide all values');
+      }
+
+      const userAlreadyExists = await User.findOne({ email });
+      if (userAlreadyExists) {
+        throw new Error('Email already in use');
+      }
+
+      await User.create({ email });
       res.status(200).json({ message: 'Create user' });
       break;
 

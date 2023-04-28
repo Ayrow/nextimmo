@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { signInWithGoogle } from '@/firebase/signin';
-import signUpWithEmail from '@/firebase/signup';
 import { useUserContext } from '@/context/user/userContext';
 import { useAppContext } from '@/context/app/appContext';
 import Alert from '@/components/Alert';
@@ -20,7 +19,7 @@ const Signin = () => {
     } else if (password !== confirmPassword) {
       displayAlert({ type: 'error', msg: 'Passwords do not match' });
     } else {
-      signUpWithEmail(email, password);
+      registerUserWithEmail(email, password);
       displayAlert({ type: 'success', msg: 'Successfully registered' });
       clearForm();
     }
@@ -37,9 +36,7 @@ const Signin = () => {
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
             <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
               <div>
-                <label
-                  htmlFor='email'
-                  className='block mb-2 text-sm font-medium text-white'>
+                <label className='block mb-2 text-sm font-medium text-white'>
                   Your email
                 </label>
                 <input
@@ -53,9 +50,7 @@ const Signin = () => {
                 />
               </div>
               <div>
-                <label
-                  htmlFor='password'
-                  className='block mb-2 text-sm font-medium text-white'>
+                <label className='block mb-2 text-sm font-medium text-white'>
                   Password
                 </label>
                 <input
@@ -69,9 +64,7 @@ const Signin = () => {
                 />
               </div>
               <div>
-                <label
-                  htmlFor='password'
-                  className='block mb-2 text-sm font-medium text-white'>
+                <label className='block mb-2 text-sm font-medium text-white'>
                   Confirm Password
                 </label>
                 <input

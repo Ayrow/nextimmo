@@ -34,9 +34,7 @@ const Signin = () => {
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
             <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
               <div>
-                <label
-                  for='email'
-                  className='block mb-2 text-sm font-medium text-white'>
+                <label className='block mb-2 text-sm font-medium text-white'>
                   Your email
                 </label>
                 <input
@@ -52,7 +50,7 @@ const Signin = () => {
               </div>
               <div>
                 <label
-                  for='password'
+                  hmtlfor='password'
                   className='block mb-2 text-sm font-medium text-white'>
                   Password
                 </label>
@@ -78,9 +76,7 @@ const Signin = () => {
                     />
                   </div>
                   <div className='ml-3 text-sm'>
-                    <label for='remember' className=' text-gray-300'>
-                      Remember me
-                    </label>
+                    <label className=' text-gray-300'>Remember me</label>
                   </div>
                 </div>
                 <Link
@@ -104,14 +100,14 @@ const Signin = () => {
               </p>
             </form>
 
-            <div class='px-6 sm:px-0 max-w-sm'>
+            <div className='px-6 sm:px-0 max-w-sm'>
               <button
                 type='button'
                 onClick={() => signInWithGoogle()}
-                class='text-white w-full bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-[#4285F4]/55 mr-2 mb-2'>
+                className='text-white w-full bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-[#4285F4]/55 mr-2 mb-2'>
                 <div className='flex w-full justify-center'>
                   <svg
-                    class='mr-2 -ml-1 w-4 h-4'
+                    className='mr-2 -ml-1 w-4 h-4'
                     aria-hidden='true'
                     focusable='false'
                     data-prefix='fab'

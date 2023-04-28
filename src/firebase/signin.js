@@ -12,7 +12,7 @@ const signInWithEmail = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (e) {
-    alert(e.message);
+    console.log('first', first);
   }
   return { result, error };
 };
@@ -25,8 +25,7 @@ const signInWithGoogle = async () => {
       console.log('User role added successfully');
     });
   } catch (err) {
-    console.error(err);
-    alert(err.message);
+    alert(err);
   }
 };
 
