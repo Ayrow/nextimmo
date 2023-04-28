@@ -3,12 +3,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Alert from '@/components/Alert';
-import sendPasswordReset from '@/firebase/passwordReset';
 import { useUserContext } from '@/context/user/userContext';
 import { useAppContext } from '@/context/app/appContext';
 
 const Signin = () => {
-  const { handleChange, email } = useUserContext();
+  const { handleChange, email, sendPasswordReset } = useUserContext();
   const { displayAlert, showAlert } = useAppContext();
 
   const handleSubmit = (e) => {

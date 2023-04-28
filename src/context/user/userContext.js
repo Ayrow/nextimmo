@@ -3,10 +3,15 @@
 import { createContext, useContext, useReducer } from 'react';
 import userReducer from './userReducer';
 import { HANDLE_CHANGE, CLEAR_FORM } from '../actions.js';
-import signUpWithEmail from '@/firebase/signup';
 import { useAppContext } from '../app/appContext';
-import { signInWithGoogle } from '@/firebase/signin';
 import { auth } from '@/firebase/config';
+import {
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
 
 const UserContext = createContext();
 
@@ -33,8 +38,11 @@ const UserProvider = ({ children }) => {
 
   const registerUserWithEmail = async (email, password) => {
     try {
-      // const result = await signUpWithEmail(email, password);
-      const result = true;
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       if (result) {
         const res = await fetch('/api/user', {
           method: 'POST',
@@ -58,7 +66,7 @@ const UserProvider = ({ children }) => {
 
   const connectWithGoogle = async () => {
     try {
-      await signInWithGoogle();
+      await signInWithPopup(auth, googleProvider);
       const user = auth.currentUser;
       const username = user.displayName;
       const email = user.email;
@@ -80,6 +88,29 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  const signInWithEmail = async (email, password) => {
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      return result;
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const sendPasswordReset = async (email) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert('Password reset link sent!');
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+  };
+
+  const signOutUser = () => {
+    signOut(auth);
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -88,6 +119,9 @@ const UserProvider = ({ children }) => {
         clearForm,
         registerUserWithEmail,
         connectWithGoogle,
+        signInWithEmail,
+        sendPasswordReset,
+        signOutUser,
       }}>
       {children}
     </UserContext.Provider>

@@ -1,17 +1,16 @@
 'use client';
 
-import useAuth from '@/hooks/useAuth';
+import { useUserContext } from '@/context/user/userContext';
 import Link from 'next/link';
-import logout from '@/firebase/signout';
 
 const AccountButton = () => {
-  const { user } = useAuth();
+  const { user, signOutUser } = useUserContext();
   return (
     <div>
       {user ? (
         <div>
           <Link href='/'>Account ({user.email})</Link>
-          <button onClick={logout}>Sign out</button>
+          <button onClick={signOutUser}>Sign out</button>
         </div>
       ) : (
         <Link

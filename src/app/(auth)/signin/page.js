@@ -1,15 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { signInWithEmail } from '@/firebase/signin';
 import { useUserContext } from '@/context/user/userContext';
 import { useAppContext } from '@/context/app/appContext';
 import Alert from '@/components/Alert';
 
 const Signin = () => {
-  const { handleChange, email, password, clearForm, connectWithGoogle } =
-    useUserContext();
+  const {
+    handleChange,
+    email,
+    password,
+    clearForm,
+    connectWithGoogle,
+    signInWithEmail,
+  } = useUserContext();
   const { displayAlert, showAlert } = useAppContext();
 
   const handleSubmit = (e) => {
