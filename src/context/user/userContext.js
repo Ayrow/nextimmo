@@ -14,6 +14,7 @@ const initialUserState = {
   email: '',
   password: '',
   confirmPassword: '',
+  user: null,
 };
 
 const UserProvider = ({ children }) => {

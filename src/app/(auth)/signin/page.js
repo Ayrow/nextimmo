@@ -18,7 +18,7 @@ const Signin = () => {
     if (!email || !password) {
       displayAlert({ type: 'error', msg: 'Email or password is missing' });
     } else {
-      signInWithEmail('test@hello.fr', '1234');
+      signInWithEmail(email, password);
       clearForm();
       displayAlert({ type: 'success', msg: 'Successful login !' });
     }

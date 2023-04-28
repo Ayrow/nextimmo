@@ -12,7 +12,9 @@ const useAuth = () => {
       setIsLoggedIn(user && user.uid ? true : false);
       setUser(user);
     });
-  });
+    console.log('user', user);
+  }, []);
   return { user, isLoggedIn };
 };
+
 export default useAuth;

@@ -1,13 +1,18 @@
 'use client';
 
-import { auth } from '@/firebase/config';
+import useAuth from '@/hooks/useAuth';
 import Link from 'next/link';
+import logout from '@/firebase/signout';
 
 const AccountButton = () => {
+  const { user } = useAuth();
   return (
     <div>
-      {auth.currentUser ? (
-        <div>Account</div>
+      {user ? (
+        <div>
+          <Link href='/'>Account ({user.email})</Link>
+          <button onClick={logout}>Sign out</button>
+        </div>
       ) : (
         <Link
           href='/signin'
