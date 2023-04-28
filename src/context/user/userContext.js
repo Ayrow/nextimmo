@@ -2,7 +2,12 @@
 
 import { createContext, useContext, useReducer } from 'react';
 import userReducer from './userReducer';
-import { HANDLE_CHANGE, CLEAR_FORM } from '../actions.js';
+import {
+  HANDLE_CHANGE,
+  CLEAR_FORM,
+  SETUP_USER,
+  CLEAR_USER,
+} from '../actions.js';
 import { useAppContext } from '../app/appContext';
 import { auth } from '@/firebase/config';
 import {
@@ -54,7 +59,11 @@ const UserProvider = ({ children }) => {
           },
         });
         const data = await res.json();
-        console.log('data', data);
+        dispatch({ type: SETUP_USER, payload: data });
+        displayAlert({
+          type: 'success',
+          msg: 'Your account has been created: welcome!',
+        });
       }
     } catch (error) {
       displayAlert({
@@ -71,7 +80,10 @@ const UserProvider = ({ children }) => {
       const username = user.displayName;
       const email = user.email;
 
-      if (user) {
+      const metadata = auth.currentUser.metadata;
+      if (
+        metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()
+      ) {
         await fetch('/api/user', {
           method: 'POST',
           body: JSON.stringify({ email, username }),
@@ -79,7 +91,23 @@ const UserProvider = ({ children }) => {
             'Content-Type': 'application/json',
           },
         });
+        const data = await res.json();
+        dispatch({ type: SETUP_USER, payload: data });
+      } else {
+        await fetch('/api/user', {
+          method: 'GET',
+          body: JSON.stringify({ email }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await res.json();
+        dispatch({ type: SETUP_USER, payload: data });
       }
+      displayAlert({
+        type: 'success',
+        msg: 'You are signed in!',
+      });
     } catch (error) {
       displayAlert({
         type: 'error',
@@ -90,25 +118,46 @@ const UserProvider = ({ children }) => {
 
   const signInWithEmail = async (email, password) => {
     try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      return result;
+      await signInWithEmailAndPassword(auth, email, password);
+      await fetch('/api/user', {
+        method: 'GET',
+        body: JSON.stringify({ email }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      dispatch({ type: SETUP_USER, payload: data });
+      displayAlert({
+        type: 'success',
+        msg: 'You are signed in!',
+      });
     } catch (error) {
-      console.log('error', error);
+      displayAlert({
+        type: 'error',
+        msg: 'Failed to signin with email and password',
+      });
     }
   };
 
   const sendPasswordReset = async (email) => {
     try {
       await sendPasswordResetEmail(auth, email);
-      alert('Password reset link sent!');
+      displayAlert({
+        type: 'success',
+        msg: 'Email to reset password successfully sent.',
+      });
     } catch (err) {
-      console.error(err);
-      alert(err.message);
+      displayAlert({
+        type: 'error',
+        msg: 'Failed to to send reset password email',
+      });
     }
   };
 
   const signOutUser = () => {
     signOut(auth);
+    dispatch({ type: CLEAR_USER });
   };
 
   return (

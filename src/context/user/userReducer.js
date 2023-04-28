@@ -1,4 +1,4 @@
-import { CLEAR_FORM, HANDLE_CHANGE } from '../actions';
+import { CLEAR_FORM, HANDLE_CHANGE, SETUP_USER } from '../actions';
 
 const userReducer = (state, action) => {
   switch (action.type) {
@@ -13,6 +13,16 @@ const userReducer = (state, action) => {
         email: '',
         password: '',
         confirmPassword: '',
+      };
+    case SETUP_USER:
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case CLEAR_USER:
+      return {
+        ...state,
+        user: null,
       };
     default:
       throw new Error(`There is no action: ${action.type}`);
