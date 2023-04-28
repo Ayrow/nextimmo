@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { signInWithGoogle, signInWithEmail } from '@/firebase/signin';
+import { signInWithEmail } from '@/firebase/signin';
 import { useUserContext } from '@/context/user/userContext';
 import { useAppContext } from '@/context/app/appContext';
 import Alert from '@/components/Alert';
 
 const Signin = () => {
-  const { handleChange, email, password, clearForm } = useUserContext();
+  const { handleChange, email, password, clearForm, connectWithGoogle } =
+    useUserContext();
   const { displayAlert, showAlert } = useAppContext();
 
   const handleSubmit = (e) => {
@@ -103,7 +104,7 @@ const Signin = () => {
             <div className='px-6 sm:px-0 max-w-sm'>
               <button
                 type='button'
-                onClick={() => signInWithGoogle()}
+                onClick={connectWithGoogle}
                 className='text-white w-full bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-[#4285F4]/55 mr-2 mb-2'>
                 <div className='flex w-full justify-center'>
                   <svg

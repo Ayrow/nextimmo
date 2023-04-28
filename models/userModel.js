@@ -7,6 +7,12 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  saved: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: 'Listing',
+    },
+  ],
 });
 
 const User = models.User || model('User', userSchema);

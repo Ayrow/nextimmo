@@ -9,7 +9,7 @@ export default async function handler(req, res) {
       break;
 
     case 'POST':
-      const { email } = req.body;
+      const { email, username } = req.body;
 
       if (!email) {
         throw new Error('please provide all values');
@@ -20,7 +20,11 @@ export default async function handler(req, res) {
         throw new Error('Email already in use');
       }
 
-      await User.create({ email });
+      if (!username || username == '') {
+        username = email;
+      }
+
+      await User.create({ email, username });
       res.status(200).json({ message: 'Create user' });
       break;
 

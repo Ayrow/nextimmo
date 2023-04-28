@@ -24,8 +24,8 @@ const signInWithGoogle = async () => {
     user.updateProfile({ role: 'user' }).then(() => {
       console.log('User role added successfully');
     });
-  } catch (err) {
-    alert(err);
+  } catch (error) {
+    console.log('error', error);
   }
 };
 
