@@ -3,12 +3,11 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 const signUpWithEmail = async (email, password) => {
   try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
-    await updateProfile(user, { role: 'user' });
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    return result;
   } catch (err) {
     console.error(err);
-    alert(err.message);
+    console.log(err.message);
   }
 };
 

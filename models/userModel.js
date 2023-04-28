@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 const userSchema = new Schema({
   username: String,
@@ -9,10 +9,15 @@ const userSchema = new Schema({
   },
   saved: [
     {
-      type: mongoose.Types.ObjectId,
+      type: Types.ObjectId,
       ref: 'Listing',
     },
   ],
+  role: {
+    type: String,
+    enum: ['admin', 'user'],
+    default: 'user',
+  },
 });
 
 const User = models.User || model('User', userSchema);

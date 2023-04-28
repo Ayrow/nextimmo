@@ -33,16 +33,20 @@ const UserProvider = ({ children }) => {
 
   const registerUserWithEmail = async (email, password) => {
     try {
-      const result = await signUpWithEmail(email, password);
-
+      // const result = await signUpWithEmail(email, password);
+      const result = true;
       if (result) {
-        await fetch('/api/user', {
+        const res = await fetch('/api/user', {
           method: 'POST',
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({
+            email,
+          }),
           headers: {
             'Content-Type': 'application/json',
           },
         });
+        const data = await res.json();
+        console.log('data', data);
       }
     } catch (error) {
       displayAlert({
