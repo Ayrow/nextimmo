@@ -16,6 +16,7 @@ const Listings = () => {
 
   return (
     <section>
+      <h2 className='text-center text-xl font-bold mt-5'>Listings</h2>
       {exampleListings.map((listing) => {
         return <div>{gridList ? <GridCard /> : <ListCard />}</div>;
       })}
