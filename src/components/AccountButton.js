@@ -9,7 +9,7 @@ const AccountButton = () => {
     <div>
       {user ? (
         <div>
-          <Link href='/'>Account ({user.email})</Link>
+          <Link href='/'>Account {user.email}</Link>
           <button onClick={signOutUser}>Sign out</button>
         </div>
       ) : (

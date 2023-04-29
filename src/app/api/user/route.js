@@ -35,10 +35,6 @@ export async function GET(request) {
 
   const user = await User.findOne({ email });
   if (user) {
-    const responseJson = JSON.stringify(user);
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const response = new Response(responseJson, { headers });
-
-    return response;
+    return new Response(user);
   }
 }

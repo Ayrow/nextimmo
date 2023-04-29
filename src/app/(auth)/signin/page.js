@@ -13,7 +13,7 @@ const Signin = () => {
     clearForm,
     connectWithGoogle,
     signInWithEmail,
-  } = useUserContext() || {};
+  } = useUserContext();
 
   const { displayAlert, showAlert } = useAppContext();
 

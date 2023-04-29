@@ -124,27 +124,28 @@ const UserProvider = ({ children }) => {
 
   const signInWithEmail = async (email, password) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      const res = await fetch(`/api/user?email=${email}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await res.json();
-      console.log('data', data);
-      if (data) {
-        dispatch({ type: SETUP_USER, payload: data });
-        displayAlert({
-          type: 'success',
-          msg: 'You are signed in!',
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      if (result) {
+        const res = await fetch(`/api/user?email=${email}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
-        router.push('/');
-      } else {
-        displayAlert({
-          type: 'error',
-          msg: 'Failed to signin with email and password',
-        });
+        const data = await res.text();
+        if (data) {
+          dispatch({ type: SETUP_USER, payload: data });
+          displayAlert({
+            type: 'success',
+            msg: 'You are signed in!',
+          });
+          router.push('/');
+        } else {
+          displayAlert({
+            type: 'error',
+            msg: 'Failed to signin with email and password',
+          });
+        }
       }
     } catch (error) {
       alert(error);

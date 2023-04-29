@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Contact = () => {
   return (
     <section className=' bg-gray-900'>
@@ -13,9 +11,7 @@ const Contact = () => {
         </p>
         <form action='#' className='space-y-8'>
           <div>
-            <label
-              for='email'
-              className='block mb-2 text-sm font-medium text-gray-300'>
+            <label className='block mb-2 text-sm font-medium text-gray-300'>
               Votre email
             </label>
             <input
@@ -27,9 +23,7 @@ const Contact = () => {
             />
           </div>
           <div>
-            <label
-              for='subject'
-              className='block mb-2 text-sm font-medium text-gray-300'>
+            <label className='block mb-2 text-sm font-medium text-gray-300'>
               Sujet
             </label>
             <input
@@ -41,9 +35,7 @@ const Contact = () => {
             />
           </div>
           <div className='sm:col-span-2'>
-            <label
-              for='message'
-              className='block mb-2 text-sm font-medium text-gray-400'>
+            <label className='block mb-2 text-sm font-medium text-gray-400'>
               Votre message
             </label>
             <textarea
