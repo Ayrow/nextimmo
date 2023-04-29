@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useReducer } from 'react';
+import { createContext, useContext, useReducer } from 'react';
 import userReducer from './userReducer';
 import {
   HANDLE_CHANGE,
@@ -33,6 +33,12 @@ const UserProvider = ({ children }) => {
   const router = useRouter();
   const [state, dispatch] = useReducer(userReducer, initialUserState);
   const { displayAlert } = useAppContext();
+
+  const navigate = (path) => {
+    setTimeout(() => {
+      router.push(path);
+    }, 3000);
+  };
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -67,7 +73,7 @@ const UserProvider = ({ children }) => {
           type: 'success',
           msg: 'Your account has been created: welcome!',
         });
-        router.push('/');
+        navigate('/');
       }
     } catch (error) {
       alert(error);
@@ -98,7 +104,7 @@ const UserProvider = ({ children }) => {
         });
         const data = await res.json();
         dispatch({ type: SETUP_USER, payload: data });
-        router.push('/');
+        navigate('/');
       } else {
         const res = await fetch('/api/user', {
           method: 'GET',
@@ -139,7 +145,7 @@ const UserProvider = ({ children }) => {
             type: 'success',
             msg: 'You are signed in!',
           });
-          router.push('/');
+          navigate('/');
         } else {
           displayAlert({
             type: 'error',
@@ -163,6 +169,7 @@ const UserProvider = ({ children }) => {
         type: 'success',
         msg: 'Email to reset password successfully sent.',
       });
+      navigate('/signin');
     } catch (err) {
       displayAlert({
         type: 'error',
