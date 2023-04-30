@@ -192,6 +192,7 @@ const UserProvider = ({ children }) => {
   };
 
   const signOutUser = () => {
+    router.push('/');
     signOut(auth);
     dispatch({ type: CLEAR_USER });
     removeUserFromLocalStorage();
