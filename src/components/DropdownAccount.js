@@ -35,12 +35,17 @@ const DropdownAccount = ({
       </div>
       <div className='p-2 flex flex-col gap-5'>
         <NavLink
-          path='/'
+          path='/account'
           label='Account'
           targetSegment='account'
-          className=' hover:bg-slate-300'
+          onClick={() => setIsDropdownOpen(false)}
         />
-        <NavLink path='/' label='Saved' targetSegment='saved-listings' />
+        <NavLink
+          path='/saved-listings'
+          label='Saved Listings'
+          targetSegment='saved-listings'
+          onClick={() => setIsDropdownOpen(false)}
+        />
         <button
           onClick={signOutUser}
           className='block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 hover:text-blue-700 text-left'>

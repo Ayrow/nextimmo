@@ -22,17 +22,27 @@ import { useRouter } from 'next/navigation';
 
 const UserContext = createContext();
 
+const user = localStorage.getItem('user');
+
 const initialUserState = {
   email: '',
   password: '',
   confirmPassword: '',
-  user: null,
+  user: user ?? null,
 };
 
 const UserProvider = ({ children }) => {
   const router = useRouter();
   const [state, dispatch] = useReducer(userReducer, initialUserState);
   const { displayAlert } = useAppContext();
+
+  const addUserToLocalStorage = (user) => {
+    localStorage.setItem('user', JSON.stringify(user));
+  };
+
+  const removeUserFromLocalStorage = () => {
+    localStorage.removeItem('user');
+  };
 
   const navigate = (path) => {
     setTimeout(() => {
@@ -69,6 +79,7 @@ const UserProvider = ({ children }) => {
         });
         const data = await res.json();
         dispatch({ type: SETUP_USER, payload: data });
+        addUserToLocalStorage(data);
         displayAlert({
           type: 'success',
           msg: 'Your account has been created: welcome!',
@@ -104,6 +115,7 @@ const UserProvider = ({ children }) => {
         });
         const data = await res.json();
         dispatch({ type: SETUP_USER, payload: data });
+        addUserToLocalStorage(data);
         navigate('/');
       } else {
         const res = await fetch('/api/user', {
@@ -145,6 +157,7 @@ const UserProvider = ({ children }) => {
             type: 'success',
             msg: 'You are signed in!',
           });
+          addUserToLocalStorage(data);
           navigate('/');
         } else {
           displayAlert({
@@ -181,6 +194,7 @@ const UserProvider = ({ children }) => {
   const signOutUser = () => {
     signOut(auth);
     dispatch({ type: CLEAR_USER });
+    removeUserFromLocalStorage();
   };
 
   return (
