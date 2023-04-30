@@ -28,7 +28,7 @@ const initialUserState = {
   email: '',
   password: '',
   confirmPassword: '',
-  user: user ?? null,
+  user: user ? JSON.parse(user) : null,
 };
 
 const UserProvider = ({ children }) => {
@@ -47,7 +47,7 @@ const UserProvider = ({ children }) => {
   const navigate = (path) => {
     setTimeout(() => {
       router.push(path);
-    }, 3000);
+    }, 1500);
   };
 
   const handleChange = (e) => {
@@ -150,14 +150,14 @@ const UserProvider = ({ children }) => {
             'Content-Type': 'application/json',
           },
         });
-        const data = await res.text();
+        const data = await res.json();
         if (data) {
           dispatch({ type: SETUP_USER, payload: data });
+          addUserToLocalStorage(data);
           displayAlert({
             type: 'success',
             msg: 'You are signed in!',
           });
-          addUserToLocalStorage(data);
           navigate('/');
         } else {
           displayAlert({

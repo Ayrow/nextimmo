@@ -18,7 +18,9 @@ export async function POST(request) {
   const user = await User.create({ email, username, role });
 
   if (user) {
-    return new Response(user);
+    return new Response(JSON.stringify(user), {
+      headers: { 'Content-Type': 'application/json' },
+    });
   } else {
     throw new Error('No user found');
   }
@@ -34,7 +36,10 @@ export async function GET(request) {
   }
 
   const user = await User.findOne({ email });
+
   if (user) {
-    return new Response(user);
+    return new Response(JSON.stringify(user), {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
