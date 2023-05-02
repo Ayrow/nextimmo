@@ -1,10 +1,13 @@
-import { useRef } from 'react';
-import NavLink from './NavLink';
+'use client';
 
-const DropdownAccount = ({
+import { useRef } from 'react';
+import NavLink from './navLink';
+
+const DropdownMenu = ({
   signOutUser,
   setIsDropdownOpen,
   isDropdownOpen,
+  links,
 }) => {
   const ref = useRef();
 
@@ -39,12 +42,16 @@ const DropdownAccount = ({
         </button>
       </div>
       <div className='p-2 flex flex-col gap-5'>
-        <NavLink path='/account' label='Account' targetSegment='account' />
-        <NavLink
-          path='/saved-listings'
-          label='Saved Listings'
-          targetSegment='saved-listings'
-        />
+        {links.map((link) => {
+          return (
+            <NavLink
+              key={link.id}
+              path={`/${link.path}`}
+              label={link.label}
+              targetSegment={link.path}
+            />
+          );
+        })}
         <button
           onClick={logOut}
           className='block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 hover:text-blue-700 text-left'>
@@ -55,4 +62,4 @@ const DropdownAccount = ({
   );
 };
 
-export default DropdownAccount;
+export default DropdownMenu;
