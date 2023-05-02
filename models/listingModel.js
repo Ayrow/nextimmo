@@ -4,9 +4,11 @@ const listingSchema = new Schema(
   {
     ref: String,
     prix: Int,
+    dateConstruction: Int,
     nbPieces: Int,
-    chambres: Int,
-    salleDeBains: Int,
+    nbChambres: Int,
+    nbSDB: Int,
+    nbEtages: Int,
     typeDeBien: {
       enum: [
         'maison',
@@ -64,18 +66,15 @@ const listingSchema = new Schema(
       default: 'Accepting offers',
     },
     description: String,
-    dpe: {
-      enum: ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
-      default: 'd',
-    },
-    ges: {
-      enum: ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
-      default: 'd',
-    },
+    dpe: Int,
+    ges: Int,
     createdBy: {
       type: Types.ObjectId,
       ref: 'User',
-      required: [true, 'Un compte est nécessaire pour ajouter une annonce'],
+      required: [
+        true,
+        'Un compte agent est nécessaire pour ajouter une annonce',
+      ],
     },
     nbAjoutFavoris: Int,
   },
