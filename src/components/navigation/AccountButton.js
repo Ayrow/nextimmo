@@ -4,7 +4,7 @@ import { useUserContext } from '@/context/user/userContext';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import DropdownMenu from './DropdownMenu';
-import { userLinks, agentLinks, adminLinks } from '../../utils/links';
+import { userLinks, agentLinks, adminLinks } from '../../../utils/links';
 
 const AccountButton = () => {
   const { user, signOutUser } = useUserContext();

@@ -1,7 +1,7 @@
 'use client';
 
-import GridCard from '@/components/GridCard';
-import ListCard from '@/components/ListCard';
+import GridCard from '@/components/listings/GridCard';
+import ListCard from '@/components/listings/ListCard';
 import { useState } from 'react';
 
 const Listings = () => {

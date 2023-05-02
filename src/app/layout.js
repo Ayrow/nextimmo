@@ -1,7 +1,7 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Navbar from '../components/navigation/Navbar';
+import Footer from '../components/navigation/Footer';
 import { UserProvider } from '../context/user/userContext';
 import { AppProvider } from '../context/app/appContext';
 
