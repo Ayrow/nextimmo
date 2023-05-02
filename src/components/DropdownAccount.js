@@ -44,7 +44,6 @@ const DropdownAccount = ({
           path='/saved-listings'
           label='Saved Listings'
           targetSegment='saved-listings'
-          onClick={() => setIsDropdownOpen(false)}
         />
         <button
           onClick={logOut}
