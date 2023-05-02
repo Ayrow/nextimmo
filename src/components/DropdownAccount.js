@@ -9,12 +9,17 @@ const DropdownAccount = ({
   const ref = useRef();
 
   const toggleDropdown = (e) => {
-    if (ref.current && isDropdownOpen && !ref.current.contains(e.target)) {
+    if (ref.current && isDropdownOpen) {
       setIsDropdownOpen(false);
     }
   };
 
   document.addEventListener('click', toggleDropdown);
+
+  const logOut = () => {
+    signOutUser();
+    setIsDropdownOpen(false);
+  };
 
   return (
     <div
@@ -34,12 +39,7 @@ const DropdownAccount = ({
         </button>
       </div>
       <div className='p-2 flex flex-col gap-5'>
-        <NavLink
-          path='/account'
-          label='Account'
-          targetSegment='account'
-          onClick={() => setIsDropdownOpen(false)}
-        />
+        <NavLink path='/account' label='Account' targetSegment='account' />
         <NavLink
           path='/saved-listings'
           label='Saved Listings'
@@ -47,7 +47,7 @@ const DropdownAccount = ({
           onClick={() => setIsDropdownOpen(false)}
         />
         <button
-          onClick={signOutUser}
+          onClick={logOut}
           className='block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 hover:text-blue-700 text-left'>
           Sign out
         </button>
