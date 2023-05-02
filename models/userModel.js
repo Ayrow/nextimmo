@@ -1,24 +1,27 @@
 import { Schema, model, models, Types } from 'mongoose';
 
-const userSchema = new Schema({
-  username: String,
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  saved: [
-    {
-      type: Types.ObjectId,
-      ref: 'Listing',
+const userSchema = new Schema(
+  {
+    username: String,
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
-  ],
-  role: {
-    type: String,
-    enum: ['admin', 'agent', 'user'],
-    default: 'user',
+    saved: [
+      {
+        type: Types.ObjectId,
+        ref: 'Listing',
+      },
+    ],
+    role: {
+      type: String,
+      enum: ['admin', 'agent', 'user'],
+      default: 'user',
+    },
   },
-});
+  { timestamps: true }
+);
 
 const User = models.User || model('User', userSchema);
 
