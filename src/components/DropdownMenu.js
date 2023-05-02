@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import NavLink from './navLink';
+import NavLink from './NavLink';
 
 const DropdownMenu = ({
   signOutUser,
@@ -46,7 +46,7 @@ const DropdownMenu = ({
           return (
             <NavLink
               key={link.id}
-              path={`/${link.path}`}
+              path={link.path}
               label={link.label}
               targetSegment={link.path}
             />

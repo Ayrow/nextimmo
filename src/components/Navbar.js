@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import NavLink from './navLink';
+import NavLink from './NavLink';
 import AccountButton from './AccountButton';
 
 const Navbar = () => {
@@ -47,14 +47,14 @@ const Navbar = () => {
               <NavLink
                 path='/listings'
                 label='Listings'
-                targetSegment='listings'
+                targetSegment='/listings'
               />
             </li>
             <li>
               <NavLink
                 path='/contact'
                 label='Contact'
-                targetSegment='contact'
+                targetSegment='/contact'
               />
             </li>
           </ul>
