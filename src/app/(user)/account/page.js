@@ -8,6 +8,8 @@ const Account = () => {
   if (!user) {
     return <div>You need to be logged in to view this page</div>;
   } else {
+    console.log(user);
+
     return (
       <div className='relative bg-gray-900 p-20'>
         <h2 className='text-center text-xl'>Account details</h2>
