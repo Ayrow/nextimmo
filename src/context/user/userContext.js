@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 import userReducer from './userReducer';
 import {
   HANDLE_CHANGE,
@@ -22,7 +22,10 @@ import { useRouter } from 'next/navigation';
 
 const UserContext = createContext();
 
-const user = localStorage.getItem('user');
+let user;
+if (typeof window !== 'undefined') {
+  user = localStorage.getItem('user');
+}
 
 const initialUserState = {
   email: '',
