@@ -11,6 +11,10 @@ const listingSchema = new Schema(
       enum: ['location', 'vente'],
       required: [true, 'Veuillez indiquer le type de transaction'],
     },
+    location: {
+      loyerMensuel: Number,
+      Caution: Number,
+    },
     prix: {
       type: Number,
       required: [true, 'Veuillez indiquer un prix'],

@@ -1,3 +1,5 @@
+'use client';
+
 const AddListing = () => {
   return (
     <section className='bg-gray-900'>
