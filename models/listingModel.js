@@ -7,6 +7,10 @@ const listingSchema = new Schema(
       required: [true, 'Veuillez ajouter une référence'],
       unique: true,
     },
+    transaction: {
+      enum: ['location', 'vente'],
+      required: [true, 'Veuillez indiquer le type de transaction'],
+    },
     prix: {
       type: Number,
       required: [true, 'Veuillez indiquer un prix'],
@@ -57,6 +61,7 @@ const listingSchema = new Schema(
         cheminee: Bool,
         climatisation: Bool,
         gardien: Bool,
+        toiletteSepare: Bool,
         cuisineEquipee: Bool,
       },
       extérieur: {
@@ -91,7 +96,7 @@ const listingSchema = new Schema(
     },
     photos: [
       {
-        lien: String,
+        lienPhoto: String,
       },
     ],
     createdBy: {
