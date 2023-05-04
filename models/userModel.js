@@ -14,6 +14,12 @@ const userSchema = new Schema(
         ref: 'Listing',
       },
     ],
+    alreadySeen: [
+      {
+        type: Types.ObjectId,
+        ref: 'Listing',
+      },
+    ],
     role: {
       type: String,
       enum: ['admin', 'agent', 'user'],

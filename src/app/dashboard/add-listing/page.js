@@ -128,7 +128,75 @@ const AddListing = () => {
             </div>
           </div>
 
-          <div className='border-b border-sky-900 pb-12 grid gap-4 sm:grid-cols-2 sm:gap-6'></div>
+          <div className='border-t border-sky-900 mt-12'>
+            <h3 className='py-5 uppercase'>Equipements Intérieurs</h3>
+            <div className='gap-4 flex'>
+              <div>
+                <input
+                  id='default-checkbox'
+                  type='checkbox'
+                  value=''
+                  class='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
+                />
+                <label
+                  for='default-checkbox'
+                  class='ml-2 text-sm font-medium text-gray-300'>
+                  Equipement 1
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className='border-t border-sky-900 mt-12'>
+            <h3 className='py-5 uppercase'>Equipements Extérieurs</h3>
+            <div className='gap-4 flex'>
+              <div>
+                <input
+                  id='default-checkbox'
+                  type='checkbox'
+                  value=''
+                  class='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
+                />
+                <label
+                  for='default-checkbox'
+                  class='ml-2 text-sm font-medium text-gray-300'>
+                  Equipement 1
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className='border-t border-sky-900 mt-12'>
+            <h3 className='py-5 uppercase'>Bilan énergétique</h3>
+            <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
+              <div className='w-full'>
+                <label className='block mb-2 text-sm font-medium text-white'>
+                  Consommation Enérgétique (en kWh/m2.an)
+                </label>
+                <input
+                  type='number'
+                  name='consoEnergetique'
+                  id='onsoEnergetique'
+                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
+                  placeholder='500'
+                  required
+                />
+              </div>
+              <div className='w-full'>
+                <label className='block mb-2 text-sm font-medium text-white'>
+                  Emission de gaz (en kgeqCO2/m².an)
+                </label>
+                <input
+                  type='number'
+                  name='ges'
+                  id='ges'
+                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
+                  placeholder='50'
+                  required
+                />
+              </div>
+            </div>
+          </div>
 
           <button
             type='submit'

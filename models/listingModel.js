@@ -2,13 +2,20 @@ import { Schema, model, models, Types } from 'mongoose';
 
 const listingSchema = new Schema(
   {
-    ref: String,
-    prix: Int,
-    dateConstruction: Int,
-    nbPieces: Int,
-    nbChambres: Int,
-    nbSDB: Int,
-    nbEtages: Int,
+    ref: {
+      type: String,
+      required: [true, 'Veuillez ajouter une référence'],
+      unique: true,
+    },
+    prix: {
+      type: Number,
+      required: [true, 'Veuillez indiquer un prix'],
+    },
+    dateConstruction: Number,
+    nbPieces: Number,
+    nbChambres: Number,
+    nbSDB: Number,
+    nbEtages: Number,
     typeDeBien: {
       enum: [
         'maison',
@@ -19,21 +26,25 @@ const listingSchema = new Schema(
         'garage',
         'bureau',
       ],
-      default: 'maison',
+      required: [true, 'Veuillez indiquer le type de bien'],
+      // default: 'maison',
     },
-    status: {
+    statut: {
       enum: ['bientôt', 'disponible', 'offre en cours'],
-      default: 'Accepting offers',
+      default: 'disponible',
     },
-    squareFeet: Int,
-    lotSize: Int,
+    surfaceNumber: {
+      type: Number,
+      required: [true, 'Veuillez indiquer une surface'],
+    },
+    surfaceExt: Number,
     lieu: {
       quartier: String,
       ville: String,
       codePostal: String,
     },
     equipements: {
-      intérieur: {
+      Numberérieur: {
         cave: Bool,
         garage: Bool,
         veranda: Bool,
@@ -42,7 +53,7 @@ const listingSchema = new Schema(
         accessibilitePMR: Bool,
         digiCode: Bool,
         alarme: Bool,
-        interphone: Bool,
+        Numbererphone: Bool,
         cheminee: Bool,
         climatisation: Bool,
         gardien: Bool,
@@ -66,15 +77,23 @@ const listingSchema = new Schema(
         'bois',
         'pompe à chaleur',
       ],
-      default: 'gaz',
+      //  default: 'gaz',
     },
     exposition: {
       enum: ['nord', 'sud', 'est', 'ouest', 'vueMer', 'procheMer'],
-      default: 'Accepting offers',
     },
     description: String,
-    dpe: Int,
-    ges: Int,
+    consoEnergetique: Number,
+    ges: Number,
+    honoraires: {
+      chargeVendeur: Bool,
+      Taux: Number,
+    },
+    photos: [
+      {
+        lien: String,
+      },
+    ],
     createdBy: {
       type: Types.ObjectId,
       ref: 'User',
@@ -83,7 +102,10 @@ const listingSchema = new Schema(
         'Un compte agent est nécessaire pour ajouter une annonce',
       ],
     },
-    nbAjoutFavoris: Int,
+    nbAjoutFavoris: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
