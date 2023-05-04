@@ -1,5 +1,6 @@
 'use client';
 
+import BasicInputWithLabel from '@/components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '@/components/listingsForm/SectionWithTitle';
 import { useState } from 'react';
 
@@ -24,19 +25,14 @@ const AddListing = () => {
 
         <form action='#'>
           <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
-            <div className=''>
-              <label className='block mb-2 text-sm font-medium text-white'>
-                Référence
-              </label>
-              <input
-                type='text'
-                name='ref'
-                id='ref'
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                placeholder='Indiquez la référence du bien'
-                required
-              />
-            </div>
+            <BasicInputWithLabel
+              label='Référence'
+              placeholder='Indiquez la référence du bien'
+              isRequired={true}
+              name='ref'
+              type='text'
+            />
+
             <div className='sm:col-span-2'>
               <label className='block mb-2 text-sm font-medium text-white'>
                 Type de Bien
@@ -67,120 +63,82 @@ const AddListing = () => {
               </select>
             </div>
 
-            <div className='sm:col-span-2 flex wrap gap-4 sm:gap-6'>
-              <div className='sm:col-span-2'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Quartier
-                </label>
-                <input
-                  type='text'
-                  name='quartier'
-                  id='quartier'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
-              <div className='sm:col-span-2'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Ville
-                </label>
-                <input
-                  type='tex'
-                  name='ville'
-                  id='ville'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
-              <div>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Code Postal
-                </label>
-                <input
-                  type='number'
-                  name='codePostal'
-                  id='codePostal'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
-            </div>
+            <div className='sm:col-span-2 flex flex-wrap sm:flex-nowrap gap-4 sm:gap-6'>
+              <BasicInputWithLabel
+                label='Quartier'
+                placeholder=''
+                isRequired={true}
+                name='quartier'
+                type='text'
+              />
 
-            <div className='sm:col-span-2'>
-              <label className='block mb-2 text-sm font-medium text-white'>
-                Prix
-              </label>
-              <input
+              <BasicInputWithLabel
+                label='Ville'
+                placeholder=''
+                isRequired={true}
+                name='ville'
+                type='text'
+              />
+
+              <BasicInputWithLabel
+                label='Code Postal'
+                placeholder=''
+                isRequired={true}
+                name='codePostal'
                 type='number'
-                name='prix'
-                id='prix'
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                required
               />
             </div>
+
+            <BasicInputWithLabel
+              label='Prix'
+              placeholder=''
+              isRequired={true}
+              name='prix'
+              type='number'
+            />
           </div>
 
           <SectionWithTitle title='Details'>
-            <div>
-              <label className='block mb-2 text-sm font-medium text-white'>
-                Année construction
-              </label>
-              <input
-                type='number'
-                name='anneeConstruction'
-                id='anneeConstruction'
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                required
-              />
-            </div>
-            <div>
-              <label className='block mb-2 text-sm font-medium text-white'>
-                Nombre de Pièces
-              </label>
-              <input
-                type='number'
-                name='nbPieces'
-                id='nbPieces'
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                required
-              />
-            </div>
-            <div className='w-full'>
-              <label className='block mb-2 text-sm font-medium text-white'>
-                Nombre de Chambres
-              </label>
-              <input
-                type='number'
-                name='nbChambre'
-                id='nbChambre'
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                required
-              />
-            </div>
-            <div>
-              <label className='block mb-2 text-sm font-medium text-white'>
-                Nombre de salle de bain / salle d'eau
-              </label>
-              <input
-                type='number'
-                name='nbSDB'
-                id='nbSDB'
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                required
-              />
-            </div>
-            <div>
-              <label className='block mb-2 text-sm font-medium text-white'>
-                Nombre d'étages
-              </label>
-              <input
-                type='number'
-                name='nbEtage'
-                id='nbEtage'
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                required
-              />
-            </div>
+            <BasicInputWithLabel
+              label='Année construction'
+              placeholder=''
+              isRequired={false}
+              name='anneeConstruction'
+              type='number'
+            />
+
+            <BasicInputWithLabel
+              label='Nombre de Pièces'
+              placeholder=''
+              isRequired={false}
+              name='nbPieces'
+              type='number'
+            />
+
+            <BasicInputWithLabel
+              label='Nombre de Chambres'
+              placeholder=''
+              isRequired={false}
+              name='nbChambre'
+              type='number'
+            />
+
+            <BasicInputWithLabel
+              label="Nombre de salle de bain / salle d'eau"
+              placeholder=''
+              isRequired={false}
+              name='nbSDB'
+              type='number'
+            />
+
+            <BasicInputWithLabel
+              label="Nombre d'étages"
+              placeholder=''
+              isRequired={false}
+              name='nbEtage'
+              type='number'
+            />
+
             <div className='sm:col-span-2'>
               <label className='block mb-2 text-sm font-medium text-white'>
                 Description
@@ -193,50 +151,42 @@ const AddListing = () => {
             </div>
           </SectionWithTitle>
 
-          <div className='border-t border-sky-900 mt-12'>
-            <h3 className='py-5 uppercase'>Equipements Intérieurs</h3>
-            <div className='flex flex-col gap-6'>
-              <div className='gap-4 flex'>
-                <input
-                  id='default-checkbox'
-                  type='checkbox'
-                  value=''
-                  class='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
-                />
-                <label
-                  for='default-checkbox'
-                  class='ml-2 text-sm font-medium text-gray-300'>
-                  Equipement 1
-                </label>
-              </div>
-
-              <div>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Surface intérieure
-                </label>
-                <input
-                  type='number'
-                  name='surfaceInt'
-                  id='surfaceInt'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
-
-              <div className='sm:col-span-2'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Type de chauffage
-                </label>
-                <select
-                  id='typeChauffage'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                  <option selected=''>Sélectionnez un type de chauffage</option>
-                  <option value='gaz'>gaz</option>
-                  <option value='pac'>Pompe à chaleur</option>
-                </select>
-              </div>
+          <SectionWithTitle title='Equipements Intérieurs'>
+            <div className='gap-4 flex'>
+              <input
+                id='default-checkbox'
+                type='checkbox'
+                value=''
+                class='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
+              />
+              <label
+                for='default-checkbox'
+                class='ml-2 text-sm font-medium text-gray-300'>
+                Equipement 1
+              </label>
             </div>
-          </div>
+
+            <BasicInputWithLabel
+              label='Surface intérieure'
+              placeholder=''
+              isRequired={true}
+              name='surfaceInt'
+              type='number'
+            />
+
+            <div className='sm:col-span-2'>
+              <label className='block mb-2 text-sm font-medium text-white'>
+                Type de chauffage
+              </label>
+              <select
+                id='typeChauffage'
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                <option selected=''>Sélectionnez un type de chauffage</option>
+                <option value='gaz'>gaz</option>
+                <option value='pac'>Pompe à chaleur</option>
+              </select>
+            </div>
+          </SectionWithTitle>
 
           <div className='border-t border-sky-900 mt-12'>
             <h3 className='py-5 uppercase'>Equipements Extérieurs</h3>
@@ -255,18 +205,13 @@ const AddListing = () => {
                 </label>
               </div>
 
-              <div>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Surface extérieure
-                </label>
-                <input
-                  type='number'
-                  name='surfaceExt'
-                  id='surfaceExt'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
+              <BasicInputWithLabel
+                label='Surface extérieure'
+                placeholder=''
+                isRequired={false}
+                name='surfaceExt'
+                type='number'
+              />
 
               <div className='sm:col-span-2'>
                 <label className='block mb-2 text-sm font-medium text-white'>
@@ -286,32 +231,21 @@ const AddListing = () => {
           <div className='border-t border-sky-900 mt-12'>
             <h3 className='py-5 uppercase'>Bilan énergétique</h3>
             <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
-              <div className='w-full'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Consommation Enérgétique (en kWh/m2.an)
-                </label>
-                <input
-                  type='number'
-                  name='consoEnergetique'
-                  id='onsoEnergetique'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  placeholder='500'
-                  required
-                />
-              </div>
-              <div className='w-full'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Emission de gaz (en kgeqCO2/m².an)
-                </label>
-                <input
-                  type='number'
-                  name='ges'
-                  id='ges'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  placeholder='50'
-                  required
-                />
-              </div>
+              <BasicInputWithLabel
+                label='Consommation Enérgétique (en kWh/m2.an)'
+                placeholder='500'
+                isRequired={false}
+                name='consoEnergetique'
+                type='number'
+              />
+
+              <BasicInputWithLabel
+                label='Emission de gaz (en kgeqCO2/m².an)'
+                placeholder='50'
+                isRequired={false}
+                name='ges'
+                type='number'
+              />
             </div>
           </div>
 
@@ -349,19 +283,13 @@ const AddListing = () => {
                 </select>
               </div>
 
-              <div className='w-full'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Taux d'honoraires (en %)
-                </label>
-                <input
-                  type='number'
-                  name='taux'
-                  id='taux'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  placeholder='50'
-                  required
-                />
-              </div>
+              <BasicInputWithLabel
+                label="Taux d'honoraires (en %)"
+                placeholder=''
+                isRequired={true}
+                name='taux'
+                type='number'
+              />
             </div>
           </div>
 
