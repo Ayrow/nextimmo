@@ -7,7 +7,6 @@ const AddListing = () => {
         <h2 className='mb-4 text-xl text-center font-bold text-white'>
           Créer une annonce
         </h2>
-
         <form action='#'>
           <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
             <div className='sm:col-span-2'>
@@ -51,33 +50,6 @@ const AddListing = () => {
                 <option value='maison'>Vente</option>
                 <option value='appartement'>Location</option>
               </select>
-            </div>
-
-            <div className='sm:col-span-2 flex flex-col gap-4 sm:gap-6'>
-              <div>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Année construction
-                </label>
-                <input
-                  type='number'
-                  name='anneeConstruction'
-                  id='anneeConstruction'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
-              <div className='sm:col-span-2'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Nombre de Pièces
-                </label>
-                <input
-                  type='number'
-                  name='nbPieces'
-                  id='nbPieces'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
             </div>
 
             <div className='sm:col-span-2 flex gap-4 sm:gap-6'>
