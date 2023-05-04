@@ -17,7 +17,7 @@ const AddListing = () => {
                 name='ref'
                 id='ref'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                placeholder='Indiquer référence du bien'
+                placeholder='Indiquer la référence du bien'
                 required
               />
             </div>
@@ -124,7 +124,7 @@ const AddListing = () => {
                 id='description'
                 rows='8'
                 className='block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                placeholder='Your description here'></textarea>
+                placeholder='Description du bien'></textarea>
             </div>
           </div>
 
