@@ -1,15 +1,30 @@
 'use client';
 
+import SectionWithTitle from '@/components/listingsForm/SectionWithTitle';
+import { useState } from 'react';
+
+const initialState = {
+  ref: '',
+};
+
 const AddListing = () => {
+  const [values, setValues] = useState(initialState);
+  const [isLocation, setIsLocation] = useState(false);
+
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
   return (
     <section className='bg-gray-900'>
       <div className='py-8 px-4 mx-auto max-w-2xl lg:py-16'>
         <h2 className='mb-4 text-xl text-center font-bold text-white'>
           Créer une annonce
         </h2>
+
         <form action='#'>
           <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
-            <div className='sm:col-span-2'>
+            <div className=''>
               <label className='block mb-2 text-sm font-medium text-white'>
                 Référence
               </label>
@@ -52,7 +67,7 @@ const AddListing = () => {
               </select>
             </div>
 
-            <div className='sm:col-span-2 flex gap-4 sm:gap-6'>
+            <div className='sm:col-span-2 flex wrap gap-4 sm:gap-6'>
               <div className='sm:col-span-2'>
                 <label className='block mb-2 text-sm font-medium text-white'>
                   Quartier
@@ -67,7 +82,7 @@ const AddListing = () => {
               </div>
               <div className='sm:col-span-2'>
                 <label className='block mb-2 text-sm font-medium text-white'>
-                  Vile
+                  Ville
                 </label>
                 <input
                   type='tex'
@@ -105,81 +120,78 @@ const AddListing = () => {
             </div>
           </div>
 
-          <div className='border-t border-sky-900 mt-12'>
-            <h3 className='py-5 uppercase'>Détails</h3>
-            <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
-              <div>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Année construction
-                </label>
-                <input
-                  type='number'
-                  name='anneeConstruction'
-                  id='anneeConstruction'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
-              <div>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Nombre de Pièces
-                </label>
-                <input
-                  type='number'
-                  name='nbPieces'
-                  id='nbPieces'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
-              <div className='w-full'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Nombre de Chambres
-                </label>
-                <input
-                  type='number'
-                  name='nbChambre'
-                  id='nbChambre'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
-              <div>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Nombre de salle de bain / salle d'eau
-                </label>
-                <input
-                  type='number'
-                  name='nbSDB'
-                  id='nbSDB'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
-              <div>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Nombre d'étages
-                </label>
-                <input
-                  type='number'
-                  name='nbEtage'
-                  id='nbEtage'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  required
-                />
-              </div>
-              <div className='sm:col-span-2'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Description
-                </label>
-                <textarea
-                  id='description'
-                  rows='8'
-                  className='block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  placeholder='Description du bien'></textarea>
-              </div>
+          <SectionWithTitle title='Details'>
+            <div>
+              <label className='block mb-2 text-sm font-medium text-white'>
+                Année construction
+              </label>
+              <input
+                type='number'
+                name='anneeConstruction'
+                id='anneeConstruction'
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
+                required
+              />
             </div>
-          </div>
+            <div>
+              <label className='block mb-2 text-sm font-medium text-white'>
+                Nombre de Pièces
+              </label>
+              <input
+                type='number'
+                name='nbPieces'
+                id='nbPieces'
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
+                required
+              />
+            </div>
+            <div className='w-full'>
+              <label className='block mb-2 text-sm font-medium text-white'>
+                Nombre de Chambres
+              </label>
+              <input
+                type='number'
+                name='nbChambre'
+                id='nbChambre'
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
+                required
+              />
+            </div>
+            <div>
+              <label className='block mb-2 text-sm font-medium text-white'>
+                Nombre de salle de bain / salle d'eau
+              </label>
+              <input
+                type='number'
+                name='nbSDB'
+                id='nbSDB'
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
+                required
+              />
+            </div>
+            <div>
+              <label className='block mb-2 text-sm font-medium text-white'>
+                Nombre d'étages
+              </label>
+              <input
+                type='number'
+                name='nbEtage'
+                id='nbEtage'
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
+                required
+              />
+            </div>
+            <div className='sm:col-span-2'>
+              <label className='block mb-2 text-sm font-medium text-white'>
+                Description
+              </label>
+              <textarea
+                id='description'
+                rows='8'
+                className='block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
+                placeholder='Description du bien'></textarea>
+            </div>
+          </SectionWithTitle>
 
           <div className='border-t border-sky-900 mt-12'>
             <h3 className='py-5 uppercase'>Equipements Intérieurs</h3>
