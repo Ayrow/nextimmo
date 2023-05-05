@@ -1,17 +1,30 @@
 'use client';
 
-import { useRef } from 'react';
+import { Dispatch, SetStateAction, useRef } from 'react';
 import NavLink from './NavLink';
+
+type LinksTypes = {
+  id: number;
+  label: string;
+  path: string;
+};
+
+type Props = {
+  signOutUser: () => void;
+  isDropdownOpen: boolean;
+  setIsDropdownOpen?: Dispatch<SetStateAction<boolean>>;
+  links: LinksTypes[];
+};
 
 const DropdownMenu = ({
   signOutUser,
   setIsDropdownOpen,
   isDropdownOpen,
   links,
-}) => {
+}: Props) => {
   const ref = useRef();
 
-  const toggleDropdown = (e) => {
+  const toggleDropdown = (e: MouseEvent) => {
     if (ref.current && isDropdownOpen) {
       setIsDropdownOpen(false);
     }
@@ -42,7 +55,7 @@ const DropdownMenu = ({
         </button>
       </div>
       <div className='p-2 flex flex-col gap-5'>
-        {links.map((link) => {
+        {links.map((link: LinksTypes) => {
           return (
             <NavLink
               key={link.id}
