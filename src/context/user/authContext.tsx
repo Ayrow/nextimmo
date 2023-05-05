@@ -115,7 +115,7 @@ const AuthProvider = ({ children }) => {
           type: 'success',
           msg: 'Your account has been created: welcome!',
         });
-        navigate('/');
+        // navigate('/');
       }
     } catch (error) {
       alert(error);
@@ -136,9 +136,7 @@ const AuthProvider = ({ children }) => {
 
       const metadata = auth.currentUser.metadata;
       console.log('metadata', metadata);
-      if (
-        metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()
-      ) {
+      if (metadata?.creationTime == metadata.lastSignInTime) {
         const res = await fetch('/api/user', {
           method: 'POST',
           body: JSON.stringify({ email, username }),
