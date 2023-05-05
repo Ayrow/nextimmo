@@ -17,16 +17,22 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import { useAppContext } from '../app/appContext';
 
 type AuthContextType = {
   user: User;
   signInWithEmail: (email: string, password: string) => void;
+  registerUserWithEmail: (email: string, password: string) => void;
   connectWithGoogle: () => void;
+  sendPasswordReset: (email: string) => void;
+  signOutUser: () => void;
 };
 
 const AuthContext = createContext<AuthContextType>(null);
 
 const AuthProvider = ({ children }) => {
+  const router = useRouter();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -42,11 +48,11 @@ const AuthProvider = ({ children }) => {
 
   const navigate = (path) => {
     setTimeout(() => {
-      //  router.push(path);
+      router.push(path);
     }, 1500);
   };
 
-  const registerUserWithEmail = async (email, password) => {
+  const registerUserWithEmail = async (email: string, password: string) => {
     try {
       const result = await createUserWithEmailAndPassword(
         auth,
@@ -69,7 +75,7 @@ const AuthProvider = ({ children }) => {
           type: 'success',
           msg: 'Your account has been created: welcome!',
         });
-        // navigate('/');
+        navigate('/');
       }
     } catch (error) {
       alert(error);
@@ -175,7 +181,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const signOutUser = () => {
-    //  router.push('/');
+    router.push('/');
     signOut(auth);
     setUser(null);
   };
@@ -183,6 +189,7 @@ const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        user,
         registerUserWithEmail,
         sendPasswordReset,
         signOutUser,
