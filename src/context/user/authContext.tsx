@@ -8,8 +8,6 @@ import {
   useState,
 } from 'react';
 import { User } from 'firebase/auth';
-import firebase from 'firebase/app';
-import 'firebase/auth';
 import { auth } from '../../firebase/config';
 import {
   GoogleAuthProvider,
@@ -20,34 +18,16 @@ import {
   signOut,
 } from 'firebase/auth';
 
-// import { useRouter } from 'next/navigation';
-
-// type User = auth.User || null;
-
-{
-  /* 
-  
-  const initialUserState: IAuthState = {
-  email: '',
-  password: '',
-  confirmPassword: '',
-  user: user ? JSON.parse(user) : null,
+type AuthContextType = {
+  user: User;
+  signInWithEmail: (email: string, password: string) => void;
+  connectWithGoogle: () => void;
 };
-  
-  */
-}
 
-interface ExtendedUserMetadata extends firebase.auth.UserMetaData {
-  getCreationTimestamp(): number;
-}
-
-const AuthContext = createContext<User>(null);
+const AuthContext = createContext<AuthContextType>(null);
 
 const AuthProvider = ({ children }) => {
-  //  const router = useRouter();
-
   const [user, setUser] = useState(null);
-  //  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const unregisterAuthObserver = auth.onAuthStateChanged(async (authUser) => {
@@ -58,38 +38,12 @@ const AuthProvider = ({ children }) => {
     return () => unregisterAuthObserver();
   }, [auth]);
 
-  //  const [state, dispatch] = useReducer(userReducer, initialUserState);
-
   const { displayAlert } = useAppContext();
-
-  {
-    /*
-
-  const addUserToLocalStorage = (user) => {
-    localStorage.setItem('user', JSON.stringify(user));
-  };
-
-  const removeUserFromLocalStorage = () => {
-    localStorage.removeItem('user');
-  };
-
-*/
-  }
 
   const navigate = (path) => {
     setTimeout(() => {
       //  router.push(path);
     }, 1500);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
-  };
-
-  const clearForm = () => {
-    dispatch({ type: CLEAR_FORM });
   };
 
   const registerUserWithEmail = async (email, password) => {
@@ -170,7 +124,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const signInWithEmail = async (email, password) => {
+  const signInWithEmail = async (email: string, password: string) => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       if (result) {
@@ -204,7 +158,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const sendPasswordReset = async (email) => {
+  const sendPasswordReset = async (email: string) => {
     try {
       await sendPasswordResetEmail(auth, email);
       displayAlert({
@@ -229,13 +183,11 @@ const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        handleChange,
-        clearForm,
         registerUserWithEmail,
-        connectWithGoogle,
-        signInWithEmail,
         sendPasswordReset,
         signOutUser,
+        signInWithEmail,
+        connectWithGoogle,
       }}>
       {children}
     </AuthContext.Provider>

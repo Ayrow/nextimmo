@@ -1,30 +1,45 @@
 'use client';
 
 import Link from 'next/link';
-import { useUserContext } from '../../../context/user/userContext';
-import { useAppContext } from '../../..//context/app/appContext';
+import { useAuthContext } from '../../../context/user/authContext';
+import { useAppContext } from '../../../context/app/appContext';
 import Alert from '../../../components/Alert';
+import { useState } from 'react';
+
+type Data = {
+  email: string;
+  password: string;
+};
+
+const initialCredentials = {
+  email: '',
+  password: '',
+};
 
 const Signin = () => {
-  const {
-    handleChange,
-    email,
-    password,
-    clearForm,
-    connectWithGoogle,
-    signInWithEmail,
-  } = useUserContext();
-
   const { displayAlert, showAlert } = useAppContext();
+  const { signInWithEmail, connectWithGoogle } = useAuthContext();
+  const [values, setValues] = useState<Data>(initialCredentials);
 
-  const handleSubmit = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setValues({ ...values, [name]: value });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const { email, password } = values;
     if (!email || !password) {
       displayAlert({ type: 'error', msg: 'Email or password is missing' });
     } else {
       signInWithEmail(email, password);
       clearForm();
     }
+  };
+
+  const clearForm = () => {
+    setValues(initialCredentials);
   };
 
   return (
@@ -45,27 +60,25 @@ const Signin = () => {
                   type='email'
                   name='email'
                   id='email'
-                  value={email}
+                  value={values.email}
                   onChange={(e) => handleChange(e)}
                   className='sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                   placeholder='name@company.com'
-                  require='true'
+                  required={true}
                 />
               </div>
               <div>
-                <label
-                  hmtlfor='password'
-                  className='block mb-2 text-sm font-medium text-white'>
+                <label className='block mb-2 text-sm font-medium text-white'>
                   Password
                 </label>
                 <input
                   type='password'
                   name='password'
-                  value={password}
+                  value={values.password}
                   onChange={(e) => handleChange(e)}
                   placeholder='••••••••'
                   className='border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
-                  require='true'
+                  required={true}
                 />
               </div>
               <div className='flex items-center justify-between'>
@@ -76,7 +89,7 @@ const Signin = () => {
                       aria-describedby='remember'
                       type='checkbox'
                       className='w-4 h-4 border rounded focus:ring-3 bg-gray-700 border-gray-600 focus:ring-primary-600 ring-offset-gray-800'
-                      require='false'
+                      required={false}
                     />
                   </div>
                   <div className='ml-3 text-sm'>
