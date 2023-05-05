@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -27,9 +23,11 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "**/*.tsx",
+    "src/context/app/appContext.js",
+    "src/components/navigation/Navbar.js",
+    "src/components/navigation/NavLink.js",
+    "src/components/Alert.js"
+, "src/components/listings/ListCard.js"  ],
+  "exclude": ["node_modules"]
 }

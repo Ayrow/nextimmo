@@ -2,12 +2,7 @@
 
 import { createContext, useContext, useReducer } from 'react';
 import userReducer from './userReducer';
-import {
-  HANDLE_CHANGE,
-  CLEAR_FORM,
-  SETUP_USER,
-  CLEAR_USER,
-} from '../actions.js';
+import { HANDLE_CHANGE, CLEAR_FORM, SETUP_USER, CLEAR_USER } from '../actions';
 import { useAppContext } from '../app/appContext';
 import { auth } from '../../firebase/config';
 import {

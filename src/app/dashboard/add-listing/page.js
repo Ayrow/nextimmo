@@ -1,7 +1,7 @@
 'use client';
 
-import BasicInputWithLabel from '@/components/listingsForm/BasicInputWithLabel';
-import SectionWithTitle from '@/components/listingsForm/SectionWithTitle';
+import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
+import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
 import { useState } from 'react';
 
 const initialState = {

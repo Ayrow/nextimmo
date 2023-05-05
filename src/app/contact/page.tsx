@@ -40,7 +40,7 @@ const Contact = () => {
             </label>
             <textarea
               id='message'
-              rows='6'
+              rows={6}
               className='block p-2.5 w-full text-sm rounded-lg shadow-sm border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500'
               placeholder='Laissez un message...'></textarea>
           </div>

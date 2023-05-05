@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Hero from '../components/Hero';
 import BasicHouseSearch from '../components/BasicHouseSearch';
 
-export default function Home() {
+const Home: React.FC = () => {
   return (
     <main className=' flex min-h-screen w-screen flex-col items-center'>
       <Hero />
@@ -14,4 +14,6 @@ export default function Home() {
       </section>
     </main>
   );
-}
+};
+
+export default Home;

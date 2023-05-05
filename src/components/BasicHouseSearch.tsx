@@ -1,4 +1,4 @@
-const BasicHouseSearch = () => {
+const BasicHouseSearch: React.FC = () => {
   return (
     <form className='flex items-center px-10'>
       <label className='sr-only'>Search</label>
