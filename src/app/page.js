@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Hero from '../components/Hero';
-import BasicHouseSearch from '@/components/BasicHouseSearch';
+import BasicHouseSearch from '../components/BasicHouseSearch';
 
 export default function Home() {
   return (

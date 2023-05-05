@@ -1,6 +1,6 @@
 'use client';
 
-import { useUserContext } from '@/context/user/userContext';
+import { useUserContext } from '../../context/user/userContext';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import DropdownMenu from './DropdownMenu';

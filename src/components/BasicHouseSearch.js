@@ -1,5 +1,3 @@
-import React from 'react';
-
 const BasicHouseSearch = () => {
   return (
     <form className='flex items-center px-10'>

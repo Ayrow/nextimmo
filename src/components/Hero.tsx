@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-const Hero = () => {
+const Hero: React.FC = () => {
   return (
     <section className='bg-gray-900 w-screen p-10'>
       <div>
