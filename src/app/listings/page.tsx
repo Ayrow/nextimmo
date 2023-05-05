@@ -5,7 +5,7 @@ import ListCard from '../../components/listings/ListCard';
 import { useState } from 'react';
 
 const Listings = () => {
-  const [gridList, setGridList] = useState(true);
+  const [gridList, setGridList] = useState<boolean>(true);
 
   const exampleListings = [
     {

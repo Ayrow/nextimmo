@@ -1,13 +1,13 @@
 'use client';
 
-import { useUserContext } from '../../context/user/userContext';
+import { useAuthContext } from '../../context/user/authContext';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import DropdownMenu from './DropdownMenu';
 import { userLinks, agentLinks, adminLinks } from '../../../utils/links';
 
 const AccountButton = () => {
-  const { user, signOutUser } = useUserContext();
+  const { user, signOutUser } = useAuthContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 

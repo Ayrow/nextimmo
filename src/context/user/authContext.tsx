@@ -1,11 +1,18 @@
 'use client';
 
-import { createContext, useContext, useReducer } from 'react';
-import userReducer from './userReducer';
-import { HANDLE_CHANGE, CLEAR_FORM, SETUP_USER, CLEAR_USER } from '../actions';
-import { useAppContext } from '../app/appContext';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
+import { User } from 'firebase/auth';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import { auth } from '../../firebase/config';
 import {
+  GoogleAuthProvider,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
@@ -13,26 +20,50 @@ import {
   signOut,
 } from 'firebase/auth';
 
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
-const UserContext = createContext();
+// type User = auth.User || null;
 
-let user;
-if (typeof window !== 'undefined') {
-  user = localStorage.getItem('user');
-}
-
-const initialUserState = {
+{
+  /* 
+  
+  const initialUserState: IAuthState = {
   email: '',
   password: '',
   confirmPassword: '',
   user: user ? JSON.parse(user) : null,
 };
+  
+  */
+}
 
-const UserProvider = ({ children }) => {
-  const router = useRouter();
-  const [state, dispatch] = useReducer(userReducer, initialUserState);
+interface ExtendedUserMetadata extends firebase.auth.UserMetaData {
+  getCreationTimestamp(): number;
+}
+
+const AuthContext = createContext<User>(null);
+
+const AuthProvider = ({ children }) => {
+  //  const router = useRouter();
+
+  const [user, setUser] = useState(null);
+  //  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const unregisterAuthObserver = auth.onAuthStateChanged(async (authUser) => {
+      if (authUser) {
+        setUser(user);
+      }
+    });
+    return () => unregisterAuthObserver();
+  }, [auth]);
+
+  //  const [state, dispatch] = useReducer(userReducer, initialUserState);
+
   const { displayAlert } = useAppContext();
+
+  {
+    /*
 
   const addUserToLocalStorage = (user) => {
     localStorage.setItem('user', JSON.stringify(user));
@@ -42,13 +73,16 @@ const UserProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
+*/
+  }
+
   const navigate = (path) => {
     setTimeout(() => {
-      router.push(path);
+      //  router.push(path);
     }, 1500);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
     dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
@@ -76,8 +110,7 @@ const UserProvider = ({ children }) => {
           },
         });
         const data = await res.json();
-        dispatch({ type: SETUP_USER, payload: data });
-        addUserToLocalStorage(data);
+        setUser(data);
         displayAlert({
           type: 'success',
           msg: 'Your account has been created: welcome!',
@@ -95,16 +128,18 @@ const UserProvider = ({ children }) => {
 
   const connectWithGoogle = async () => {
     try {
+      const googleProvider = new GoogleAuthProvider();
       await signInWithPopup(auth, googleProvider);
       const user = auth.currentUser;
       const username = user.displayName;
       const email = user.email;
 
       const metadata = auth.currentUser.metadata;
+      console.log('metadata', metadata);
       if (
         metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()
       ) {
-        await fetch('/api/user', {
+        const res = await fetch('/api/user', {
           method: 'POST',
           body: JSON.stringify({ email, username }),
           headers: {
@@ -112,8 +147,7 @@ const UserProvider = ({ children }) => {
           },
         });
         const data = await res.json();
-        dispatch({ type: SETUP_USER, payload: data });
-        addUserToLocalStorage(data);
+        setUser(data);
         navigate('/');
       } else {
         const res = await fetch('/api/user', {
@@ -124,7 +158,7 @@ const UserProvider = ({ children }) => {
           },
         });
         const data = await res.json();
-        dispatch({ type: SETUP_USER, payload: data });
+        setUser(data);
       }
       displayAlert({
         type: 'success',
@@ -150,8 +184,7 @@ const UserProvider = ({ children }) => {
         });
         const data = await res.json();
         if (data) {
-          dispatch({ type: SETUP_USER, payload: data });
-          addUserToLocalStorage(data);
+          setUser(data);
           displayAlert({
             type: 'success',
             msg: 'You are signed in!',
@@ -190,16 +223,14 @@ const UserProvider = ({ children }) => {
   };
 
   const signOutUser = () => {
-    router.push('/');
+    //  router.push('/');
     signOut(auth);
-    dispatch({ type: CLEAR_USER });
-    removeUserFromLocalStorage();
+    setUser(null);
   };
 
   return (
-    <UserContext.Provider
+    <AuthContext.Provider
       value={{
-        ...state,
         handleChange,
         clearForm,
         registerUserWithEmail,
@@ -209,12 +240,12 @@ const UserProvider = ({ children }) => {
         signOutUser,
       }}>
       {children}
-    </UserContext.Provider>
+    </AuthContext.Provider>
   );
 };
 
-const useUserContext = () => {
-  return useContext(UserContext);
+const useAuthContext = () => {
+  return useContext(AuthContext);
 };
 
-export { UserProvider, useUserContext };
+export { AuthProvider, useAuthContext };

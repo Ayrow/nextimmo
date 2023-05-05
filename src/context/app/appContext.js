@@ -4,14 +4,14 @@ import { createContext, useContext, useReducer } from 'react';
 import { CLEAR_ALERT, DISPLAY_ALERT } from '../actions';
 import appReducer from './appReducer';
 
-const AppContext = createContext({});
-
 const initialAppState = {
   isLoading: false,
   showAlert: false,
   alertText: '',
   alertType: '',
 };
+
+const AppContext = createContext(initialAppState);
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialAppState);

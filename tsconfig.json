@@ -24,10 +24,12 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/context/app/appContext.js",
+    "src/context/app/appContext.tsx",
     "src/components/navigation/Navbar.js",
     "src/components/navigation/NavLink.js",
-    "src/components/Alert.js"
-, "src/components/listings/ListCard.js"  ],
+    "src/components/Alert.js",
+    "src/components/listings/ListCard.js",
+    "src/context/app/appReducer.js"
+  ],
   "exclude": ["node_modules"]
 }
