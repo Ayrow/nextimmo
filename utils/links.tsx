@@ -2,7 +2,13 @@
 
 // import { FaHeart, FaSuitcase, FaUserEdit, FaChalkboard } from 'react-icons/fa';
 
-const userLinks = [
+export type LinksTypes = {
+  id: number;
+  label: string;
+  path: string;
+};
+
+const userLinks: LinksTypes[] = [
   {
     id: 1,
     label: 'account',
@@ -17,7 +23,7 @@ const userLinks = [
   },
 ];
 
-const agentLinks = [
+const agentLinks: LinksTypes[] = [
   {
     id: 1,
     label: 'dashboard',
@@ -38,7 +44,7 @@ const agentLinks = [
   },
 ];
 
-const adminLinks = [
+const adminLinks: LinksTypes[] = [
   {
     id: 1,
     label: 'dashboard',

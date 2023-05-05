@@ -2,7 +2,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const NavLink = ({ label, path, targetSegment }) => {
+type NavLinkProps = {
+  label: string;
+  path: string;
+  targetSegment: string;
+};
+
+const NavLink = ({ label, path, targetSegment }: NavLinkProps) => {
   const activePath = usePathname();
 
   return (

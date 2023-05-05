@@ -2,12 +2,7 @@
 
 import { Dispatch, SetStateAction, useRef } from 'react';
 import NavLink from './NavLink';
-
-type LinksTypes = {
-  id: number;
-  label: string;
-  path: string;
-};
+import { LinksTypes } from '../../../utils/links';
 
 type Props = {
   signOutUser: () => void;
