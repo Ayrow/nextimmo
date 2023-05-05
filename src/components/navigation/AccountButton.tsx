@@ -8,7 +8,7 @@ import { userLinks, agentLinks, adminLinks } from '../../../utils/links';
 
 const AccountButton = () => {
   const { user, signOutUser } = useAuthContext();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {

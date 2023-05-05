@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import {
@@ -19,9 +13,19 @@ import {
 } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useAppContext } from '../app/appContext';
+import { ObjectId } from 'mongoose';
+
+type userFromDB = {
+  _id: ObjectId;
+  username: string;
+  email: string;
+  saved: [ObjectId];
+  role: string;
+};
 
 type AuthContextType = {
-  user: User;
+  user: userFromDB;
+  firebaseUser: User;
   signInWithEmail: (email: string, password: string) => void;
   registerUserWithEmail: (email: string, password: string) => void;
   connectWithGoogle: () => void;
@@ -33,20 +37,24 @@ const AuthContext = createContext<AuthContextType>(null);
 
 const AuthProvider = ({ children }) => {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<userFromDB>(null);
+  const [firebaseUser, setFirebaseUser] = useState<User>(null);
 
   useEffect(() => {
     const unregisterAuthObserver = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
-        setUser(user);
+        setFirebaseUser(authUser);
+      } else {
+        setFirebaseUser(null);
+        setUser(null);
       }
     });
     return () => unregisterAuthObserver();
-  }, [auth]);
+  }, []);
 
   const { displayAlert } = useAppContext();
 
-  const navigate = (path) => {
+  const navigate = (path: string) => {
     setTimeout(() => {
       router.push(path);
     }, 1500);
@@ -190,6 +198,7 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        firebaseUser,
         registerUserWithEmail,
         sendPasswordReset,
         signOutUser,
