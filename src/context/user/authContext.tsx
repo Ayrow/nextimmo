@@ -52,7 +52,8 @@ const AuthProvider = ({ children }) => {
     return () => unregisterAuthObserver();
   }, []);
 
-  const { displayAlert } = useAppContext();
+  const { actions } = useAppContext();
+  const { displayAlert } = actions;
 
   const navigate = (path: string) => {
     setTimeout(() => {
