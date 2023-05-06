@@ -1,4 +1,10 @@
-const SectionWithTitle = ({ children, title }) => {
+const SectionWithTitle = ({
+  children,
+  title,
+}: {
+  children: React.ReactNode;
+  title: string;
+}) => {
   return (
     <div className='border-t border-sky-900 mt-12'>
       <h3 className=' py-6 uppercase'>{title}</h3>
