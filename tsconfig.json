@@ -27,7 +27,7 @@
     "src/context/app/appContext.tsx",
     "src/components/navigation/Navbar.js",
     "src/components/navigation/NavLink.js",
-    "src/components/Alert.js",
+    "src/components/Alert.tsx",
     "src/components/listings/ListCard.js",
     "src/context/app/appReducer.tsx"
   ],

@@ -1,2 +1,2 @@
-This is an app made for french real estate agencies using NextJS, MongoDB and
-firebase auth.
+This is an app made for small french real estate agencies using NextJS, MongoDB,
+firebase auth, typescript.
