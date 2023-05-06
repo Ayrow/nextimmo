@@ -1,6 +1,13 @@
 import { CLEAR_ALERT, DISPLAY_ALERT } from '../actions';
 
-const appReducer = (state, action) => {
+import { AppState } from './appContext';
+
+type AppAction = {
+  type: string;
+  payload?: any;
+};
+
+const appReducer = (state: AppState, action: AppAction) => {
   switch (action.type) {
     case DISPLAY_ALERT:
       return {

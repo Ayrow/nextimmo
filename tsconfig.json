@@ -29,7 +29,7 @@
     "src/components/navigation/NavLink.js",
     "src/components/Alert.js",
     "src/components/listings/ListCard.js",
-    "src/context/app/appReducer.js"
+    "src/context/app/appReducer.tsx"
   ],
   "exclude": ["node_modules"]
 }

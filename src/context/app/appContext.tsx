@@ -4,14 +4,35 @@ import { createContext, useContext, useReducer } from 'react';
 import { CLEAR_ALERT, DISPLAY_ALERT } from '../actions';
 import appReducer from './appReducer';
 
-const initialAppState = {
+export type AppState = {
+  isLoading: boolean;
+  showAlert: boolean;
+  alertText: string;
+  alertType: string;
+};
+
+const initialAppState: AppState = {
   isLoading: false,
   showAlert: false,
   alertText: '',
   alertType: '',
 };
 
-const AppContext = createContext(initialAppState);
+type AppActions = {
+  displayAlert: (options: { type: string; msg: string }) => void;
+};
+
+const initialAppActions = {
+  displayAlert: () => null,
+};
+
+const AppContext = createContext<{
+  state: AppState;
+  actions: AppActions;
+}>({
+  state: initialAppState,
+  actions: initialAppActions,
+});
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialAppState);
@@ -36,7 +57,7 @@ const AppProvider = ({ children }) => {
   };
 
   return (
-    <AppContext.Provider value={{ ...state, displayAlert }}>
+    <AppContext.Provider value={{ state, actions: { displayAlert } }}>
       {children}
     </AppContext.Provider>
   );
