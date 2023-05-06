@@ -1,9 +1,9 @@
 'use client';
 
-import { useUserContext } from '@/context/user/userContext';
+import { useAuthContext } from '../../../context/user/authContext';
 
 const Account = () => {
-  const { user } = useUserContext();
+  const { user } = useAuthContext();
 
   if (!user) {
     return <div>You need to be logged in to view this page</div>;
