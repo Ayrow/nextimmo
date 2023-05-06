@@ -1,23 +1,42 @@
 'use client';
 
 import Link from 'next/link';
-import { useUserContext } from '../../../context/user/userContext';
+import { useAuthContext } from '../../../context/user/authContext';
 import { useAppContext } from '../../../context/app/appContext';
 import Alert from '../../../components/Alert';
+import { useState } from 'react';
+
+type Data = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+const initialCredentials = {
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 
 const Signin = () => {
-  const {
-    handleChange,
-    email,
-    password,
-    confirmPassword,
-    clearForm,
-    registerUserWithEmail,
-    connectWithGoogle,
-  } = useUserContext();
-  const { displayAlert, showAlert } = useAppContext();
+  const { registerUserWithEmail, connectWithGoogle } = useAuthContext();
+  const { state, actions } = useAppContext();
+  const { displayAlert } = actions;
+  const { showAlert } = state;
+  const [values, setValues] = useState<Data>(initialCredentials);
 
-  const handleSubmit = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setValues({ ...values, [name]: value });
+  };
+
+  const clearForm = () => {
+    setValues(initialCredentials);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const { email, password, confirmPassword } = values;
     e.preventDefault();
     if (!email && !password && !confirmPassword) {
       displayAlert({ type: 'error', msg: 'Please complete all fields' });
@@ -52,11 +71,11 @@ const Signin = () => {
                 <input
                   type='email'
                   name='email'
-                  value={email}
+                  value={values.email}
                   onChange={(e) => handleChange(e)}
                   className='sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                   placeholder='name@company.com'
-                  require='true'
+                  required={true}
                 />
               </div>
               <div>
@@ -66,11 +85,11 @@ const Signin = () => {
                 <input
                   type='password'
                   name='password'
-                  value={password}
+                  value={values.password}
                   onChange={(e) => handleChange(e)}
                   placeholder='••••••••'
                   className='border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
-                  require='true'
+                  required={true}
                 />
               </div>
               <div>
@@ -80,11 +99,11 @@ const Signin = () => {
                 <input
                   type='password'
                   name='confirmPassword'
-                  value={confirmPassword}
+                  value={values.confirmPassword}
                   onChange={(e) => handleChange(e)}
                   placeholder='••••••••'
                   className='border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
-                  require='true'
+                  required={true}
                 />
               </div>
               <button

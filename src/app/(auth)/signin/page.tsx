@@ -17,7 +17,9 @@ const initialCredentials = {
 };
 
 const Signin = () => {
-  const { displayAlert, showAlert } = useAppContext();
+  const { state, actions } = useAppContext();
+  const { displayAlert } = actions;
+  const { showAlert } = state;
   const { signInWithEmail, connectWithGoogle } = useAuthContext();
   const [values, setValues] = useState<Data>(initialCredentials);
 
