@@ -1,15 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import Alert from '@/components/Alert';
-import { useUserContext } from '@/context/user/userContext';
-import { useAppContext } from '@/context/app/appContext';
+import Alert from '../../../components/Alert';
+import { useAuthContext } from '../../../context/user/authContext';
+import { useAppContext } from '../../../context/app/appContext';
+import { useState } from 'react';
 
 const Signin = () => {
-  const { handleChange, email, sendPasswordReset } = useUserContext();
-  const { displayAlert, showAlert } = useAppContext();
+  const { sendPasswordReset } = useAuthContext();
+  const { state, actions } = useAppContext();
+  const { displayAlert } = actions;
+  const { showAlert } = state;
+  const [email, setEmail] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (email) {
       sendPasswordReset(email);
@@ -40,10 +44,10 @@ const Signin = () => {
                   type='email'
                   name='email'
                   value={email}
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e) => setEmail(e.target.value)}
                   className='sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                   placeholder='name@company.com'
-                  require='true'
+                  required={true}
                 />
               </div>
               <button
