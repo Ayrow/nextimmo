@@ -1,8 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { ConnectOptions } from 'mongoose';
 
-const connection = {};
+interface IConnection {
+  isConnected: boolean;
+}
 
-async function connectDB() {
+const connection: IConnection = {
+  isConnected: false,
+};
+
+async function connectDB(): Promise<void> {
   if (connection.isConnected) {
     return;
   }
@@ -10,9 +16,9 @@ async function connectDB() {
   const db = await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  });
+  } as ConnectOptions);
 
-  connection.isConnected = db.connections[0].readyState;
+  connection.isConnected = db.connections[0].readyState === 1;
   console.log('MongoDB connected!');
 }
 
