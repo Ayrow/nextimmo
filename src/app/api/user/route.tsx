@@ -1,7 +1,8 @@
 import connectDB from '../../../../utils/connectDB';
 import User from '../../../../models/userModel';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   await connectDB();
   const { email, username } = await request.json();
   const role = 'user';
@@ -18,7 +19,7 @@ export async function POST(request) {
   const user = await User.create({ email, username, role });
 
   if (user) {
-    return new Response(JSON.stringify(user), {
+    return new NextResponse(JSON.stringify(user), {
       headers: { 'Content-Type': 'application/json' },
     });
   } else {
@@ -26,7 +27,7 @@ export async function POST(request) {
   }
 }
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   await connectDB();
   const { searchParams } = new URL(request.url);
   const email = searchParams.get('email');
@@ -38,7 +39,7 @@ export async function GET(request) {
   const user = await User.findOne({ email });
 
   if (user) {
-    return new Response(JSON.stringify(user), {
+    return new NextResponse(JSON.stringify(user), {
       headers: { 'Content-Type': 'application/json' },
     });
   }
