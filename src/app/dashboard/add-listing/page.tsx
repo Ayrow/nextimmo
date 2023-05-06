@@ -12,8 +12,9 @@ const AddListing = () => {
   const [values, setValues] = useState(initialState);
   const [isLocation, setIsLocation] = useState(false);
 
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
   };
 
   return (
@@ -40,7 +41,7 @@ const AddListing = () => {
               <select
                 id='typeBien'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option selected=''>Sélectionnez un type de bien</option>
+                <option selected={true}>Sélectionnez un type de bien</option>
                 <option value='maison'>Maison</option>
                 <option value='appartement'>Appartement</option>
                 <option value='terrain'>Terrain</option>
@@ -57,7 +58,9 @@ const AddListing = () => {
               <select
                 id='typeBien'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option selected=''>Sélectionnez le type de transaction</option>
+                <option selected={true}>
+                  Sélectionnez le type de transaction
+                </option>
                 <option value='maison'>Vente</option>
                 <option value='appartement'>Location</option>
               </select>
@@ -145,7 +148,7 @@ const AddListing = () => {
               </label>
               <textarea
                 id='description'
-                rows='8'
+                rows={8}
                 className='block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
                 placeholder='Description du bien'></textarea>
             </div>
@@ -157,11 +160,9 @@ const AddListing = () => {
                 id='default-checkbox'
                 type='checkbox'
                 value=''
-                class='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
+                className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
               />
-              <label
-                for='default-checkbox'
-                class='ml-2 text-sm font-medium text-gray-300'>
+              <label className='ml-2 text-sm font-medium text-gray-300'>
                 Equipement 1
               </label>
             </div>
@@ -181,7 +182,9 @@ const AddListing = () => {
               <select
                 id='typeChauffage'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option selected=''>Sélectionnez un type de chauffage</option>
+                <option selected={true}>
+                  Sélectionnez un type de chauffage
+                </option>
                 <option value='gaz'>gaz</option>
                 <option value='pac'>Pompe à chaleur</option>
               </select>
@@ -196,11 +199,9 @@ const AddListing = () => {
                   id='default-checkbox'
                   type='checkbox'
                   value=''
-                  class='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
+                  className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
                 />
-                <label
-                  for='default-checkbox'
-                  class='ml-2 text-sm font-medium text-gray-300'>
+                <label className='ml-2 text-sm font-medium text-gray-300'>
                   Equipement 1
                 </label>
               </div>
@@ -220,7 +221,7 @@ const AddListing = () => {
                 <select
                   id='exposition'
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                  <option selected=''>Sélectionnez une exposition</option>
+                  <option selected={true}>Sélectionnez une exposition</option>
                   <option value='nord'>nord</option>
                   <option value='sud'>sud</option>
                 </select>
@@ -275,7 +276,7 @@ const AddListing = () => {
                 <select
                   id='typeBien'
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                  <option selected=''>
+                  <option selected={true}>
                     Sélectionnez le type de transaction
                   </option>
                   <option value='maison'>Vente</option>

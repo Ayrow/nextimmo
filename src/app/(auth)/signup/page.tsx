@@ -26,8 +26,7 @@ const Signin = () => {
   const [values, setValues] = useState<Data>(initialCredentials);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };
 
