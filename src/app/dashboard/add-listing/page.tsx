@@ -1,5 +1,4 @@
 'use client';
-
 import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
 import { useState } from 'react';
@@ -7,9 +6,55 @@ import { useState } from 'react';
 const initialState = {
   ref: '',
   typeDeBien: '',
+  transaction: 'vente',
   quartier: '',
   ville: '',
   codePostal: null,
+  prix: 0,
+  dateConstruction: 0,
+  nbPieces: 0,
+  nbChambres: 0,
+  nbSDB: 0,
+  nbEtages: 0,
+  statut: 'string',
+  surfaceInt: 0,
+  surfaceExt: 0,
+  equipement: {
+    equipementsInt: {
+      cave: false,
+      garage: false,
+      veranda: false,
+      ascenseur: false,
+      plainPied: false,
+      accessibilitePMR: false,
+      digiCode: false,
+      alarme: false,
+      Interphone: false,
+      cheminee: false,
+      climatisation: false,
+      gardien: false,
+      toiletteSepare: false,
+      cuisineEquipee: false,
+    },
+    equipementsExt: {
+      balcon: false,
+      terrasse: false,
+      piscine: false,
+      jardin: false,
+      stationnement: false,
+      portail: false,
+    },
+  },
+  typeChauffage: '',
+  exposition: '',
+  description: '',
+  consoEnergetique: 0,
+  ges: 0,
+  photos: [String],
+  honoraires: {
+    chargeVendeur: false,
+    taux: 0,
+  },
 };
 
 const biens = [
@@ -55,14 +100,14 @@ const AddListing = () => {
               <label className='block mb-2 text-sm font-medium text-white'>
                 Type de Bien
               </label>
-              <select className='border capitalize text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+              <select className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>Sélectionnez un type de bien</option>
                 {biens.map((bien) => {
                   return <option value={bien}>{bien}</option>;
                 })}
               </select>
             </div>
-            <div className='sm:col-span-2'>
+            <div className='sm:col-span-2 capitalize'>
               <label className='block mb-2 text-sm font-medium text-white'>
                 Type de transaction
               </label>
@@ -72,8 +117,8 @@ const AddListing = () => {
                 <option selected={true}>
                   Sélectionnez le type de transaction
                 </option>
-                <option value='maison'>Vente</option>
-                <option value='appartement'>Location</option>
+                <option value='vente'>Vente</option>
+                <option value='location'>Location</option>
               </select>
             </div>
 
