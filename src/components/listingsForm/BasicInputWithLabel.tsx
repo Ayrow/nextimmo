@@ -1,3 +1,5 @@
+'use client';
+
 type Input = {
   label: string;
   placeholder: string;
@@ -30,6 +32,7 @@ const BasicInputWithLabel = ({
         placeholder={placeholder}
         required={isRequired}
         value={value}
+        min={0}
       />
     </>
   );

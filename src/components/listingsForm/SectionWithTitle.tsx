@@ -1,3 +1,5 @@
+'use client';
+
 const SectionWithTitle = ({
   children,
   title,

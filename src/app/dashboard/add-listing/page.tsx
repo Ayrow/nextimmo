@@ -1,4 +1,5 @@
 'use client';
+
 import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
 import { useState } from 'react';
@@ -73,23 +74,52 @@ const AddListing = () => {
   const [values, setValues] = useState(initialState);
   const [isLocation, setIsLocation] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     let data = { ...values };
     const { name, value } = e.target;
-    if (name == 'quartier' || name == 'ville' || name == 'codePostal') {
+
+    if (name.startsWith('lieu')) {
+      let lieuField = name.split('.')[1];
       data = {
         ...data,
         lieu: {
           ...data.lieu,
-          [name]: value,
+          [lieuField]: value,
         },
       };
-    } else if (name == 'taux' || name == 'charge') {
+    } else if (name.startsWith('honoraires')) {
+      let honorairesField = name.split('.')[1];
       data = {
         ...data,
         honoraires: {
           ...data.honoraires,
-          [name]: value,
+          [honorairesField]: value,
+        },
+      };
+    } else if (name.startsWith('equipementsInt')) {
+      let equipementsIntField = name.split('.')[1];
+      data = {
+        ...data,
+        equipements: {
+          ...data.equipements,
+          equipementsInt: {
+            ...data.equipements.equipementsInt,
+            [equipementsIntField]: value,
+          },
+        },
+      };
+    } else if (name.startsWith('equipementsExt')) {
+      let equipementsExtField = name.split('.')[1];
+      data = {
+        ...data,
+        equipements: {
+          ...data.equipements,
+          equipementsInt: {
+            ...data.equipements.equipementsInt,
+            [equipementsExtField]: value,
+          },
         },
       };
     } else {
@@ -105,7 +135,6 @@ const AddListing = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('values', values);
     clearForm();
   };
 
@@ -134,7 +163,9 @@ const AddListing = () => {
               <label className='block mb-2 text-sm font-medium text-white'>
                 Type de Bien
               </label>
-              <select className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+              <select
+                onChange={handleChange}
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>Sélectionnez un type de bien</option>
                 {biens.map((bien) => {
                   return (
@@ -166,7 +197,7 @@ const AddListing = () => {
                   label='Quartier'
                   placeholder=''
                   isRequired={true}
-                  name='quartier'
+                  name='lieu.quartier'
                   type='text'
                   handleChange={handleChange}
                   value={values.lieu.quartier}
@@ -177,7 +208,7 @@ const AddListing = () => {
                   label='Ville'
                   placeholder=''
                   isRequired={true}
-                  name='ville'
+                  name='lieu.ville'
                   type='text'
                   handleChange={handleChange}
                   value={values.lieu.ville}
@@ -188,7 +219,7 @@ const AddListing = () => {
                   label='Code Postal'
                   placeholder=''
                   isRequired={true}
-                  name='codePostal'
+                  name='lieu.codePostal'
                   type='number'
                   handleChange={handleChange}
                   value={values.lieu.codePostal}
@@ -285,13 +316,13 @@ const AddListing = () => {
           <SectionWithTitle title='Equipements Intérieurs'>
             <div className='gap-4 flex'>
               <input
-                id='default-checkbox'
                 type='checkbox'
-                value=''
+                onChange={handleChange}
+                name='equipementsInt.cave'
                 className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
               />
               <label className='ml-2 text-sm font-medium text-gray-300'>
-                Equipement 1
+                Cave
               </label>
             </div>
 
@@ -312,7 +343,7 @@ const AddListing = () => {
                 Type de chauffage
               </label>
               <select
-                id='typeChauffage'
+                onChange={handleChange}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>
                   Sélectionnez un type de chauffage
@@ -328,13 +359,13 @@ const AddListing = () => {
             <div className='flex flex-col gap-6'>
               <div className='gap-4 flex'>
                 <input
-                  id='default-checkbox'
                   type='checkbox'
-                  value=''
+                  name='equipementsExt.balcon'
+                  onChange={handleChange}
                   className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
                 />
                 <label className='ml-2 text-sm font-medium text-gray-300'>
-                  Equipement 1
+                  Balcon
                 </label>
               </div>
 
@@ -355,7 +386,7 @@ const AddListing = () => {
                   Exposition
                 </label>
                 <select
-                  id='exposition'
+                  onChange={handleChange}
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                   <option selected={true}>Sélectionnez une exposition</option>
                   <option value='nord'>nord</option>
@@ -403,6 +434,7 @@ const AddListing = () => {
                   name='photos'
                   value={values.photos}
                   id='photo'
+                  onChange={handleChange}
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
                   placeholder='https://maphoto.com'
                   required={false}
@@ -419,7 +451,7 @@ const AddListing = () => {
                   A Charge:
                 </label>
                 <select
-                  id='typeBien'
+                  onChange={handleChange}
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                   <option selected={true}>
                     Sélectionnez qui prend en charge.
