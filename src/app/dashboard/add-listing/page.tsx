@@ -6,7 +6,21 @@ import { useState } from 'react';
 
 const initialState = {
   ref: '',
+  typeDeBien: '',
+  quartier: '',
+  ville: '',
+  codePostal: null,
 };
+
+const biens = [
+  'maison',
+  'appartement',
+  'terrain',
+  'immeuble',
+  'parking',
+  'garage',
+  'bureau',
+];
 
 const AddListing = () => {
   const [values, setValues] = useState(initialState);
@@ -40,15 +54,11 @@ const AddListing = () => {
               </label>
               <select
                 id='typeBien'
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                className='border capitalize text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>Sélectionnez un type de bien</option>
-                <option value='maison'>Maison</option>
-                <option value='appartement'>Appartement</option>
-                <option value='terrain'>Terrain</option>
-                <option value='immeuble'>Immeuble</option>
-                <option value='parking'>Parking</option>
-                <option value='garage'>Garage</option>
-                <option value='bureau'>Bureau</option>
+                {biens.map((bien) => {
+                  return <option value={bien}>{bien}</option>;
+                })}
               </select>
             </div>
             <div className='sm:col-span-2'>
@@ -56,7 +66,7 @@ const AddListing = () => {
                 Type de transaction
               </label>
               <select
-                id='typeBien'
+                id='typeTransaction'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>
                   Sélectionnez le type de transaction
@@ -67,80 +77,94 @@ const AddListing = () => {
             </div>
 
             <div className='sm:col-span-2 flex flex-wrap sm:flex-nowrap gap-4 sm:gap-6'>
+              <div className='sm:col-span-2'>
+                <BasicInputWithLabel
+                  label='Quartier'
+                  placeholder=''
+                  isRequired={true}
+                  name='quartier'
+                  type='text'
+                />
+              </div>
+              <div className='sm:col-span-2'>
+                <BasicInputWithLabel
+                  label='Ville'
+                  placeholder=''
+                  isRequired={true}
+                  name='ville'
+                  type='text'
+                />
+              </div>
+              <div className='sm:col-span-2'>
+                <BasicInputWithLabel
+                  label='Code Postal'
+                  placeholder=''
+                  isRequired={true}
+                  name='codePostal'
+                  type='number'
+                />
+              </div>
+            </div>
+            <div className='sm:col-span-2'>
               <BasicInputWithLabel
-                label='Quartier'
+                label='Prix'
                 placeholder=''
                 isRequired={true}
-                name='quartier'
-                type='text'
+                name='prix'
+                type='number'
               />
+            </div>
+          </div>
 
+          <SectionWithTitle title='Details'>
+            <div className='sm:col-span-2'>
               <BasicInputWithLabel
-                label='Ville'
+                label='Année construction'
                 placeholder=''
-                isRequired={true}
-                name='ville'
-                type='text'
+                isRequired={false}
+                name='anneeConstruction'
+                type='number'
               />
-
+            </div>
+            <div className='sm:col-span-2'>
               <BasicInputWithLabel
-                label='Code Postal'
+                label='Nombre de Pièces'
                 placeholder=''
-                isRequired={true}
-                name='codePostal'
+                isRequired={false}
+                name='nbPieces'
                 type='number'
               />
             </div>
 
-            <BasicInputWithLabel
-              label='Prix'
-              placeholder=''
-              isRequired={true}
-              name='prix'
-              type='number'
-            />
-          </div>
+            <div className='sm:col-span-2'>
+              <BasicInputWithLabel
+                label='Nombre de Chambres'
+                placeholder=''
+                isRequired={false}
+                name='nbChambre'
+                type='number'
+              />
+            </div>
 
-          <SectionWithTitle title='Details'>
-            <BasicInputWithLabel
-              label='Année construction'
-              placeholder=''
-              isRequired={false}
-              name='anneeConstruction'
-              type='number'
-            />
+            <div className='sm:col-span-2'>
+              <BasicInputWithLabel
+                label="Nombre de salle de bain / salle d'eau"
+                placeholder=''
+                isRequired={false}
+                name='nbSDB'
+                type='number'
+              />
+            </div>
 
-            <BasicInputWithLabel
-              label='Nombre de Pièces'
-              placeholder=''
-              isRequired={false}
-              name='nbPieces'
-              type='number'
-            />
-
-            <BasicInputWithLabel
-              label='Nombre de Chambres'
-              placeholder=''
-              isRequired={false}
-              name='nbChambre'
-              type='number'
-            />
-
-            <BasicInputWithLabel
-              label="Nombre de salle de bain / salle d'eau"
-              placeholder=''
-              isRequired={false}
-              name='nbSDB'
-              type='number'
-            />
-
-            <BasicInputWithLabel
-              label="Nombre d'étages"
-              placeholder=''
-              isRequired={false}
-              name='nbEtage'
-              type='number'
-            />
+            <div className='sm:col-span-2'>
+              <BasicInputWithLabel
+                label="Nombre d'étages"
+                placeholder=''
+                isRequired={false}
+                name='nbEtage'
+                type='number'
+              />
+            </div>
 
             <div className='sm:col-span-2'>
               <label className='block mb-2 text-sm font-medium text-white'>
@@ -167,13 +191,15 @@ const AddListing = () => {
               </label>
             </div>
 
-            <BasicInputWithLabel
-              label='Surface intérieure'
-              placeholder=''
-              isRequired={true}
-              name='surfaceInt'
-              type='number'
-            />
+            <div className='sm:col-span-2'>
+              <BasicInputWithLabel
+                label='Surface intérieure'
+                placeholder=''
+                isRequired={true}
+                name='surfaceInt'
+                type='number'
+              />
+            </div>
 
             <div className='sm:col-span-2'>
               <label className='block mb-2 text-sm font-medium text-white'>
@@ -206,13 +232,15 @@ const AddListing = () => {
                 </label>
               </div>
 
-              <BasicInputWithLabel
-                label='Surface extérieure'
-                placeholder=''
-                isRequired={false}
-                name='surfaceExt'
-                type='number'
-              />
+              <div className='sm:col-span-2'>
+                <BasicInputWithLabel
+                  label='Surface extérieure'
+                  placeholder=''
+                  isRequired={false}
+                  name='surfaceExt'
+                  type='number'
+                />
+              </div>
 
               <div className='sm:col-span-2'>
                 <label className='block mb-2 text-sm font-medium text-white'>
@@ -232,21 +260,25 @@ const AddListing = () => {
           <div className='border-t border-sky-900 mt-12'>
             <h3 className='py-5 uppercase'>Bilan énergétique</h3>
             <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
-              <BasicInputWithLabel
-                label='Consommation Enérgétique (en kWh/m2.an)'
-                placeholder='500'
-                isRequired={false}
-                name='consoEnergetique'
-                type='number'
-              />
+              <div className='sm:col-span-2'>
+                <BasicInputWithLabel
+                  label='Consommation Enérgétique (en kWh/m2.an)'
+                  placeholder='500'
+                  isRequired={false}
+                  name='consoEnergetique'
+                  type='number'
+                />
+              </div>
 
-              <BasicInputWithLabel
-                label='Emission de gaz (en kgeqCO2/m².an)'
-                placeholder='50'
-                isRequired={false}
-                name='ges'
-                type='number'
-              />
+              <div className='sm:col-span-2'>
+                <BasicInputWithLabel
+                  label='Emission de gaz (en kgeqCO2/m².an)'
+                  placeholder='50'
+                  isRequired={false}
+                  name='ges'
+                  type='number'
+                />
+              </div>
             </div>
           </div>
 
@@ -284,13 +316,15 @@ const AddListing = () => {
                 </select>
               </div>
 
-              <BasicInputWithLabel
-                label="Taux d'honoraires (en %)"
-                placeholder=''
-                isRequired={true}
-                name='taux'
-                type='number'
-              />
+              <div className='sm:col-span-2'>
+                <BasicInputWithLabel
+                  label="Taux d'honoraires (en %)"
+                  placeholder=''
+                  isRequired={true}
+                  name='taux'
+                  type='number'
+                />
+              </div>
             </div>
           </div>
 

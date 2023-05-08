@@ -14,7 +14,7 @@ const BasicInputWithLabel = ({
   type,
 }: Input) => {
   return (
-    <div className='sm:col-span-2'>
+    <>
       <label className='block mb-2 text-sm font-medium text-white'>
         {label}
       </label>
@@ -25,7 +25,7 @@ const BasicInputWithLabel = ({
         placeholder={placeholder}
         required={isRequired}
       />
-    </div>
+    </>
   );
 };
 

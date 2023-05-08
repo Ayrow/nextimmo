@@ -8,6 +8,11 @@ import {
   Model,
 } from 'mongoose';
 
+interface ILocation {
+  loyerMensuel: number;
+  caution: number;
+}
+
 interface ILieu {
   quartier: string;
   ville: string;
@@ -53,7 +58,7 @@ interface IHonoraires {
 interface IListingDocument extends Document {
   ref: string;
   transaction: string;
-  location: number;
+  location: ILocation;
   prix: number;
   dateConstruction: number;
   nbPieces: number;
