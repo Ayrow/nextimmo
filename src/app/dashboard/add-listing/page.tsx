@@ -10,7 +10,7 @@ const initialState = {
   lieu: {
     quartier: '',
     ville: '',
-    codePostal: null,
+    codePostal: 0,
   },
   prix: 0,
   dateConstruction: 0,
@@ -18,7 +18,7 @@ const initialState = {
   nbChambres: 0,
   nbSDB: 0,
   nbEtages: 0,
-  statut: 'string',
+  statut: '',
   surfaceInt: 0,
   surfaceExt: 0,
   equipements: {
@@ -52,7 +52,7 @@ const initialState = {
   description: '',
   consoEnergetique: 0,
   ges: 0,
-  photos: [String],
+  photos: [],
   honoraires: {
     chargeVendeur: false,
     taux: 0,
@@ -74,8 +74,29 @@ const AddListing = () => {
   const [isLocation, setIsLocation] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let data = { ...values };
     const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
+    if (name == 'quartier' || name == 'ville' || name == 'codePostal') {
+      data = {
+        ...data,
+        lieu: {
+          ...data.lieu,
+          [name]: value,
+        },
+      };
+    } else if (name == 'taux' || name == 'charge') {
+      data = {
+        ...data,
+        honoraires: {
+          ...data.honoraires,
+          [name]: value,
+        },
+      };
+    } else {
+      data = { ...data, [name]: value };
+    }
+    setValues(data);
+    console.log('values', values);
   };
 
   const clearForm = () => {
@@ -145,9 +166,10 @@ const AddListing = () => {
                   label='Quartier'
                   placeholder=''
                   isRequired={true}
-                  name='lieu.quartier'
+                  name='quartier'
                   type='text'
                   handleChange={handleChange}
+                  value={values.lieu.quartier}
                 />
               </div>
               <div className='sm:col-span-2'>
@@ -155,9 +177,10 @@ const AddListing = () => {
                   label='Ville'
                   placeholder=''
                   isRequired={true}
-                  name='lieu.ville'
+                  name='ville'
                   type='text'
                   handleChange={handleChange}
+                  value={values.lieu.ville}
                 />
               </div>
               <div className='sm:col-span-2'>
@@ -165,9 +188,10 @@ const AddListing = () => {
                   label='Code Postal'
                   placeholder=''
                   isRequired={true}
-                  name='lieu.codePostal'
+                  name='codePostal'
                   type='number'
                   handleChange={handleChange}
+                  value={values.lieu.codePostal}
                 />
               </div>
             </div>
@@ -179,6 +203,7 @@ const AddListing = () => {
                 name='prix'
                 type='number'
                 handleChange={handleChange}
+                value={values.prix}
               />
             </div>
           </div>
@@ -186,12 +211,13 @@ const AddListing = () => {
           <SectionWithTitle title='Details'>
             <div className='sm:col-span-2'>
               <BasicInputWithLabel
-                label='Année construction'
+                label='Date de construction'
                 placeholder=''
                 isRequired={false}
-                name='anneeConstruction'
+                name='dateConstruction'
                 type='number'
                 handleChange={handleChange}
+                value={values.dateConstruction}
               />
             </div>
             <div className='sm:col-span-2'>
@@ -202,6 +228,7 @@ const AddListing = () => {
                 name='nbPieces'
                 type='number'
                 handleChange={handleChange}
+                value={values.nbPieces}
               />
             </div>
 
@@ -213,6 +240,7 @@ const AddListing = () => {
                 name='nbChambre'
                 type='number'
                 handleChange={handleChange}
+                value={values.nbChambres}
               />
             </div>
 
@@ -224,6 +252,7 @@ const AddListing = () => {
                 name='nbSDB'
                 type='number'
                 handleChange={handleChange}
+                value={values.nbSDB}
               />
             </div>
 
@@ -235,6 +264,7 @@ const AddListing = () => {
                 name='nbEtage'
                 type='number'
                 handleChange={handleChange}
+                value={values.nbEtages}
               />
             </div>
 
@@ -246,7 +276,9 @@ const AddListing = () => {
                 id='description'
                 rows={8}
                 className='block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                placeholder='Description du bien'></textarea>
+                placeholder='Description du bien'
+                name='description'
+                value={values.description}></textarea>
             </div>
           </SectionWithTitle>
 
@@ -271,6 +303,7 @@ const AddListing = () => {
                 name='surfaceInt'
                 type='number'
                 handleChange={handleChange}
+                value={values.surfaceInt}
               />
             </div>
 
@@ -313,6 +346,7 @@ const AddListing = () => {
                   name='surfaceExt'
                   type='number'
                   handleChange={handleChange}
+                  value={values.surfaceExt}
                 />
               </div>
 
@@ -342,6 +376,7 @@ const AddListing = () => {
                   name='consoEnergetique'
                   type='number'
                   handleChange={handleChange}
+                  value={values.consoEnergetique}
                 />
               </div>
 
@@ -353,6 +388,7 @@ const AddListing = () => {
                   name='ges'
                   type='number'
                   handleChange={handleChange}
+                  value={values.ges}
                 />
               </div>
             </div>
@@ -365,6 +401,7 @@ const AddListing = () => {
                 <input
                   type='text'
                   name='photos'
+                  value={values.photos}
                   id='photo'
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
                   placeholder='https://maphoto.com'
@@ -400,6 +437,7 @@ const AddListing = () => {
                   name='taux'
                   type='number'
                   handleChange={handleChange}
+                  value={values.honoraires.taux}
                 />
               </div>
             </div>
