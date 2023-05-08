@@ -21,7 +21,7 @@ const initialState = {
   statut: 'string',
   surfaceInt: 0,
   surfaceExt: 0,
-  equipement: {
+  equipements: {
     equipementsInt: {
       cave: false,
       garage: false,
@@ -78,6 +78,16 @@ const AddListing = () => {
     setValues({ ...values, [name]: value });
   };
 
+  const clearForm = () => {
+    setValues(initialState);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('values', values);
+    clearForm();
+  };
+
   return (
     <section className='bg-gray-900'>
       <div className='py-8 px-4 mx-auto max-w-2xl lg:py-16'>
@@ -85,7 +95,7 @@ const AddListing = () => {
           Créer une annonce
         </h2>
 
-        <form action='#' className='mt-10'>
+        <form onSubmit={handleSubmit} className='mt-10'>
           <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
             <div className='sm:col-span-2'>
               <BasicInputWithLabel
@@ -95,6 +105,7 @@ const AddListing = () => {
                 name='ref'
                 type='text'
                 handleChange={handleChange}
+                value={values.ref}
               />
             </div>
 
@@ -105,7 +116,11 @@ const AddListing = () => {
               <select className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>Sélectionnez un type de bien</option>
                 {biens.map((bien) => {
-                  return <option value={bien}>{bien}</option>;
+                  return (
+                    <option key={bien} value={bien}>
+                      {bien}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -130,7 +145,7 @@ const AddListing = () => {
                   label='Quartier'
                   placeholder=''
                   isRequired={true}
-                  name='quartier'
+                  name='lieu.quartier'
                   type='text'
                   handleChange={handleChange}
                 />
@@ -140,7 +155,7 @@ const AddListing = () => {
                   label='Ville'
                   placeholder=''
                   isRequired={true}
-                  name='ville'
+                  name='lieu.ville'
                   type='text'
                   handleChange={handleChange}
                 />
@@ -150,7 +165,7 @@ const AddListing = () => {
                   label='Code Postal'
                   placeholder=''
                   isRequired={true}
-                  name='codePostal'
+                  name='lieu.codePostal'
                   type='number'
                   handleChange={handleChange}
                 />
@@ -353,7 +368,7 @@ const AddListing = () => {
                   id='photo'
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
                   placeholder='https://maphoto.com'
-                  required
+                  required={false}
                 />
               </div>
             </div>
