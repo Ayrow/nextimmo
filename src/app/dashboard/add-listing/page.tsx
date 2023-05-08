@@ -38,23 +38,24 @@ const AddListing = () => {
           Créer une annonce
         </h2>
 
-        <form action='#'>
+        <form action='#' className='mt-10'>
           <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
-            <BasicInputWithLabel
-              label='Référence'
-              placeholder='Indiquez la référence du bien'
-              isRequired={true}
-              name='ref'
-              type='text'
-            />
+            <div className='sm:col-span-2'>
+              <BasicInputWithLabel
+                label='Référence'
+                placeholder='Indiquez la référence du bien'
+                isRequired={true}
+                name='ref'
+                type='text'
+                handleChange={handleChange}
+              />
+            </div>
 
             <div className='sm:col-span-2'>
               <label className='block mb-2 text-sm font-medium text-white'>
                 Type de Bien
               </label>
-              <select
-                id='typeBien'
-                className='border capitalize text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+              <select className='border capitalize text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>Sélectionnez un type de bien</option>
                 {biens.map((bien) => {
                   return <option value={bien}>{bien}</option>;
@@ -67,7 +68,7 @@ const AddListing = () => {
               </label>
               <select
                 id='typeTransaction'
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>
                   Sélectionnez le type de transaction
                 </option>
@@ -84,6 +85,7 @@ const AddListing = () => {
                   isRequired={true}
                   name='quartier'
                   type='text'
+                  handleChange={handleChange}
                 />
               </div>
               <div className='sm:col-span-2'>
@@ -93,6 +95,7 @@ const AddListing = () => {
                   isRequired={true}
                   name='ville'
                   type='text'
+                  handleChange={handleChange}
                 />
               </div>
               <div className='sm:col-span-2'>
@@ -102,6 +105,7 @@ const AddListing = () => {
                   isRequired={true}
                   name='codePostal'
                   type='number'
+                  handleChange={handleChange}
                 />
               </div>
             </div>
@@ -112,6 +116,7 @@ const AddListing = () => {
                 isRequired={true}
                 name='prix'
                 type='number'
+                handleChange={handleChange}
               />
             </div>
           </div>
@@ -124,6 +129,7 @@ const AddListing = () => {
                 isRequired={false}
                 name='anneeConstruction'
                 type='number'
+                handleChange={handleChange}
               />
             </div>
             <div className='sm:col-span-2'>
@@ -133,6 +139,7 @@ const AddListing = () => {
                 isRequired={false}
                 name='nbPieces'
                 type='number'
+                handleChange={handleChange}
               />
             </div>
 
@@ -143,6 +150,7 @@ const AddListing = () => {
                 isRequired={false}
                 name='nbChambre'
                 type='number'
+                handleChange={handleChange}
               />
             </div>
 
@@ -153,6 +161,7 @@ const AddListing = () => {
                 isRequired={false}
                 name='nbSDB'
                 type='number'
+                handleChange={handleChange}
               />
             </div>
 
@@ -163,6 +172,7 @@ const AddListing = () => {
                 isRequired={false}
                 name='nbEtage'
                 type='number'
+                handleChange={handleChange}
               />
             </div>
 
@@ -198,6 +208,7 @@ const AddListing = () => {
                 isRequired={true}
                 name='surfaceInt'
                 type='number'
+                handleChange={handleChange}
               />
             </div>
 
@@ -207,7 +218,7 @@ const AddListing = () => {
               </label>
               <select
                 id='typeChauffage'
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>
                   Sélectionnez un type de chauffage
                 </option>
@@ -239,6 +250,7 @@ const AddListing = () => {
                   isRequired={false}
                   name='surfaceExt'
                   type='number'
+                  handleChange={handleChange}
                 />
               </div>
 
@@ -248,7 +260,7 @@ const AddListing = () => {
                 </label>
                 <select
                   id='exposition'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                   <option selected={true}>Sélectionnez une exposition</option>
                   <option value='nord'>nord</option>
                   <option value='sud'>sud</option>
@@ -267,6 +279,7 @@ const AddListing = () => {
                   isRequired={false}
                   name='consoEnergetique'
                   type='number'
+                  handleChange={handleChange}
                 />
               </div>
 
@@ -277,6 +290,7 @@ const AddListing = () => {
                   isRequired={false}
                   name='ges'
                   type='number'
+                  handleChange={handleChange}
                 />
               </div>
             </div>
@@ -301,18 +315,18 @@ const AddListing = () => {
           <div className='border-t border-sky-900 mt-12'>
             <h3 className='py-5 uppercase'>Honoraires</h3>
             <div className='flex flex-col gap-4'>
-              <div className='w-full'>
+              <div className='w-full capitalize'>
                 <label className='block mb-2 text-sm font-medium text-white'>
-                  Type de transaction
+                  A Charge:
                 </label>
                 <select
                   id='typeBien'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                   <option selected={true}>
-                    Sélectionnez le type de transaction
+                    Sélectionnez qui prend en charge.
                   </option>
-                  <option value='maison'>Vente</option>
-                  <option value='appartement'>Location</option>
+                  <option value='acheteur'>Acheteur</option>
+                  <option value='vendeur'>Vendeur</option>
                 </select>
               </div>
 
@@ -323,6 +337,7 @@ const AddListing = () => {
                   isRequired={true}
                   name='taux'
                   type='number'
+                  handleChange={handleChange}
                 />
               </div>
             </div>
