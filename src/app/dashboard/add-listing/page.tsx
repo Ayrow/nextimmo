@@ -1,10 +1,11 @@
 'use client';
 
+import { IListing } from '../../../../types/listingTypes';
 import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
 import { useState } from 'react';
 
-const initialState = {
+const initialState: IListing = {
   ref: '',
   typeDeBien: '',
   transaction: 'vente',
@@ -23,7 +24,7 @@ const initialState = {
   surfaceInt: 0,
   surfaceExt: 0,
   equipements: {
-    equipementsInt: {
+    interieur: {
       cave: false,
       garage: false,
       veranda: false,
@@ -39,7 +40,7 @@ const initialState = {
       toiletteSepare: false,
       cuisineEquipee: false,
     },
-    equipementsExt: {
+    exterieur: {
       balcon: false,
       terrasse: false,
       piscine: false,
@@ -53,7 +54,11 @@ const initialState = {
   description: '',
   consoEnergetique: 0,
   ges: 0,
-  photos: [],
+  location: {
+    loyerMensuel: 0,
+    caution: 0,
+  },
+  photos: [''],
   honoraires: {
     chargeVendeur: false,
     taux: 0,
@@ -104,8 +109,8 @@ const AddListing = () => {
         ...data,
         equipements: {
           ...data.equipements,
-          equipementsInt: {
-            ...data.equipements.equipementsInt,
+          interieur: {
+            ...data.equipements.interieur,
             [equipementsIntField]: value,
           },
         },
@@ -116,8 +121,8 @@ const AddListing = () => {
         ...data,
         equipements: {
           ...data.equipements,
-          equipementsInt: {
-            ...data.equipements.equipementsInt,
+          exterieur: {
+            ...data.equipements.exterieur,
             [equipementsExtField]: value,
           },
         },
