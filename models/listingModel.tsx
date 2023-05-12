@@ -39,7 +39,7 @@ const listingSchema: Schema<IListingDocument> = new Schema(
       // default: 'maison',
     },
     statut: {
-      enum: ['bientôt', 'disponible', 'offre en cours'],
+      enum: ['bientôt', 'disponible', 'offreEnCours'],
       default: 'disponible',
     },
     surfaceInt: {
@@ -98,6 +98,7 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     honoraires: {
       chargeVendeur: Boolean,
       taux: Number,
+      fraisAgence: Number,
     },
     photos: [
       {

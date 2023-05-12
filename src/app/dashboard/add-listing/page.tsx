@@ -10,23 +10,23 @@ const initialState: IListing = {
   typeDeBien: '',
   transaction: 'vente',
   location: {
-    loyerMensuel: 0,
-    caution: 0,
+    loyerMensuel: undefined,
+    caution: undefined,
   },
   lieu: {
     quartier: '',
     ville: '',
-    codePostal: 0,
+    codePostal: undefined,
   },
-  prix: 0,
-  dateConstruction: 0,
-  nbPieces: 0,
-  nbChambres: 0,
-  nbSDB: 0,
-  nbEtages: 0,
+  prix: undefined,
+  dateConstruction: undefined,
+  nbPieces: undefined,
+  nbChambres: undefined,
+  nbSDB: undefined,
+  nbEtages: undefined,
   statut: '',
-  surfaceInt: 0,
-  surfaceExt: 0,
+  surfaceInt: undefined,
+  surfaceExt: undefined,
   equipements: {
     interieur: {
       cave: false,
@@ -56,12 +56,13 @@ const initialState: IListing = {
   typeChauffage: '',
   exposition: '',
   description: '',
-  consoEnergetique: 0,
-  ges: 0,
+  consoEnergetique: undefined,
+  ges: undefined,
   photos: [''],
   honoraires: {
     aCharge: '',
-    taux: 0,
+    taux: undefined,
+    fraisAgence: undefined,
   },
 };
 
@@ -150,6 +151,46 @@ const AddListing = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const {
+      transaction,
+      ref,
+      prix,
+      typeDeBien,
+      nbPieces,
+      lieu,
+      surfaceInt,
+      location,
+    } = values;
+
+    if (transaction === 'vente') {
+      if (
+        !ref ||
+        !prix ||
+        !typeDeBien ||
+        !lieu.quartier ||
+        lieu.ville ||
+        lieu.codePostal ||
+        !nbPieces ||
+        !surfaceInt
+      ) {
+        alert('missing fields');
+      }
+    } else {
+      if (
+        !ref ||
+        !location.loyerMensuel ||
+        !location.caution ||
+        !typeDeBien ||
+        !lieu.quartier ||
+        !lieu.ville ||
+        !nbPieces ||
+        !lieu.codePostal ||
+        !surfaceInt
+      ) {
+        alert('missing fields');
+      }
+    }
+
     clearForm();
   };
 
@@ -204,6 +245,21 @@ const AddListing = () => {
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option value='vente'>Vente</option>
                 <option value='location'>Location</option>
+              </select>
+            </div>
+
+            <div className='sm:col-span-2 capitalize'>
+              <label className='block mb-2 text-sm font-medium text-white'>
+                Statut
+              </label>
+              <select
+                name='statut'
+                onChange={handleChange}
+                defaultValue='disponible'
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                <option value='bientot'>Bientôt</option>
+                <option value='disponible'>Disponible</option>
+                <option value='offreEnCours'>Offre en cours</option>
               </select>
             </div>
 
@@ -490,33 +546,47 @@ const AddListing = () => {
 
           <div className='border-t border-sky-900 mt-12'>
             <h3 className='py-5 uppercase'>Honoraires</h3>
-            <div className='flex flex-col gap-4'>
-              <div className='w-full capitalize'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  A Charge:
-                </label>
-                <select
-                  onChange={handleChange}
-                  name='values.honoraires.aCharge'
-                  defaultValue='acheteur'
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                  <option value='acheteur'>Acheteur</option>
-                  <option value='vendeur'>Vendeur</option>
-                </select>
-              </div>
+            {values.transaction === 'vente' ? (
+              <div className='flex flex-col gap-4'>
+                <div className='w-full capitalize'>
+                  <label className='block mb-2 text-sm font-medium text-white'>
+                    A Charge:
+                  </label>
+                  <select
+                    onChange={handleChange}
+                    name='values.honoraires.aCharge'
+                    defaultValue='acheteur'
+                    className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                    <option value='acheteur'>Acheteur</option>
+                    <option value='vendeur'>Vendeur</option>
+                  </select>
+                </div>
 
+                <div className='sm:col-span-2'>
+                  <BasicInputWithLabel
+                    label="Taux d'honoraires (en %)"
+                    placeholder=''
+                    isRequired={true}
+                    name='taux'
+                    type='number'
+                    handleChange={handleChange}
+                    value={values.honoraires.taux}
+                  />
+                </div>
+              </div>
+            ) : (
               <div className='sm:col-span-2'>
                 <BasicInputWithLabel
-                  label="Taux d'honoraires (en %)"
+                  label="Frais d'Agence"
                   placeholder=''
                   isRequired={true}
-                  name='taux'
+                  name='fraisAgence'
                   type='number'
                   handleChange={handleChange}
-                  value={values.honoraires.taux}
+                  value={values.honoraires.fraisAgence}
                 />
               </div>
-            </div>
+            )}
           </div>
 
           <button

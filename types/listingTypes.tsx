@@ -45,6 +45,7 @@ interface IEquip {
 interface IHonoraires {
   aCharge: string;
   taux: number;
+  fraisAgence: number;
 }
 
 export interface IListing {
