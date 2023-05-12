@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useAuthContext } from '../../../context/user/authContext';
 import { useAppContext } from '../../../context/app/appContext';
 import Alert from '../../../components/Alert';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Data = {
   email: string;
@@ -17,6 +17,8 @@ const initialCredentials = {
 };
 
 const Signin = () => {
+  const { firebaseUser } = useAuthContext();
+
   const { state, actions } = useAppContext();
   const { displayAlert } = actions;
   const { showAlert } = state;
@@ -42,6 +44,10 @@ const Signin = () => {
   const clearForm = () => {
     setValues(initialCredentials);
   };
+
+  useEffect(() => {
+    console.log('firebaseUser', firebaseUser);
+  }, [firebaseUser]);
 
   return (
     <section className=' bg-gray-900'>

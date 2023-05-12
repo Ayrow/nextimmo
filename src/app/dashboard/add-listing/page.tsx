@@ -1,6 +1,5 @@
 'use client';
 
-import { getAuth } from 'firebase/auth';
 import { IListing } from '../../../../types/listingTypes';
 import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
@@ -155,13 +154,19 @@ const AddListing = () => {
   const addListing = async () => {
     if (firebaseUser) {
       const { email } = firebaseUser;
-      await fetch('/api/listings', {
-        method: 'POST',
-        body: JSON.stringify({ values, email }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      try {
+        await fetch('/api/listings', {
+          method: 'POST',
+          body: JSON.stringify({ values, email }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        // Add Modal to confirm it has been added
+        clearForm();
+      } catch (error) {
+        // Add Modal for error
+      }
     }
   };
 
@@ -210,8 +215,6 @@ const AddListing = () => {
         addListing();
       }
     }
-
-    // clearForm();
   };
 
   return (

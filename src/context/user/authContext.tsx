@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import { useAppContext } from '../app/appContext';
 import { ObjectId } from 'mongoose';
 
-type userFromDB = {
+type UserFromDB = {
   _id: ObjectId;
   username: string;
   email: string;
@@ -24,7 +24,7 @@ type userFromDB = {
 };
 
 type AuthContextType = {
-  user: userFromDB;
+  user: UserFromDB;
   firebaseUser: User;
   signInWithEmail: (email: string, password: string) => void;
   registerUserWithEmail: (email: string, password: string) => void;
@@ -36,17 +36,34 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>(null);
 
 const AuthProvider = ({ children }) => {
+  const userSession =
+    typeof window != 'undefined'
+      ? window.sessionStorage.getItem('storedUser')
+      : null;
+  const storedUser = userSession ? JSON.parse(userSession) : null;
+
   const router = useRouter();
-  const [user, setUser] = useState<userFromDB>(null);
+  const [user, setUser] = useState<UserFromDB>(storedUser);
   const [firebaseUser, setFirebaseUser] = useState<User>(null);
+
+  const addUserToSessionStorage = (user: UserFromDB) => {
+    sessionStorage.setItem('storedUser', JSON.stringify(user));
+  };
+
+  const removeUserFromSessionStorage = () => {
+    sessionStorage.removeItem('storedUser');
+  };
 
   useEffect(() => {
     const unregisterAuthObserver = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
+        console.log('user is signed in');
         setFirebaseUser(authUser);
       } else {
+        console.log('user is signed out');
         setFirebaseUser(null);
         setUser(null);
+        removeUserFromSessionStorage();
       }
     });
     return () => unregisterAuthObserver();
@@ -80,6 +97,7 @@ const AuthProvider = ({ children }) => {
         });
         const data = await res.json();
         setUser(data);
+        addUserToSessionStorage(data);
         displayAlert({
           type: 'success',
           msg: 'Your account has been created: welcome!',
@@ -126,6 +144,7 @@ const AuthProvider = ({ children }) => {
         });
         const data = await res.json();
         setUser(data);
+        addUserToSessionStorage(data);
       }
       displayAlert({
         type: 'success',
@@ -152,6 +171,7 @@ const AuthProvider = ({ children }) => {
         const data = await res.json();
         if (data) {
           setUser(data);
+          addUserToSessionStorage(data);
           displayAlert({
             type: 'success',
             msg: 'You are signed in!',
@@ -193,6 +213,7 @@ const AuthProvider = ({ children }) => {
     router.push('/');
     signOut(auth);
     setUser(null);
+    removeUserFromSessionStorage();
   };
 
   return (
