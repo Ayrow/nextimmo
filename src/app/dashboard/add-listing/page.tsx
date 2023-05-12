@@ -1,13 +1,15 @@
 'use client';
 
+import { getAuth } from 'firebase/auth';
 import { IListing } from '../../../../types/listingTypes';
 import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
 import { useState } from 'react';
+import { useAuthContext } from '../../../context/user/authContext';
 
 const initialState: IListing = {
   ref: '',
-  typeDeBien: 'Sélectionnez le type de bien',
+  typeDeBien: '',
   transaction: 'vente',
   location: {
     loyerMensuel: undefined,
@@ -24,7 +26,7 @@ const initialState: IListing = {
   nbChambres: undefined,
   nbSDB: undefined,
   nbEtages: undefined,
-  statut: '',
+  statut: 'disponible',
   surfaceInt: undefined,
   surfaceExt: undefined,
   equipements: {
@@ -77,6 +79,7 @@ const biens = [
 ];
 
 const AddListing = () => {
+  const { firebaseUser } = useAuthContext();
   const [values, setValues] = useState(initialState);
 
   const handleChange = (
@@ -150,13 +153,16 @@ const AddListing = () => {
   };
 
   const addListing = async () => {
-    await fetch('/api/listings', {
-      method: 'POST',
-      body: JSON.stringify(values),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    if (firebaseUser) {
+      const { email } = firebaseUser;
+      await fetch('/api/listings', {
+        method: 'POST',
+        body: JSON.stringify({ values, email }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -178,8 +184,8 @@ const AddListing = () => {
         !prix ||
         !typeDeBien ||
         !lieu.quartier ||
-        lieu.ville ||
-        lieu.codePostal ||
+        !lieu.ville ||
+        !lieu.codePostal ||
         !nbPieces ||
         !surfaceInt
       ) {
@@ -235,8 +241,8 @@ const AddListing = () => {
               </label>
               <select
                 onChange={handleChange}
-                name='values.typeDeBien'
-                defaultValue='maison'
+                name='typeDeBien'
+                defaultValue='Sélectionnez le type de bien'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected disabled>
                   Sélectionnez le type de bien

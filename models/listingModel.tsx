@@ -9,8 +9,8 @@ const listingSchema: Schema<IListingDocument> = new Schema(
       unique: true,
     },
     transaction: {
+      type: String,
       enum: ['location', 'vente'],
-      required: [true, 'Veuillez indiquer le type de transaction'],
     },
     location: {
       loyerMensuel: Number,
@@ -26,7 +26,9 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     nbSDB: Number,
     nbEtages: Number,
     typeDeBien: {
+      type: String,
       enum: [
+        'Sélectionnez le type de bien',
         'maison',
         'appartement',
         'terrain',
@@ -38,8 +40,8 @@ const listingSchema: Schema<IListingDocument> = new Schema(
       required: [true, 'Veuillez indiquer le type de bien'],
     },
     statut: {
-      enum: ['bientôt', 'disponible', 'offreEnCours'],
-      default: 'disponible',
+      type: String,
+      enum: ['bientot', 'disponible', 'offreEnCours'],
     },
     surfaceInt: {
       type: Number,
@@ -78,8 +80,9 @@ const listingSchema: Schema<IListingDocument> = new Schema(
       },
     },
     typeChauffage: {
+      type: String,
       enum: [
-        '',
+        'Sélectionnez le type de chauffage',
         'gaz',
         'fioul',
         'electrique',
@@ -87,7 +90,7 @@ const listingSchema: Schema<IListingDocument> = new Schema(
         'bois',
         'pompe à chaleur',
       ],
-      default: '',
+      default: 'Sélectionnez le type de chauffage',
     },
     exposition: {
       enum: ['nord', 'sud', 'est', 'ouest', 'vueMer', 'procheMer'],
@@ -100,11 +103,7 @@ const listingSchema: Schema<IListingDocument> = new Schema(
       taux: Number,
       fraisAgence: Number,
     },
-    photos: [
-      {
-        lienPhoto: String,
-      },
-    ],
+    photos: [String],
     createdBy: {
       type: Types.ObjectId,
       ref: 'User',
