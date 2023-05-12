@@ -43,7 +43,7 @@ interface IEquip {
 }
 
 interface IHonoraires {
-  chargeVendeur: boolean;
+  aCharge: string;
   taux: number;
 }
 

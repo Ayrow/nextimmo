@@ -60,7 +60,7 @@ const initialState: IListing = {
   },
   photos: [''],
   honoraires: {
-    chargeVendeur: false,
+    aCharge: '',
     taux: 0,
   },
 };
@@ -170,6 +170,7 @@ const AddListing = () => {
               </label>
               <select
                 onChange={handleChange}
+                name={values.typeDeBien}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>Sélectionnez un type de bien</option>
                 {biens.map((bien) => {
@@ -187,10 +188,11 @@ const AddListing = () => {
               </label>
               <select
                 id='typeTransaction'
+                name={values.transaction}
+                onChange={handleChange}
+                defaultValue=' Sélectionnez le type de transaction'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option selected={true}>
-                  Sélectionnez le type de transaction
-                </option>
+                <option hidden>Sélectionnez le type de transaction</option>
                 <option value='vente'>Vente</option>
                 <option value='location'>Location</option>
               </select>
@@ -349,6 +351,7 @@ const AddListing = () => {
               </label>
               <select
                 onChange={handleChange}
+                name={values.typeChauffage}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option selected={true}>
                   Sélectionnez un type de chauffage
@@ -392,6 +395,7 @@ const AddListing = () => {
                 </label>
                 <select
                   onChange={handleChange}
+                  name={values.exposition}
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                   <option selected={true}>Sélectionnez une exposition</option>
                   <option value='nord'>nord</option>
@@ -457,6 +461,7 @@ const AddListing = () => {
                 </label>
                 <select
                   onChange={handleChange}
+                  name={values.honoraires.aCharge}
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                   <option selected={true}>
                     Sélectionnez qui prend en charge.
