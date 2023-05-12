@@ -286,6 +286,7 @@ const AddListing = () => {
                 <option value='bientot'>Bientôt</option>
                 <option value='disponible'>Disponible</option>
                 <option value='offreEnCours'>Offre en cours</option>
+                <option value='vendu'>Vendu</option>
               </select>
             </div>
 
