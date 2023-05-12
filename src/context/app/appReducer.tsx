@@ -13,7 +13,7 @@ const appReducer = (state: AppState, action: AppAction) => {
       return {
         ...state,
         showAlert: true,
-        alertType: action.payload.color,
+        alertType: action.payload.type,
         alertText: action.payload.msg,
       };
     case CLEAR_ALERT:

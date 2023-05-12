@@ -12,7 +12,7 @@ import {
   signOut,
 } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { useAppContext } from '../app/appContext';
+import { ColorTypes, useAppContext } from '../app/appContext';
 import { ObjectId } from 'mongoose';
 
 type UserFromDB = {
@@ -36,6 +36,8 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>(null);
 
 const AuthProvider = ({ children }) => {
+  const { actions } = useAppContext();
+  const { displayAlert } = actions;
   const userSession =
     typeof window != 'undefined'
       ? window.sessionStorage.getItem('storedUser')
@@ -69,9 +71,6 @@ const AuthProvider = ({ children }) => {
     return () => unregisterAuthObserver();
   }, []);
 
-  const { actions } = useAppContext();
-  const { displayAlert } = actions;
-
   const navigate = (path: string) => {
     setTimeout(() => {
       router.push(path);
@@ -99,15 +98,14 @@ const AuthProvider = ({ children }) => {
         setUser(data);
         addUserToSessionStorage(data);
         displayAlert({
-          type: 'success',
+          type: ColorTypes.Success,
           msg: 'Your account has been created: welcome!',
         });
         navigate('/');
       }
     } catch (error) {
-      alert(error);
       displayAlert({
-        type: 'error',
+        type: ColorTypes.Error,
         msg: 'Failed to register with email and password',
       });
     }
@@ -147,12 +145,12 @@ const AuthProvider = ({ children }) => {
         addUserToSessionStorage(data);
       }
       displayAlert({
-        type: 'success',
+        type: ColorTypes.Success,
         msg: 'You are signed in!',
       });
     } catch (error) {
       displayAlert({
-        type: 'error',
+        type: ColorTypes.Error,
         msg: 'Failed to connect with Google',
       });
     }
@@ -173,21 +171,20 @@ const AuthProvider = ({ children }) => {
           setUser(data);
           addUserToSessionStorage(data);
           displayAlert({
-            type: 'success',
+            type: ColorTypes.Success,
             msg: 'You are signed in!',
           });
           navigate('/');
         } else {
           displayAlert({
-            type: 'error',
+            type: ColorTypes.Error,
             msg: 'Failed to signin with email and password',
           });
         }
       }
     } catch (error) {
-      alert(error);
       displayAlert({
-        type: 'error',
+        type: ColorTypes.Error,
         msg: 'Failed to signin with email and password',
       });
     }
@@ -197,13 +194,13 @@ const AuthProvider = ({ children }) => {
     try {
       await sendPasswordResetEmail(auth, email);
       displayAlert({
-        type: 'success',
+        type: ColorTypes.Success,
         msg: 'Email to reset password successfully sent.',
       });
       navigate('/signin');
     } catch (err) {
       displayAlert({
-        type: 'error',
+        type: ColorTypes.Error,
         msg: 'Failed to to send reset password email',
       });
     }

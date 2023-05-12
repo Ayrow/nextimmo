@@ -4,22 +4,44 @@ import { createContext, useContext, useReducer } from 'react';
 import { CLEAR_ALERT, DISPLAY_ALERT } from '../actions';
 import appReducer from './appReducer';
 
+enum ModalTypes {
+  Notification = 'notification',
+  Edit = 'edit',
+  Delete = 'delete',
+  Alert = 'alert',
+}
+
+export enum ColorTypes {
+  Success = 'success',
+  Error = 'error',
+  Warning = 'warning',
+  Notification = 'notification',
+}
+
 export type AppState = {
   isLoading: boolean;
   showAlert: boolean;
   alertText: string;
-  alertType: string;
+  alertType: ColorTypes;
+  showModal: boolean;
+  modalMsg: string;
+  modalTitle: '';
+  modalType: ModalTypes;
 };
 
 const initialAppState: AppState = {
   isLoading: false,
   showAlert: false,
   alertText: '',
-  alertType: '',
+  alertType: ColorTypes.Notification,
+  showModal: false,
+  modalMsg: '',
+  modalTitle: '',
+  modalType: ModalTypes.Notification,
 };
 
 type AppActions = {
-  displayAlert: (options: { type: string; msg: string }) => void;
+  displayAlert: (options: { type: ColorTypes; msg: string }) => void;
 };
 
 const initialAppActions = {
@@ -43,16 +65,8 @@ const AppProvider = ({ children }) => {
     }, 4000);
   };
 
-  const displayAlert = ({ type, msg }) => {
-    let color = '';
-
-    if (type == 'error') {
-      color = 'bg-red-500';
-    } else if (type == 'success') {
-      color = 'bg-green-500';
-    }
-
-    dispatch({ type: DISPLAY_ALERT, payload: { color, msg } });
+  const displayAlert = ({ type, msg }: { type: ColorTypes; msg: string }) => {
+    dispatch({ type: DISPLAY_ALERT, payload: { type, msg } });
     clearAlert();
   };
 

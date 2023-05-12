@@ -10,10 +10,6 @@ const AccountButton = () => {
   const { user, signOutUser } = useAuthContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    console.log('user', user);
-  }, []);
-
   return (
     <div>
       {!user ? (

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAuthContext } from '../../../context/user/authContext';
-import { useAppContext } from '../../../context/app/appContext';
+import { ColorTypes, useAppContext } from '../../../context/app/appContext';
 import Alert from '../../../components/Alert';
 import { useEffect, useState } from 'react';
 
@@ -34,7 +34,10 @@ const Signin = () => {
     e.preventDefault();
     const { email, password } = values;
     if (!email || !password) {
-      displayAlert({ type: 'error', msg: 'Email or password is missing' });
+      displayAlert({
+        type: ColorTypes.Error,
+        msg: 'Email or password is missing',
+      });
     } else {
       signInWithEmail(email, password);
       clearForm();
