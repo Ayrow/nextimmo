@@ -36,7 +36,6 @@ const listingSchema: Schema<IListingDocument> = new Schema(
         'bureau',
       ],
       required: [true, 'Veuillez indiquer le type de bien'],
-      // default: 'maison',
     },
     statut: {
       enum: ['bientôt', 'disponible', 'offreEnCours'],
@@ -80,6 +79,7 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     },
     typeChauffage: {
       enum: [
+        '',
         'gaz',
         'fioul',
         'electrique',
@@ -87,7 +87,7 @@ const listingSchema: Schema<IListingDocument> = new Schema(
         'bois',
         'pompe à chaleur',
       ],
-      //  default: 'gaz',
+      default: '',
     },
     exposition: {
       enum: ['nord', 'sud', 'est', 'ouest', 'vueMer', 'procheMer'],

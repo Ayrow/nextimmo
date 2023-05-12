@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 const initialState: IListing = {
   ref: '',
-  typeDeBien: '',
+  typeDeBien: 'Sélectionnez le type de bien',
   transaction: 'vente',
   location: {
     loyerMensuel: undefined,
@@ -53,14 +53,14 @@ const initialState: IListing = {
       portail: false,
     },
   },
-  typeChauffage: '',
-  exposition: '',
+  typeChauffage: 'Sélectionnez le type de chauffage',
+  exposition: 'nord',
   description: '',
   consoEnergetique: undefined,
   ges: undefined,
   photos: [''],
   honoraires: {
-    aCharge: '',
+    aCharge: 'acheteur',
     taux: undefined,
     fraisAgence: undefined,
   },
@@ -183,7 +183,7 @@ const AddListing = () => {
         !nbPieces ||
         !surfaceInt
       ) {
-        alert('missing fields');
+        alert('missing fields vente');
       } else {
         addListing();
       }
@@ -199,13 +199,13 @@ const AddListing = () => {
         !lieu.codePostal ||
         !surfaceInt
       ) {
-        alert('missing fields');
+        alert('missing fields location');
       } else {
         addListing();
       }
     }
 
-    clearForm();
+    // clearForm();
   };
 
   return (
@@ -238,6 +238,9 @@ const AddListing = () => {
                 name='values.typeDeBien'
                 defaultValue='maison'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                <option selected disabled>
+                  Sélectionnez le type de bien
+                </option>
                 {biens.map((bien) => {
                   return (
                     <option key={bien} value={bien}>
@@ -460,8 +463,11 @@ const AddListing = () => {
               <select
                 onChange={handleChange}
                 name='values.typeChauffage'
-                defaultValue='gaz'
+                defaultValue=''
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                <option selected disabled>
+                  Sélectionnez le type de chauffage
+                </option>
                 <option value='gaz'>gaz</option>
                 <option value='pac'>Pompe à chaleur</option>
               </select>
