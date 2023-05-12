@@ -149,6 +149,16 @@ const AddListing = () => {
     setValues(initialState);
   };
 
+  const addListing = async () => {
+    await fetch('/api/listings', {
+      method: 'POST',
+      body: JSON.stringify(values),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const {
@@ -174,6 +184,8 @@ const AddListing = () => {
         !surfaceInt
       ) {
         alert('missing fields');
+      } else {
+        addListing();
       }
     } else {
       if (
@@ -188,6 +200,8 @@ const AddListing = () => {
         !surfaceInt
       ) {
         alert('missing fields');
+      } else {
+        addListing();
       }
     }
 
@@ -356,7 +370,7 @@ const AddListing = () => {
               <BasicInputWithLabel
                 label='Nombre de Pièces'
                 placeholder=''
-                isRequired={false}
+                isRequired={true}
                 name='nbPieces'
                 type='number'
                 handleChange={handleChange}
