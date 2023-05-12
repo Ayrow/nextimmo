@@ -1,4 +1,16 @@
+import { useAppContext } from '../../context/app/appContext';
+
 const ConfirmDeletionModal = () => {
+  const { state } = useAppContext();
+  const { modalType, modalMsg, modalTitle } = state;
+
+  const colorVariants = {
+    success: 'text-green-500',
+    delete: 'text-red-500',
+    edit: 'text-orange-500',
+    notification: 'text-blue-500',
+  };
+
   return (
     <div
       id='deleteModal'

@@ -1,4 +1,16 @@
+import { useAppContext } from '../../context/app/appContext';
+
 const successModal = () => {
+  const { state } = useAppContext();
+  const { modalType, modalMsg, modalTitle } = state;
+
+  const colorVariants = {
+    success: 'text-green-500',
+    delete: 'text-red-500',
+    edit: 'text-orange-500',
+    notification: 'text-blue-500',
+  };
+
   return (
     <div
       id='successModal'
@@ -24,6 +36,7 @@ const successModal = () => {
             </svg>
             <span className='sr-only'>Close modal</span>
           </button>
+
           <div className='w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5'>
             <svg
               aria-hidden='true'

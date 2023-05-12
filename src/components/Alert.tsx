@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useAppContext } from '../context/app/appContext';
 
 const Alert = () => {
@@ -11,10 +10,6 @@ const Alert = () => {
     warning: 'bg-orange-500',
     notification: 'bg-blue-500',
   };
-
-  useEffect(() => {
-    console.log('alertType', alertType);
-  }, []);
 
   return (
     <div
