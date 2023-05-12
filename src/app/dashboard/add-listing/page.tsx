@@ -9,6 +9,10 @@ const initialState: IListing = {
   ref: '',
   typeDeBien: '',
   transaction: 'vente',
+  location: {
+    loyerMensuel: 0,
+    caution: 0,
+  },
   lieu: {
     quartier: '',
     ville: '',
@@ -54,10 +58,6 @@ const initialState: IListing = {
   description: '',
   consoEnergetique: 0,
   ges: 0,
-  location: {
-    loyerMensuel: 0,
-    caution: 0,
-  },
   photos: [''],
   honoraires: {
     aCharge: '',
@@ -77,10 +77,11 @@ const biens = [
 
 const AddListing = () => {
   const [values, setValues] = useState(initialState);
-  const [isLocation, setIsLocation] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     let data = { ...values };
     const { name, value } = e.target;
@@ -92,6 +93,15 @@ const AddListing = () => {
         lieu: {
           ...data.lieu,
           [lieuField]: value,
+        },
+      };
+    } else if (name.startsWith('location')) {
+      let locationField = name.split('.')[1];
+      data = {
+        ...data,
+        location: {
+          ...data.location,
+          [locationField]: value,
         },
       };
     } else if (name.startsWith('honoraires')) {
@@ -170,9 +180,9 @@ const AddListing = () => {
               </label>
               <select
                 onChange={handleChange}
-                name={values.typeDeBien}
+                name='values.typeDeBien'
+                defaultValue='maison'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option selected={true}>Sélectionnez un type de bien</option>
                 {biens.map((bien) => {
                   return (
                     <option key={bien} value={bien}>
@@ -188,11 +198,10 @@ const AddListing = () => {
               </label>
               <select
                 id='typeTransaction'
-                name={values.transaction}
+                name='transaction'
                 onChange={handleChange}
-                defaultValue=' Sélectionnez le type de transaction'
+                defaultValue='vente'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option hidden>Sélectionnez le type de transaction</option>
                 <option value='vente'>Vente</option>
                 <option value='location'>Location</option>
               </select>
@@ -233,17 +242,46 @@ const AddListing = () => {
                 />
               </div>
             </div>
-            <div className='sm:col-span-2'>
-              <BasicInputWithLabel
-                label='Prix'
-                placeholder=''
-                isRequired={true}
-                name='prix'
-                type='number'
-                handleChange={handleChange}
-                value={values.prix}
-              />
-            </div>
+
+            {values.transaction === 'vente' ? (
+              <div className='sm:col-span-2'>
+                <BasicInputWithLabel
+                  label='Prix'
+                  placeholder=''
+                  isRequired={true}
+                  name='prix'
+                  type='number'
+                  handleChange={handleChange}
+                  value={values.prix}
+                />
+              </div>
+            ) : (
+              <>
+                <div className='sm:col-span-2'>
+                  <BasicInputWithLabel
+                    label='Loyer Mensuel'
+                    placeholder=''
+                    isRequired={true}
+                    name='location.loyerMensuel'
+                    type='number'
+                    handleChange={handleChange}
+                    value={values.location.loyerMensuel}
+                  />
+                </div>
+
+                <div className='sm:col-span-2'>
+                  <BasicInputWithLabel
+                    label='Caution'
+                    placeholder=''
+                    isRequired={true}
+                    name='location.caution'
+                    type='number'
+                    handleChange={handleChange}
+                    value={values.location.caution}
+                  />
+                </div>
+              </>
+            )}
           </div>
 
           <SectionWithTitle title='Details'>
@@ -311,7 +349,7 @@ const AddListing = () => {
                 Description
               </label>
               <textarea
-                id='description'
+                onChange={handleChange}
                 rows={8}
                 className='block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
                 placeholder='Description du bien'
@@ -351,11 +389,9 @@ const AddListing = () => {
               </label>
               <select
                 onChange={handleChange}
-                name={values.typeChauffage}
+                name='values.typeChauffage'
+                defaultValue='gaz'
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option selected={true}>
-                  Sélectionnez un type de chauffage
-                </option>
                 <option value='gaz'>gaz</option>
                 <option value='pac'>Pompe à chaleur</option>
               </select>
@@ -395,9 +431,9 @@ const AddListing = () => {
                 </label>
                 <select
                   onChange={handleChange}
-                  name={values.exposition}
+                  name='values.exposition'
+                  defaultValue='nord'
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                  <option selected={true}>Sélectionnez une exposition</option>
                   <option value='nord'>nord</option>
                   <option value='sud'>sud</option>
                 </select>
@@ -461,11 +497,9 @@ const AddListing = () => {
                 </label>
                 <select
                   onChange={handleChange}
-                  name={values.honoraires.aCharge}
+                  name='values.honoraires.aCharge'
+                  defaultValue='acheteur'
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                  <option selected={true}>
-                    Sélectionnez qui prend en charge.
-                  </option>
                   <option value='acheteur'>Acheteur</option>
                   <option value='vendeur'>Vendeur</option>
                 </select>
