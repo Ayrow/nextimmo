@@ -3,6 +3,20 @@
 import { useEffect } from 'react';
 
 const ManageListings = () => {
+  const getAllListings = async () => {
+    try {
+      await fetch('/api/allListings', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      alert(error);
+      // add Modal for error
+    }
+  };
+
   useEffect(() => {}, []);
 
   return (

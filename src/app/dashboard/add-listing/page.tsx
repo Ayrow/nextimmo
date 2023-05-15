@@ -165,6 +165,7 @@ const AddListing = () => {
         // Add Modal to confirm it has been added
         clearForm();
       } catch (error) {
+        alert(error);
         // Add Modal for error
       }
     }
