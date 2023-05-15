@@ -2,23 +2,30 @@
 
 import GridCard from '../../components/listings/GridCard';
 import ListCard from '../../components/listings/ListCard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useListingsContext } from '../../context/listings/listingsContext';
 
 const Listings = () => {
+  const { allListings, getAllListings } = useListingsContext();
   const [gridList, setGridList] = useState<boolean>(true);
 
-  const exampleListings = [
-    {
-      title: 'Big house',
-      surface: 300,
-    },
-  ];
+  useEffect(() => {
+    getAllListings();
+  }, []);
 
   return (
     <section>
       <h2 className='text-center text-xl font-bold mt-5'>Listings</h2>
-      {exampleListings.map((listing) => {
-        return <div>{gridList ? <GridCard /> : <ListCard />}</div>;
+      {allListings.map((listing) => {
+        return (
+          <div>
+            {gridList ? (
+              <GridCard listing={listing} />
+            ) : (
+              <ListCard listing={listing} />
+            )}
+          </div>
+        );
       })}
     </section>
   );
