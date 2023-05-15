@@ -7,7 +7,7 @@ import { useListingsContext } from '../../context/listings/listingsContext';
 
 const Listings = () => {
   const { allListings, getAllListings } = useListingsContext();
-  const [gridList, setGridList] = useState<boolean>(true);
+  const [isgridList, setIsGridList] = useState<boolean>(true);
 
   useEffect(() => {
     getAllListings();
@@ -16,17 +16,20 @@ const Listings = () => {
   return (
     <section>
       <h2 className='text-center text-xl font-bold mt-5'>Listings</h2>
-      {allListings.map((listing) => {
-        return (
-          <div>
-            {gridList ? (
-              <GridCard listing={listing} />
-            ) : (
-              <ListCard listing={listing} />
-            )}
-          </div>
-        );
-      })}
+      <div
+        className={
+          isgridList
+            ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 m-10'
+            : 'flex flex-wrap flex-col m-10'
+        }>
+        {allListings?.map((listing) => {
+          return isgridList ? (
+            <GridCard key={listing.ref} listing={listing} />
+          ) : (
+            <ListCard key={listing.ref} listing={listing} />
+          );
+        })}
+      </div>
     </section>
   );
 };
