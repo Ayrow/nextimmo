@@ -24,9 +24,9 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
       <div className='relative'>
         {photos.length > 0 && currentPhoto > 1 && (
           <button
-            className='absolute top-1/2 left-5 font-bold'
+            className='absolute px-1 top-1/2 left-2 font-bold shadow-2xl bg-gray-900 bg-opacity-50 rounded-full text-3xl'
             onClick={() => setIsCurrentPhoto(currentPhoto - 1)}>
-            Left
+            ⇦
           </button>
         )}
         <Image
@@ -38,9 +38,9 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
         />
         {photos.length > currentPhoto && (
           <button
-            className='absolute top-1/2 right-5 font-bold'
+            className='absolute px-1 top-1/2 right-2 font-bold shadow-2xl bg-gray-900 bg-opacity-50 rounded-full text-3xl'
             onClick={() => setIsCurrentPhoto(currentPhoto + 1)}>
-            Right
+            ⇨
           </button>
         )}
       </div>
