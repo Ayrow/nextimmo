@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import { IListingDocument } from '../../../types/listingTypes';
+import { useRouter } from 'next/navigation';
 
 const ListCard = ({ listing }: { listing: IListingDocument }) => {
+  const router = useRouter();
   const {
     ref,
     nbPieces,
@@ -13,8 +15,13 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
     statut,
     photos,
   } = listing;
+
+  const slug = `annonce-${listing.transaction}-${listing.lieu.ville}-${ref}`;
+
   return (
-    <div className='relative border rounded-2xl flex flex-col sm:flex-row flex-wrap items-center justify-between gap-5 p-5'>
+    <div
+      className='relative border rounded-2xl flex flex-col sm:flex-row flex-wrap items-center justify-between gap-5 p-5'
+      onClick={() => router.push(`/listings/${slug}}`)}>
       <div className='flex flex-wrap flex-col gap-2'>
         <p className='font-bold'>ref: {ref}</p>
 

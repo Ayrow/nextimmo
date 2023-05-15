@@ -27,7 +27,6 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
       const data = await res.json();
       if (data) {
         setAllListings(data);
-        console.log('data', data);
       } else {
         //display alert error fetching listings
       }
