@@ -19,6 +19,7 @@ export enum ColorTypes {
 }
 
 export type AppState = {
+  seenListings: string[];
   isLoading: boolean;
   showAlert: boolean;
   alertText: string;
@@ -30,6 +31,7 @@ export type AppState = {
 };
 
 const initialAppState: AppState = {
+  seenListings: [],
   isLoading: false,
   showAlert: false,
   alertText: '',

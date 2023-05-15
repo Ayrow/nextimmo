@@ -7,23 +7,18 @@ import ListCard from '../../../components/listings/ListCard';
 
 const ManageListings = () => {
   const { getAllListings, allListings } = useListingsContext();
-  const [isDisplayGrid, setIsDisplayGrid] = useState(true);
 
   useEffect(() => {
     getAllListings();
   }, []);
 
   return (
-    <div className='p-10'>
+    <div className='p-10 bg-gray-900'>
       <h2 className='text-center text-xl font-bold'>Manage Listings</h2>
-      <div>
+      <div className='flex flex-col gap-5 mt-10'>
         {allListings?.map((listing) => {
           const { ref } = listing;
-          return isDisplayGrid ? (
-            <GridCard key={ref} listing={listing} />
-          ) : (
-            <ListCard key={ref} listing={listing} />
-          );
+          return <ListCard key={ref} listing={listing} />;
         })}
       </div>
     </div>

@@ -14,13 +14,13 @@ const Listings = () => {
   }, []);
 
   return (
-    <section>
-      <h2 className='text-center text-xl font-bold mt-5'>Listings</h2>
+    <section className='bg-gray-900 py-5'>
+      <h2 className='text-center text-xl font-bold p-5'>Listings</h2>
       <div
         className={
           isgridList
-            ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 m-10'
-            : 'flex flex-wrap flex-col m-10'
+            ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 m-10 gap-5'
+            : 'flex flex-wrap flex-col m-10 gap-5'
         }>
         {allListings?.map((listing) => {
           return isgridList ? (
