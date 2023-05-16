@@ -7,6 +7,7 @@ type ListingContextType = {
   allListings: [IListingDocument];
   singleListing: IListingDocument;
   getAllListings: () => void;
+  getSingleListing: (id: any) => void;
 };
 
 const ListingsContext = createContext<ListingContextType>(null);
@@ -36,9 +37,11 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const getSingleListing = async (ref: string) => {};
+
   return (
     <ListingsContext.Provider
-      value={{ getAllListings, allListings, singleListing }}>
+      value={{ getAllListings, allListings, singleListing, getSingleListing }}>
       {children}
     </ListingsContext.Provider>
   );

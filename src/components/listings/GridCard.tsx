@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { IListingDocument } from '../../../types/listingTypes';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const GridCard = ({ listing }: { listing: IListingDocument }) => {
-  const router = useRouter();
   const {
     ref,
     nbPieces,
@@ -21,12 +21,12 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
 
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
 
-  const slug = `annonce-${listing.transaction}-${listing.lieu.ville}-${ref}`;
+  const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
   return (
-    <div
-      className='relative border rounded-2xl cursor-pointer'
-      onClick={() => router.push(`/listings/${slug}}`)}>
+    <Link
+      href={`/listings/${slug}/${ref}`}
+      className='relative border rounded-2xl cursor-pointer'>
       <div className='relative'>
         {photos.length > 0 && currentPhoto > 1 && (
           <button
@@ -76,7 +76,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
           </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
