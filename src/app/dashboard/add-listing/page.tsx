@@ -182,6 +182,9 @@ const AddListing = () => {
       lieu,
       surfaceInt,
       location,
+      nbChambres,
+      nbEtages,
+      nbSDB,
     } = values;
 
     if (transaction === 'vente') {
@@ -193,7 +196,10 @@ const AddListing = () => {
         !lieu.ville ||
         !lieu.codePostal ||
         !nbPieces ||
-        !surfaceInt
+        !surfaceInt ||
+        !nbChambres ||
+        !nbEtages ||
+        !nbSDB
       ) {
         alert('missing fields vente');
       } else {
@@ -209,7 +215,10 @@ const AddListing = () => {
         !lieu.ville ||
         !nbPieces ||
         !lieu.codePostal ||
-        !surfaceInt
+        !surfaceInt ||
+        !nbChambres ||
+        !nbEtages ||
+        !nbSDB
       ) {
         alert('missing fields location');
       } else {
@@ -396,7 +405,7 @@ const AddListing = () => {
               <BasicInputWithLabel
                 label='Nombre de Chambres'
                 placeholder=''
-                isRequired={false}
+                isRequired={true}
                 name='nbChambre'
                 type='number'
                 handleChange={handleChange}
@@ -408,7 +417,7 @@ const AddListing = () => {
               <BasicInputWithLabel
                 label="Nombre de salle de bain / salle d'eau"
                 placeholder=''
-                isRequired={false}
+                isRequired={true}
                 name='nbSDB'
                 type='number'
                 handleChange={handleChange}
@@ -420,7 +429,7 @@ const AddListing = () => {
               <BasicInputWithLabel
                 label="Nombre d'étages"
                 placeholder=''
-                isRequired={false}
+                isRequired={true}
                 name='nbEtage'
                 type='number'
                 handleChange={handleChange}

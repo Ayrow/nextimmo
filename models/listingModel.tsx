@@ -18,7 +18,6 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     },
     prix: {
       type: Number,
-      required: [true, 'Veuillez indiquer un prix'],
     },
     dateConstruction: Number,
     nbPieces: {
