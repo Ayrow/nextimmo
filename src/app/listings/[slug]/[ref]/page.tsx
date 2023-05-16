@@ -1,20 +1,44 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useListingsContext } from '../../../../context/listings/listingsContext';
+
+export async function generateStaticParams() {
+  const listings = await fetch('/api/allListings').then((res) => res.json());
+
+  return listings.map((listing) => ({
+    ref: listing.ref,
+  }));
+}
 
 const SingleListing = ({
   params,
 }: {
   params: { slug: string; ref: string };
 }) => {
-  const { slug } = params;
+  const { ref } = params;
+  const { getSingleListing, singleListing } = useListingsContext();
+  const [currentPhoto, setIsCurrentPhoto] = useState(1);
+
+  function separateNumbers(number: number) {
+    const numberString = number.toString(); // Convert number to string
+
+    let separatedString = ''; // Initialize the separated string
+
+    for (let i = numberString.length - 1; i >= 0; i--) {
+      separatedString = numberString[i] + separatedString;
+
+      if ((numberString.length - i) % 3 === 0 && i !== 0) {
+        separatedString = ' ' + separatedString;
+      }
+    }
+
+    return separatedString;
+  }
 
   useEffect(() => {
-    console.log('params', params);
-
-    console.log('slug', slug);
-    // fetch Single Listing data
+    getSingleListing(ref);
   }, []);
 
   return (
@@ -22,30 +46,79 @@ const SingleListing = ({
       <div className='flex flex-col-reverse lg:flex-row gap-5 w-full'>
         <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-5 px-2'>
           <div className='flex flex-col justify-center gap-5 col-span-2'>
-            <h2 className='text-2xl'>Maison à vendre 5 pièces • 82 m2</h2>
+            <h2 className='text-2xl capitalize'>
+              {singleListing?.typeDeBien} à{' '}
+              {singleListing?.transaction == 'vente' ? 'vendre' : 'louer'}{' '}
+              {singleListing?.nbPieces}{' '}
+              {singleListing?.nbPieces > 1 ? 'pièces' : 'pièce'} •{' '}
+              {singleListing?.surfaceInt} m2
+            </h2>
             <div className='flex flex-col gap-2'>
-              <p>lieu: Trébeurden</p>
+              <p>
+                {singleListing?.lieu?.quartier}
+                {', '}
+                {singleListing?.lieu?.ville} ({singleListing?.lieu?.codePostal})
+              </p>
               <p className=' text-sm'>ref: annonce-1</p>
             </div>
           </div>
           <div className=' md:col-start-3 lg:col-start-1'>
-            <p className='text-red-500 text-2xl font-bold'>100 000 €</p>
-            <p className='text-xs text-gray-200 italic'>
-              (340000 euros Hors Honoraires) - Honoraires : 6.5 % TTC à la
-              charge de l'acquéreur inclus.
-            </p>
+            {singleListing?.transaction === 'vente' ? (
+              <p className='text-red-500 text-2xl font-bold'>
+                {singleListing?.prix && separateNumbers(singleListing?.prix)} €
+              </p>
+            ) : (
+              <p className='text-red-500 text-2xl font-bold'>
+                {singleListing &&
+                  separateNumbers(singleListing?.location?.loyerMensuel)}{' '}
+                €
+              </p>
+            )}
+
+            {singleListing?.transaction === 'vente' ? (
+              <p className='text-xs text-gray-200 italic'>
+                (340000 euros Hors Honoraires) - Honoraires :{' '}
+                {singleListing?.honoraires?.taux} % TTC à la charge{' '}
+                {singleListing?.honoraires?.aCharge === 'acheteur'
+                  ? "de l'acquéreur"
+                  : 'du vendeur'}
+                .
+              </p>
+            ) : (
+              <p className='text-xs text-gray-200 italic'>
+                Caution: {singleListing?.location?.caution} € - Frais d'agence :{' '}
+                {singleListing?.honoraires?.fraisAgence}.
+              </p>
+            )}
           </div>
         </div>
 
-        <div>
-          //Image carousel
+        <div className='relative'>
+          {singleListing?.photos.length > 0 && currentPhoto > 1 && (
+            <button
+              className='absolute px-1 top-1/2 left-2 font-bold shadow-2xl bg-gray-900 bg-opacity-50 rounded-full text-3xl'
+              onClick={() => setIsCurrentPhoto(currentPhoto - 1)}>
+              ⇦
+            </button>
+          )}
           <Image
-            src={'/house.jpg'}
-            alt={`photo-1`}
+            src={
+              singleListing?.photos.length > 1
+                ? singleListing?.photos[currentPhoto - 1]
+                : '/house.jpg'
+            }
+            alt={`photo-${currentPhoto}`}
             width='1000'
             height='1000'
             className='rounded-2xl'
           />
+          {singleListing?.photos.length > currentPhoto && (
+            <button
+              className='absolute px-1 top-1/2 right-2 font-bold shadow-2xl bg-gray-900 bg-opacity-50 rounded-full text-3xl'
+              onClick={() => setIsCurrentPhoto(currentPhoto + 1)}>
+              ⇨
+            </button>
+          )}
         </div>
       </div>
 
@@ -53,7 +126,7 @@ const SingleListing = ({
         <div className='flex flex-col gap-5 border-b pb-5'>
           <h3>L'essentiel</h3>
           <div className='flex flex-wrap gap-10'>
-            <p>5 pièces</p>
+            <p>{} pièces</p>
             <p>Surface: 80 m²</p>
             <p>2 chambres</p>
             <p>1 salle de bain/eau</p>

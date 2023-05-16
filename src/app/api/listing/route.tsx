@@ -29,6 +29,18 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   await connectDB();
-  const { id } = await request.json();
-  console.log('id', id);
+  const { searchParams } = new URL(request.url);
+  const ref = searchParams.get('ref');
+
+  if (!ref) {
+    throw new Error('No listing here');
+  }
+
+  const listing = await Listing.findOne({ ref });
+
+  if (listing) {
+    return new NextResponse(JSON.stringify(listing), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }

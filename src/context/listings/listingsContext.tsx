@@ -7,7 +7,7 @@ type ListingContextType = {
   allListings: [IListingDocument];
   singleListing: IListingDocument;
   getAllListings: () => void;
-  getSingleListing: (id: any) => void;
+  getSingleListing: (ref: string) => void;
 };
 
 const ListingsContext = createContext<ListingContextType>(null);
@@ -37,7 +37,25 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const getSingleListing = async (ref: string) => {};
+  const getSingleListing = async (ref: string) => {
+    try {
+      const res = await fetch(`/api/listing?ref=${ref}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      if (data) {
+        setSingleListing(data);
+      } else {
+        alert('error');
+        // display error
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   return (
     <ListingsContext.Provider
