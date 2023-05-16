@@ -44,6 +44,58 @@ const SingleListing = ({
     return trueKeys;
   };
 
+  let displayNoteDPE = '';
+  let displayNoteGES = '';
+
+  const notesDPE = [
+    { letter: 'A', range: { min: 0, max: 50 } },
+    { letter: 'B', range: { min: 50, max: 90 } },
+    { letter: 'C', range: { min: 91, max: 150 } },
+    { letter: 'D', range: { min: 151, max: 230 } },
+    { letter: 'E', range: { min: 231, max: 330 } },
+    { letter: 'F', range: { min: 331, max: 450 } },
+    { letter: 'G', range: { min: 451, max: 999 } },
+  ];
+
+  const notesGES = [
+    { letter: 'A', range: { min: 0, max: 5 } },
+    { letter: 'B', range: { min: 6, max: 10 } },
+    { letter: 'C', range: { min: 11, max: 20 } },
+    { letter: 'D', range: { min: 21, max: 35 } },
+    { letter: 'E', range: { min: 36, max: 55 } },
+    { letter: 'F', range: { min: 56, max: 80 } },
+    { letter: 'G', range: { min: 81, max: 999 } },
+  ];
+
+  for (const noteDPE of notesDPE) {
+    const { min, max } = noteDPE.range;
+    if (
+      singleListing?.consoEnergetique >= min &&
+      singleListing?.consoEnergetique <= max
+    ) {
+      displayNoteDPE = noteDPE.letter;
+      break;
+    }
+  }
+
+  for (const noteGES of notesGES) {
+    const { min, max } = noteGES.range;
+    if (singleListing?.ges >= min && singleListing?.ges <= max) {
+      displayNoteGES = noteGES.letter;
+      break;
+    }
+  }
+
+  const colorVariantsNotes = {
+    A: 'bg-[#029163]',
+    B: 'bg-[#46a64a]',
+    C: 'bg-[#6db56b]',
+    D: 'bg-[#f2e314]',
+    E: 'bg-[#edab0f]',
+    F: 'bg-[#e8782f]',
+    G: 'bg-[#d1201e]',
+  };
+
   useEffect(() => {
     getSingleListing(ref);
   }, []);
@@ -152,7 +204,11 @@ const SingleListing = ({
             <div className='flex flex-wrap gap-10'>
               {singleListing?.equipements?.interieur &&
                 displayAllTrueKeys(singleListing?.equipements?.interieur).map(
-                  ([key, value]) => <p className='capitalize'>{key}</p>
+                  ([key, value]) => (
+                    <p key={key} className='capitalize'>
+                      {key}
+                    </p>
+                  )
                 )}
             </div>
           </div>
@@ -161,7 +217,11 @@ const SingleListing = ({
             <div className='flex flex-wrap gap-10'>
               {singleListing?.equipements?.exterieur &&
                 displayAllTrueKeys(singleListing?.equipements?.exterieur).map(
-                  ([key, value]) => <p className='capitalize'>{key}</p>
+                  ([key, value]) => (
+                    <p key={key} className='capitalize'>
+                      {key}
+                    </p>
+                  )
                 )}
             </div>
           </div>
@@ -191,6 +251,33 @@ const SingleListing = ({
           <div className='flex flex-col gap-5'>
             <h3 className='font-bold'>Bilan énergétique</h3>
             // show infos
+            <div className='relative flex gap-2 items-start'>
+              {notesDPE.map((gradeRange) => (
+                <div key={gradeRange.letter}>
+                  <div
+                    className={
+                      gradeRange.letter === displayNoteDPE
+                        ? `px-2 rounded flex justify-center font-bold ${
+                            colorVariantsNotes[gradeRange.letter]
+                          }`
+                        : `px-2 rounded ${
+                            colorVariantsNotes[gradeRange.letter]
+                          }`
+                    }>
+                    {gradeRange.letter}
+                  </div>
+                  {gradeRange.letter === displayNoteDPE && (
+                    <div className='flex flex-col items-center'>
+                      <p className='text-blue-500'>⬆︎</p>
+                      <p className='font-bold'>
+                        {singleListing?.consoEnergetique}
+                      </p>
+                      <p>kWh/m2.an</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
