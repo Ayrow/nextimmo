@@ -37,6 +37,13 @@ const SingleListing = ({
     return separatedString;
   }
 
+  const displayAllTrueKeys = (object: object) => {
+    const trueKeys = Object.entries(object).filter(
+      ([key, value]) => value === true
+    );
+    return trueKeys;
+  };
+
   useEffect(() => {
     getSingleListing(ref);
   }, []);
@@ -124,55 +131,65 @@ const SingleListing = ({
 
       <div className='flex flex-col gap-5 mt-10'>
         <div className='flex flex-col gap-5 border-b pb-5'>
-          <h3>L'essentiel</h3>
+          <h3 className='font-bold'>L'essentiel</h3>
           <div className='flex flex-wrap gap-10'>
-            <p>{} pièces</p>
-            <p>Surface: 80 m²</p>
-            <p>2 chambres</p>
-            <p>1 salle de bain/eau</p>
-            <p>Terrain 730 m²</p>
+            <p>{singleListing?.nbPieces} pièces</p>
+            <p>Surface: {singleListing?.surfaceInt} m²</p>
+
+            {singleListing?.nbChambres > 0 && (
+              <p>{singleListing?.nbChambres} chambres</p>
+            )}
+
+            <p>{singleListing?.nbSDB} salle de bain/eau</p>
+            {singleListing?.surfaceExt > 0 && (
+              <p>Terrain {singleListing?.surfaceExt} m²</p>
+            )}
           </div>
         </div>
         <div className='flex flex-col gap-5'>
           <div className='flex flex-col gap-5 border-b pb-5'>
-            <h3>Interieur</h3>
+            <h3 className='font-bold'>Interieur</h3>
             <div className='flex flex-wrap gap-10'>
-              <p>Cheminée</p>
+              {singleListing?.equipements?.interieur &&
+                displayAllTrueKeys(singleListing?.equipements?.interieur).map(
+                  ([key, value]) => <p className='capitalize'>{key}</p>
+                )}
             </div>
           </div>
           <div className='flex flex-col gap-5 border-b pb-5'>
-            <h3>Exterieur</h3>
+            <h3 className='font-bold'>Exterieur</h3>
             <div className='flex flex-wrap gap-10'>
-              <p>Terrasse</p>
-              <p>Garage</p>
-              <p>Cave</p>
-              <p>Avec jardin</p>
+              {singleListing?.equipements?.exterieur &&
+                displayAllTrueKeys(singleListing?.equipements?.exterieur).map(
+                  ([key, value]) => <p className='capitalize'>{key}</p>
+                )}
             </div>
           </div>
           <div className='flex flex-col gap-5 border-b pb-5'>
-            <h3>Autre</h3>
+            <h3 className='font-bold'>Autre</h3>
             <div className='flex flex-wrap gap-10'>
-              <p>Terrasse</p>
-              <p>Garage</p>
-              <p>Cave</p>
-              <p>Avec jardin</p>
+              {singleListing?.dateConstruction && (
+                <p>{singleListing?.dateConstruction}</p>
+              )}
+              {singleListing?.nbEtages > 1 ? (
+                <p>Composé de {singleListing?.nbEtages} étages</p>
+              ) : (
+                <p>Plain-pied</p>
+              )}
+              <p>Chauffage: {singleListing?.typeChauffage}</p>
             </div>
           </div>
           <div className='flex flex-col gap-5 border-b pb-5'>
-            <h3>Description</h3>
-            <div className='flex flex-wrap gap-10'>
-              <p>Construit en 1900</p>
-              <p>Construction en pierre</p>
-              <p>Composé de 2 étages</p>
-            </div>
+            <h3 className='font-bold'>Description</h3>
+            <p>{singleListing?.description}</p>
 
-            <p>
+            <p className='italic'>
               Les informations sur les risques auxquels ce bien est exposé sont
               disponibles sur le site Géorisques : www.georisques.gouv.fr
             </p>
           </div>
           <div className='flex flex-col gap-5'>
-            <h3>Bilan énergétique</h3>
+            <h3 className='font-bold'>Bilan énergétique</h3>
             // show infos
           </div>
         </div>

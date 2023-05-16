@@ -6,14 +6,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export async function generateStaticParams() {
-  const listings = await fetch('/api/allListings').then((res) => res.json());
-
-  return listings.map((listing) => ({
-    ref: listing.ref,
-  }));
-}
-
 const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const {
     ref,
