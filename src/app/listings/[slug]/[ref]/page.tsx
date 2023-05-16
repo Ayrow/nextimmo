@@ -86,7 +86,7 @@ const SingleListing = ({
     }
   }
 
-  const colorVariantsNotes = {
+  const colorVariantsDPE = {
     A: 'bg-[#029163]',
     B: 'bg-[#46a64a]',
     C: 'bg-[#6db56b]',
@@ -94,6 +94,16 @@ const SingleListing = ({
     E: 'bg-[#edab0f]',
     F: 'bg-[#e8782f]',
     G: 'bg-[#d1201e]',
+  };
+
+  const colorVariantsGES = {
+    A: 'bg-[#99d5f7]',
+    B: 'bg-[#80abcd]',
+    C: 'bg-[#6d87a8]',
+    D: 'bg-[#546384]',
+    E: 'bg-[#434665]',
+    F: 'bg-[#332d47]',
+    G: 'bg-[#231a2f]',
   };
 
   useEffect(() => {
@@ -250,33 +260,64 @@ const SingleListing = ({
           </div>
           <div className='flex flex-col gap-5'>
             <h3 className='font-bold'>Bilan énergétique</h3>
-            // show infos
-            <div className='relative flex gap-2 items-start'>
-              {notesDPE.map((gradeRange) => (
-                <div key={gradeRange.letter}>
-                  <div
-                    className={
-                      gradeRange.letter === displayNoteDPE
-                        ? `px-2 rounded flex justify-center font-bold ${
-                            colorVariantsNotes[gradeRange.letter]
-                          }`
-                        : `px-2 rounded ${
-                            colorVariantsNotes[gradeRange.letter]
-                          }`
-                    }>
-                    {gradeRange.letter}
-                  </div>
-                  {gradeRange.letter === displayNoteDPE && (
-                    <div className='flex flex-col items-center'>
-                      <p className='text-blue-500'>⬆︎</p>
-                      <p className='font-bold'>
-                        {singleListing?.consoEnergetique}
-                      </p>
-                      <p>kWh/m2.an</p>
+            <div>
+              <h4 className='pb-5'>Consommation Energétique :</h4>
+              <div className='relative flex gap-2 items-start'>
+                {notesDPE.map((gradeRange) => (
+                  <div key={gradeRange.letter}>
+                    <div
+                      className={
+                        gradeRange.letter === displayNoteDPE
+                          ? `px-2 rounded flex justify-center font-bold border border-white ${
+                              colorVariantsDPE[gradeRange.letter]
+                            }`
+                          : `px-2 rounded border border-white ${
+                              colorVariantsDPE[gradeRange.letter]
+                            }`
+                      }>
+                      {gradeRange.letter}
                     </div>
-                  )}
-                </div>
-              ))}
+                    {gradeRange.letter === displayNoteDPE && (
+                      <div className='flex flex-col items-center'>
+                        <p className='text-blue-500'>⬆︎</p>
+                        <p className='font-bold'>
+                          {singleListing?.consoEnergetique}
+                        </p>
+                        <p>kWh/m2.an</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h4 className='pb-5'>Emission de Gaz :</h4>
+              <div className='relative flex gap-2 items-start'>
+                {notesGES.map((gradeRange) => (
+                  <div key={gradeRange.letter}>
+                    <div
+                      className={
+                        gradeRange.letter === displayNoteGES
+                          ? `px-2 rounded flex border border-white justify-center font-bold ${
+                              colorVariantsGES[gradeRange.letter]
+                            }`
+                          : `px-2 rounded border border-white ${
+                              colorVariantsGES[gradeRange.letter]
+                            }`
+                      }>
+                      {gradeRange.letter}
+                    </div>
+                    {gradeRange.letter === displayNoteGES && (
+                      <div className='flex flex-col items-center'>
+                        <p className='text-blue-500'>⬆︎</p>
+                        <p className='font-bold'>{singleListing?.ges}</p>
+                        <p>kgeqCO2/m².an</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
