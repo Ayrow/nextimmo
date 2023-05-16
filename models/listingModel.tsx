@@ -21,10 +21,22 @@ const listingSchema: Schema<IListingDocument> = new Schema(
       required: [true, 'Veuillez indiquer un prix'],
     },
     dateConstruction: Number,
-    nbPieces: Number,
-    nbChambres: Number,
-    nbSDB: Number,
-    nbEtages: Number,
+    nbPieces: {
+      type: Number,
+      required: [true, 'Veuillez indiquer le nombre de pièces'],
+    },
+    nbChambres: {
+      type: Number,
+      required: [true, 'Veuillez indiquer le nombre de chambres'],
+    },
+    nbSDB: {
+      type: Number,
+      required: [true, 'Veuillez indiquer le nombre de salle de bain'],
+    },
+    nbEtages: {
+      type: Number,
+      required: [true, "Veuillez indiquer le nombre d'étages"],
+    },
     typeDeBien: {
       type: String,
       enum: [
@@ -50,8 +62,14 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     surfaceExt: Number,
     lieu: {
       quartier: String,
-      ville: String,
-      codePostal: String,
+      ville: {
+        type: String,
+        required: [true, 'Veuillez indiquer une ville'],
+      },
+      codePostal: {
+        type: String,
+        required: [true, 'Veuillez indiquer un code postal'],
+      },
     },
     equipements: {
       intérieur: {
