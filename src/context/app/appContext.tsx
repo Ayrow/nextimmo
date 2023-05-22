@@ -58,6 +58,7 @@ type AppActions = {
     modalType: ModalTypes;
     modalTitle: string;
     refItem: string;
+    deleteFunction: (ref: string) => void;
   }) => void;
 };
 
@@ -89,10 +90,16 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  const displayModal = ({ modalTitle, modalMsg, modalType, refItem }) => {
+  const displayModal = ({
+    modalTitle,
+    modalMsg,
+    modalType,
+    refItem,
+    deleteFunction,
+  }) => {
     dispatch({
       type: DISPLAY_MODAL,
-      payload: { modalTitle, modalMsg, modalType, refItem },
+      payload: { modalTitle, modalMsg, modalType, refItem, deleteFunction },
     });
   };
 

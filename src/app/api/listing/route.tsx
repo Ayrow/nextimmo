@@ -47,5 +47,21 @@ export async function GET(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   await connectDB();
-  //
+  const { searchParams } = new URL(request.url);
+  const ref = searchParams.get('ref');
+
+  if (!ref) {
+    throw new Error('No listing here');
+  }
+
+  const listing = await Listing.findOne({ ref });
+
+  if (listing) {
+    await Listing.deleteOne({ listing });
+    return new NextResponse(JSON.stringify(listing), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } else {
+    throw new Error('No listing found');
+  }
 }

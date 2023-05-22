@@ -1,7 +1,10 @@
-import { useState } from 'react';
 import { useAppContext } from '../../context/app/appContext';
 
-const ConfirmDeletionModal = () => {
+type Props = {
+  deleteFunction: (ref: string) => void;
+};
+
+const ConfirmDeletionModal = ({ deleteFunction }: Props) => {
   const { state, actions } = useAppContext();
   const { modalType, modalMsg, modalTitle, refItem } = state;
 
@@ -50,6 +53,7 @@ const ConfirmDeletionModal = () => {
             </button>
             <button
               type='submit'
+              onSubmit={() => deleteFunction(refItem)}
               className={`${colorVariants[modalType]} py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none`}>
               Oui, j'en suis sûr(e)
             </button>
