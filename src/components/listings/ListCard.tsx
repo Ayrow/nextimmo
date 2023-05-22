@@ -5,6 +5,7 @@ import { IListingDocument } from '../../../types/listingTypes';
 
 import { useListingsContext } from '../../context/listings/listingsContext';
 import Link from 'next/link';
+import { ModalTypes, useAppContext } from '../../context/app/appContext';
 
 const ListCard = ({ listing }: { listing: IListingDocument }) => {
   const {
@@ -20,6 +21,7 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
   } = listing;
 
   const { separateThousands } = useListingsContext();
+  const { actions } = useAppContext();
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
   return (
@@ -63,6 +65,14 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
         </button>
         <button
           type='button'
+          onClick={() =>
+            actions.displayModal({
+              modalMsg: `Êtes-vous sûr(e) de vouloir supprimer l'annonce`,
+              modalTitle: "Suppression d'annonce",
+              modalType: ModalTypes.Delete,
+              refItem: `${ref}`,
+            })
+          }
           className='border rounded-xl py-2 px-5 border-red-500 shadow-red-500 shadow-md'>
           Supprimer
         </button>

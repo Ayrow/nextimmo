@@ -1,4 +1,9 @@
-import { CLEAR_ALERT, DISPLAY_ALERT, CLOSE_MODAL } from '../actions';
+import {
+  CLEAR_ALERT,
+  DISPLAY_ALERT,
+  CLOSE_MODAL,
+  DISPLAY_MODAL,
+} from '../actions';
 
 import { AppState } from './appContext';
 
@@ -21,12 +26,22 @@ const appReducer = (state: AppState, action: AppAction) => {
         ...state,
         showAlert: false,
       };
+    case DISPLAY_MODAL:
+      return {
+        ...state,
+        showModal: true,
+        modalTitle: action.payload.modalTitle,
+        modalMsg: action.payload.modalMsg,
+        modalType: action.payload.modalType,
+        refItem: action.payload.refItem,
+      };
     case CLOSE_MODAL:
       return {
         ...state,
         showModal: false,
         modalMsg: '',
         modalTitle: '',
+        refItem: '',
       };
     default:
       throw new Error(`There is no action: ${action.type}`);

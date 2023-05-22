@@ -1,11 +1,17 @@
 'use client';
 
 import { createContext, useContext, useReducer } from 'react';
-import { CLEAR_ALERT, DISPLAY_ALERT } from '../actions';
+import {
+  CLEAR_ALERT,
+  CLOSE_MODAL,
+  DISPLAY_ALERT,
+  DISPLAY_MODAL,
+} from '../actions';
 import appReducer from './appReducer';
 
-enum ModalTypes {
+export enum ModalTypes {
   Notification = 'notification',
+  Success = 'success',
   Edit = 'edit',
   Delete = 'delete',
   Alert = 'alert',
@@ -27,6 +33,7 @@ export type AppState = {
   showModal: boolean;
   modalMsg: string;
   modalTitle: string;
+  refItem: string;
   modalType: ModalTypes;
 };
 
@@ -36,18 +43,28 @@ const initialAppState: AppState = {
   showAlert: false,
   alertText: '',
   alertType: ColorTypes.Notification,
-  showModal: true,
+  showModal: false,
   modalMsg: '',
   modalTitle: '',
+  refItem: '',
   modalType: ModalTypes.Notification,
 };
 
 type AppActions = {
   displayAlert: (options: { type: ColorTypes; msg: string }) => void;
+  closeModal: () => void;
+  displayModal: (options: {
+    modalMsg: string;
+    modalType: ModalTypes;
+    modalTitle: string;
+    refItem: string;
+  }) => void;
 };
 
-const initialAppActions = {
+const initialAppActions: AppActions = {
   displayAlert: () => null,
+  closeModal: () => null,
+  displayModal: () => null,
 };
 
 const AppContext = createContext<{
@@ -72,10 +89,20 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  const displayModal = ({}) => {};
+  const displayModal = ({ modalTitle, modalMsg, modalType, refItem }) => {
+    dispatch({
+      type: DISPLAY_MODAL,
+      payload: { modalTitle, modalMsg, modalType, refItem },
+    });
+  };
+
+  const closeModal = () => {
+    dispatch({ type: CLOSE_MODAL });
+  };
 
   return (
-    <AppContext.Provider value={{ state, actions: { displayAlert } }}>
+    <AppContext.Provider
+      value={{ state, actions: { displayAlert, closeModal, displayModal } }}>
       {children}
     </AppContext.Provider>
   );
