@@ -70,7 +70,7 @@ export interface IListing {
   consoEnergetique: number;
   ges: number;
   honoraires: IHonoraires;
-  photos: [string];
+  photos: string[];
 }
 
 export interface IListingDocument extends Document, IListing {

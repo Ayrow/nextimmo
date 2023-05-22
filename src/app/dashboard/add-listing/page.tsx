@@ -3,6 +3,7 @@
 import { IListing } from '../../../../types/listingTypes';
 import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
+import AddPhotosForm from '../../../components/listingsForm/AddPhotosForm';
 import { useState } from 'react';
 import { useAuthContext } from '../../../context/user/authContext';
 
@@ -59,7 +60,7 @@ const initialState: IListing = {
   description: '',
   consoEnergetique: undefined,
   ges: undefined,
-  photos: [''],
+  photos: [],
   honoraires: {
     aCharge: 'acheteur',
     taux: undefined,
@@ -568,20 +569,11 @@ const AddListing = () => {
 
           <div className='border-t border-sky-900 mt-12'>
             <h3 className='py-5 uppercase'>Photos</h3>
-            <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
-              <div className='w-full'>
-                <input
-                  type='text'
-                  name='photos'
-                  value={values.photos}
-                  id='photo'
-                  onChange={handleChange}
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'
-                  placeholder='https://maphoto.com'
-                  required={false}
-                />
-              </div>
-            </div>
+            <AddPhotosForm
+              values={values}
+              setValues={setValues}
+              photos={values.photos}
+            />
           </div>
 
           <div className='border-t border-sky-900 mt-12'>

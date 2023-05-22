@@ -6,8 +6,7 @@ import { useEffect, useState } from 'react';
 import { useListingsContext } from '../../context/listings/listingsContext';
 
 const Listings = () => {
-  const { allListings, getAllListings, separateThousands } =
-    useListingsContext();
+  const { allListings, getAllListings } = useListingsContext();
   const [isgridList, setIsGridList] = useState<boolean>(true);
 
   useEffect(() => {
@@ -16,6 +15,7 @@ const Listings = () => {
 
   return (
     <section className='bg-gray-900 py-5'>
+      // Filter and sort section here
       <h2 className='text-center text-xl font-bold p-5'>Listings</h2>
       <div
         className={
