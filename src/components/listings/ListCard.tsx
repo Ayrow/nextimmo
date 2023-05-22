@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { IListingDocument } from '../../../types/listingTypes';
 import { useRouter } from 'next/navigation';
 import { useListingsContext } from '../../context/listings/listingsContext';
+import Link from 'next/link';
 
 const ListCard = ({ listing }: { listing: IListingDocument }) => {
   const router = useRouter();
@@ -18,12 +19,10 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
   } = listing;
 
   const { separateThousands } = useListingsContext();
-  const slug = `annonce-${listing.transaction}-${listing.lieu.ville}-${ref}`;
+  const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
   return (
-    <div
-      className='relative border rounded-2xl flex flex-col sm:flex-row flex-wrap items-center justify-between gap-5 p-5'
-      onClick={() => router.push(`/listings/${slug}}`)}>
+    <div className='relative border rounded-2xl flex flex-col sm:flex-row flex-wrap items-center justify-between gap-5 p-5'>
       <div className='flex flex-wrap flex-col gap-2'>
         <p className='font-bold'>ref: {ref}</p>
 
@@ -51,20 +50,20 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
       </p>
 
       <div className='flex flex-wrap gap-5'>
-        <button
-          type='button'
+        <Link
+          href={`/listings/${slug}/${ref}`}
           className='border rounded-xl py-2 px-5 border-blue-500 shadow-blue-500 shadow-md'>
-          See
-        </button>
+          Voir
+        </Link>
         <button
           type='button'
           className='border rounded-xl py-2 px-5 border-orange-500 shadow-orange-500 shadow-md'>
-          Edit
+          Modifier
         </button>
         <button
           type='button'
           className='border rounded-xl py-2 px-5 border-red-500 shadow-red-500 shadow-md'>
-          Delete
+          Supprimer
         </button>
       </div>
     </div>
