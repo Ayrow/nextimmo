@@ -8,6 +8,7 @@ type ListingContextType = {
   singleListing: IListingDocument;
   getAllListings: () => void;
   getSingleListing: (ref: string) => void;
+  deleteListing: (ref: string) => void;
   separateThousands: (number: number) => string;
 };
 
@@ -58,6 +59,26 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const deleteListing = async (ref: string) => {
+    try {
+      const res = await fetch(`/api/listing?ref=${ref}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      if (data) {
+        setAllListings(data);
+      } else {
+        // display error
+      }
+    } catch (error) {
+      alert(error);
+      // display pop up alert
+    }
+  };
+
   function separateThousands(number: number) {
     const numberString = number.toString(); // Convert number to string
 
@@ -81,6 +102,7 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
         allListings,
         singleListing,
         getSingleListing,
+        deleteListing,
         separateThousands,
       }}>
       {children}
