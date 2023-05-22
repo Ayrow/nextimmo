@@ -34,7 +34,6 @@ const appReducer = (state: AppState, action: AppAction) => {
         modalMsg: action.payload.modalMsg,
         modalType: action.payload.modalType,
         refItem: action.payload.refItem,
-        deleteFunction: action.payload.deleteFunction,
       };
     case CLOSE_MODAL:
       return {

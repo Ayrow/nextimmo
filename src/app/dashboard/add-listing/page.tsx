@@ -9,7 +9,7 @@ import { useAuthContext } from '../../../context/user/authContext';
 
 const initialState: IListing = {
   ref: '',
-  typeDeBien: '',
+  typeDeBien: 'Sélectionnez le type de bien',
   transaction: 'vente',
   location: {
     loyerMensuel: undefined,
@@ -22,10 +22,10 @@ const initialState: IListing = {
   },
   prix: undefined,
   dateConstruction: undefined,
-  nbPieces: undefined,
-  nbChambres: undefined,
-  nbSDB: undefined,
-  nbEtages: undefined,
+  nbPieces: 0,
+  nbChambres: 0,
+  nbSDB: 0,
+  nbEtages: 0,
   statut: 'disponible',
   surfaceInt: undefined,
   surfaceExt: undefined,
@@ -56,15 +56,15 @@ const initialState: IListing = {
     },
   },
   typeChauffage: 'Sélectionnez le type de chauffage',
-  exposition: 'nord',
+  exposition: '',
   description: '',
   consoEnergetique: undefined,
   ges: undefined,
   photos: [],
   honoraires: {
     aCharge: 'acheteur',
-    taux: undefined,
-    fraisAgence: undefined,
+    taux: 0,
+    fraisAgence: 0,
   },
 };
 
@@ -156,7 +156,7 @@ const AddListing = () => {
     if (firebaseUser) {
       const { email } = firebaseUser;
       try {
-        await fetch('/api/listings', {
+        await fetch('/api/listing', {
           method: 'POST',
           body: JSON.stringify({ values, email }),
           headers: {
@@ -164,7 +164,7 @@ const AddListing = () => {
           },
         });
         // Add Modal to confirm it has been added
-        clearForm();
+        // clearForm();
       } catch (error) {
         alert(error);
         // Add Modal for error
@@ -256,11 +256,9 @@ const AddListing = () => {
               <select
                 onChange={handleChange}
                 name='typeDeBien'
-                defaultValue='Sélectionnez le type de bien'
+                value={values.typeDeBien}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option selected disabled>
-                  Sélectionnez le type de bien
-                </option>
+                <option disabled>Sélectionnez le type de bien</option>
                 {biens.map((bien) => {
                   return (
                     <option key={bien} value={bien}>
@@ -275,10 +273,9 @@ const AddListing = () => {
                 Type de transaction
               </label>
               <select
-                id='typeTransaction'
                 name='transaction'
                 onChange={handleChange}
-                defaultValue='vente'
+                value={values.transaction}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option value='vente'>Vente</option>
                 <option value='location'>Location</option>
@@ -292,7 +289,7 @@ const AddListing = () => {
               <select
                 name='statut'
                 onChange={handleChange}
-                defaultValue='disponible'
+                value={values.statut}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option value='bientot'>Bientôt</option>
                 <option value='disponible'>Disponible</option>
@@ -332,7 +329,11 @@ const AddListing = () => {
                   name='lieu.codePostal'
                   type='number'
                   handleChange={handleChange}
-                  value={values.lieu.codePostal}
+                  value={
+                    values.lieu.codePostal === undefined
+                      ? ''
+                      : values.lieu.codePostal
+                  }
                 />
               </div>
             </div>
@@ -346,7 +347,7 @@ const AddListing = () => {
                   name='prix'
                   type='number'
                   handleChange={handleChange}
-                  value={values.prix}
+                  value={values.prix === undefined ? '' : values.prix}
                 />
               </div>
             ) : (
@@ -359,7 +360,11 @@ const AddListing = () => {
                     name='location.loyerMensuel'
                     type='number'
                     handleChange={handleChange}
-                    value={values.location.loyerMensuel}
+                    value={
+                      values.location.loyerMensuel
+                        ? undefined
+                        : values.location.loyerMensuel
+                    }
                   />
                 </div>
 
@@ -371,7 +376,11 @@ const AddListing = () => {
                     name='location.caution'
                     type='number'
                     handleChange={handleChange}
-                    value={values.location.caution}
+                    value={
+                      values.location.caution === undefined
+                        ? ''
+                        : values.location.caution
+                    }
                   />
                 </div>
               </>
@@ -387,7 +396,11 @@ const AddListing = () => {
                 name='dateConstruction'
                 type='number'
                 handleChange={handleChange}
-                value={values.dateConstruction}
+                value={
+                  values.dateConstruction === undefined
+                    ? ''
+                    : values.dateConstruction
+                }
               />
             </div>
             <div className='sm:col-span-2'>
@@ -407,7 +420,7 @@ const AddListing = () => {
                 label='Nombre de Chambres'
                 placeholder=''
                 isRequired={true}
-                name='nbChambre'
+                name='nbChambres'
                 type='number'
                 handleChange={handleChange}
                 value={values.nbChambres}
@@ -431,7 +444,7 @@ const AddListing = () => {
                 label="Nombre d'étages"
                 placeholder=''
                 isRequired={true}
-                name='nbEtage'
+                name='nbEtages'
                 type='number'
                 handleChange={handleChange}
                 value={values.nbEtages}
@@ -473,7 +486,7 @@ const AddListing = () => {
                 name='surfaceInt'
                 type='number'
                 handleChange={handleChange}
-                value={values.surfaceInt}
+                value={values.surfaceInt === undefined ? '' : values.surfaceInt}
               />
             </div>
 
@@ -483,12 +496,10 @@ const AddListing = () => {
               </label>
               <select
                 onChange={handleChange}
-                name='values.typeChauffage'
-                defaultValue=''
+                name='typeChauffage'
+                value={values.typeChauffage}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option selected disabled>
-                  Sélectionnez le type de chauffage
-                </option>
+                <option disabled>Sélectionnez le type de chauffage</option>
                 <option value='gaz'>gaz</option>
                 <option value='pac'>Pompe à chaleur</option>
               </select>
@@ -518,7 +529,9 @@ const AddListing = () => {
                   name='surfaceExt'
                   type='number'
                   handleChange={handleChange}
-                  value={values.surfaceExt}
+                  value={
+                    values.surfaceExt === undefined ? '' : values.surfaceExt
+                  }
                 />
               </div>
 
@@ -528,8 +541,8 @@ const AddListing = () => {
                 </label>
                 <select
                   onChange={handleChange}
-                  name='values.exposition'
-                  defaultValue='nord'
+                  name='exposition'
+                  value={values.exposition}
                   className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                   <option value='nord'>nord</option>
                   <option value='sud'>sud</option>
@@ -549,7 +562,11 @@ const AddListing = () => {
                   name='consoEnergetique'
                   type='number'
                   handleChange={handleChange}
-                  value={values.consoEnergetique}
+                  value={
+                    values.consoEnergetique === undefined
+                      ? ''
+                      : values.consoEnergetique
+                  }
                 />
               </div>
 
@@ -561,7 +578,7 @@ const AddListing = () => {
                   name='ges'
                   type='number'
                   handleChange={handleChange}
-                  value={values.ges}
+                  value={values.ges === undefined ? '' : values.ges}
                 />
               </div>
             </div>
@@ -586,8 +603,8 @@ const AddListing = () => {
                   </label>
                   <select
                     onChange={handleChange}
-                    name='values.honoraires.aCharge'
-                    defaultValue='acheteur'
+                    name='honoraires.aCharge'
+                    value={values.honoraires.aCharge}
                     className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                     <option value='acheteur'>Acheteur</option>
                     <option value='vendeur'>Vendeur</option>
@@ -599,7 +616,7 @@ const AddListing = () => {
                     label="Taux d'honoraires (en %)"
                     placeholder=''
                     isRequired={true}
-                    name='taux'
+                    name='honoraires.taux'
                     type='number'
                     handleChange={handleChange}
                     value={values.honoraires.taux}
@@ -612,7 +629,7 @@ const AddListing = () => {
                   label="Frais d'Agence"
                   placeholder=''
                   isRequired={true}
-                  name='fraisAgence'
+                  name='honoraires.fraisAgence'
                   type='number'
                   handleChange={handleChange}
                   value={values.honoraires.fraisAgence}

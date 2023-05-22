@@ -98,18 +98,10 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     },
     typeChauffage: {
       type: String,
-      enum: [
-        'Sélectionnez le type de chauffage',
-        'gaz',
-        'fioul',
-        'electrique',
-        'solaire',
-        'bois',
-        'pompe à chaleur',
-      ],
-      default: 'Sélectionnez le type de chauffage',
+      enum: ['gaz', 'fioul', 'electrique', 'solaire', 'bois', 'pac'],
     },
     exposition: {
+      type: String,
       enum: ['nord', 'sud', 'est', 'ouest', 'vueMer', 'procheMer'],
     },
     description: String,

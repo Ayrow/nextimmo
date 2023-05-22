@@ -49,15 +49,17 @@ export async function DELETE(request: NextRequest) {
   await connectDB();
   const { searchParams } = new URL(request.url);
   const ref = searchParams.get('ref');
+  console.log('ref', ref);
 
   if (!ref) {
     throw new Error('No listing here');
   }
 
   const listing = await Listing.findOne({ ref });
+  console.log('listing', listing);
 
   if (listing) {
-    await Listing.deleteOne({ listing });
+    await Listing.deleteOne({ ref });
     return new NextResponse(JSON.stringify(listing), {
       headers: { 'Content-Type': 'application/json' },
     });

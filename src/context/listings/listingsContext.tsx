@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState } from 'react';
 import { IListingDocument } from '../../../types/listingTypes';
+import { useAppContext } from '../app/appContext';
 
 type ListingContextType = {
   allListings: [IListingDocument];
@@ -15,6 +16,7 @@ type ListingContextType = {
 const ListingsContext = createContext<ListingContextType>(null);
 
 const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
+  const { actions } = useAppContext();
   const [allListings, setAllListings] = useState<[IListingDocument]>(undefined);
   const [singleListing, setSingleListing] =
     useState<IListingDocument>(undefined);
@@ -77,6 +79,7 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
       alert(error);
       // display pop up alert
     }
+    actions.closeModal();
   };
 
   function separateThousands(number: number) {
