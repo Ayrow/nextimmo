@@ -1,11 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 import { IListingDocument } from '../../../types/listingTypes';
-import { useRouter } from 'next/navigation';
+
 import { useListingsContext } from '../../context/listings/listingsContext';
 import Link from 'next/link';
 
 const ListCard = ({ listing }: { listing: IListingDocument }) => {
-  const router = useRouter();
   const {
     ref,
     nbPieces,
@@ -22,7 +23,7 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
   return (
-    <div className='relative border rounded-2xl flex flex-col sm:flex-row flex-wrap items-center justify-between gap-5 p-5'>
+    <div className='relative w-full border rounded-2xl flex flex-col sm:flex-row flex-wrap items-center justify-between gap-5 p-5'>
       <div className='flex flex-wrap flex-col gap-2'>
         <p className='font-bold'>ref: {ref}</p>
 

@@ -26,7 +26,7 @@ export type AppState = {
   alertType: ColorTypes;
   showModal: boolean;
   modalMsg: string;
-  modalTitle: '';
+  modalTitle: string;
   modalType: ModalTypes;
 };
 
@@ -36,7 +36,7 @@ const initialAppState: AppState = {
   showAlert: false,
   alertText: '',
   alertType: ColorTypes.Notification,
-  showModal: false,
+  showModal: true,
   modalMsg: '',
   modalTitle: '',
   modalType: ModalTypes.Notification,
@@ -71,6 +71,8 @@ const AppProvider = ({ children }) => {
     dispatch({ type: DISPLAY_ALERT, payload: { type, msg } });
     clearAlert();
   };
+
+  const displayModal = ({}) => {};
 
   return (
     <AppContext.Provider value={{ state, actions: { displayAlert } }}>
