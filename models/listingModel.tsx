@@ -121,6 +121,7 @@ const listingSchema: Schema<IListingDocument> = new Schema(
         'Un compte agent est nécessaire pour ajouter une annonce',
       ],
     },
+    draft: false,
     nbAjoutFavoris: {
       type: Number,
       default: 0,

@@ -66,6 +66,7 @@ const initialState: IListing = {
     taux: 0,
     fraisAgence: 0,
   },
+  draft: false,
 };
 
 const biens = [
@@ -638,11 +639,13 @@ const AddListing = () => {
             )}
           </div>
 
-          <button
-            type='submit'
-            className='inline-flex items-center px-5 py-2.5 mt-4 sm:mt-10 text-sm font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-gray-900 hover:bg-gray-800 border-sky-800 border-2'>
-            Ajouter le bien
-          </button>
+          <div>
+            <button
+              type='submit'
+              className='inline-flex items-center px-5 py-2.5 mt-4 sm:mt-10 text-sm font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-gray-900 hover:bg-gray-800 border-sky-800 border-2'>
+              Publier le bien
+            </button>
+          </div>
         </form>
       </div>
     </section>

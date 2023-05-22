@@ -71,6 +71,7 @@ export interface IListing {
   ges: number;
   honoraires: IHonoraires;
   photos: string[];
+  draft: boolean;
 }
 
 export interface IListingDocument extends Document, IListing {
