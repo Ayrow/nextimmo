@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { IListingDocument } from '../../../types/listingTypes';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useListingsContext } from '../../context/listings/listingsContext';
+import { useRouter } from 'next/navigation';
 
 const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const {
@@ -20,20 +20,38 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
     photos,
   } = listing;
 
+  const router = useRouter();
   const { separateThousands } = useListingsContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
 
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
+  enum possiblePhotosDirection {
+    Left,
+    Right,
+  }
+
+  const handleClick = (
+    direction: possiblePhotosDirection,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    if (direction === possiblePhotosDirection.Left) {
+      setIsCurrentPhoto(currentPhoto - 1);
+    } else {
+      setIsCurrentPhoto(currentPhoto + 1);
+    }
+  };
+
   return (
-    <Link
-      href={`/listings/${slug}/${ref}`}
-      className='relative border rounded-2xl cursor-pointer'>
+    <div
+      className='relative border rounded-2xl cursor-pointer'
+      onClick={() => router.push(`/listings/${slug}/${ref}`)}>
       <div className='relative'>
         {photos.length > 0 && currentPhoto > 1 && (
           <button
             className='absolute px-1 top-1/2 left-2 font-bold shadow-2xl bg-gray-900 bg-opacity-50 rounded-full text-3xl'
-            onClick={() => setIsCurrentPhoto(currentPhoto - 1)}>
+            onClick={(e) => handleClick(possiblePhotosDirection.Left, e)}>
             ⇦
           </button>
         )}
@@ -47,7 +65,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
         {photos.length > currentPhoto && (
           <button
             className='absolute px-1 top-1/2 right-2 font-bold shadow-2xl bg-gray-900 bg-opacity-50 rounded-full text-3xl'
-            onClick={() => setIsCurrentPhoto(currentPhoto + 1)}>
+            onClick={(e) => handleClick(possiblePhotosDirection.Right, e)}>
             ⇨
           </button>
         )}
@@ -80,7 +98,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
           </button>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
