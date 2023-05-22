@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { IListingDocument } from '../../../types/listingTypes';
 import { useRouter } from 'next/navigation';
+import { useListingsContext } from '../../context/listings/listingsContext';
 
 const ListCard = ({ listing }: { listing: IListingDocument }) => {
   const router = useRouter();
@@ -16,6 +17,7 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
     photos,
   } = listing;
 
+  const { separateThousands } = useListingsContext();
   const slug = `annonce-${listing.transaction}-${listing.lieu.ville}-${ref}`;
 
   return (
@@ -44,7 +46,9 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
         </p>
       </div>
 
-      <p className='text-red-500 font-bold'>{prix} €</p>
+      <p className='text-red-500 font-bold'>
+        {prix && separateThousands(prix)} €
+      </p>
 
       <div className='flex flex-wrap gap-5'>
         <button

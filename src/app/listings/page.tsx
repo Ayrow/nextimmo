@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
 import { useListingsContext } from '../../context/listings/listingsContext';
 
 const Listings = () => {
-  const { allListings, getAllListings } = useListingsContext();
+  const { allListings, getAllListings, separateThousands } =
+    useListingsContext();
   const [isgridList, setIsGridList] = useState<boolean>(true);
 
   useEffect(() => {

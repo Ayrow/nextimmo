@@ -5,6 +5,7 @@ import { IListingDocument } from '../../../types/listingTypes';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useListingsContext } from '../../context/listings/listingsContext';
 
 const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const {
@@ -19,6 +20,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
     photos,
   } = listing;
 
+  const { separateThousands } = useListingsContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
 
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
@@ -56,7 +58,9 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
           <p className='capitalize'>
             {typeDeBien} - {nbPieces} pièces - {surfaceInt}m2
           </p>
-          <p className='text-red-500 font-bold'>{prix} €</p>
+          <p className='text-red-500 font-bold'>
+            {prix && separateThousands(prix)} €
+          </p>
         </div>
 
         <p className='mt-5'>

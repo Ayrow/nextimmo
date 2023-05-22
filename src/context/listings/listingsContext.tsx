@@ -8,6 +8,7 @@ type ListingContextType = {
   singleListing: IListingDocument;
   getAllListings: () => void;
   getSingleListing: (ref: string) => void;
+  separateThousands: (number: number) => string;
 };
 
 const ListingsContext = createContext<ListingContextType>(null);
@@ -57,9 +58,31 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  function separateThousands(number: number) {
+    const numberString = number.toString(); // Convert number to string
+
+    let separatedString = ''; // Initialize the separated string
+
+    for (let i = numberString.length - 1; i >= 0; i--) {
+      separatedString = numberString[i] + separatedString;
+
+      if ((numberString.length - i) % 3 === 0 && i !== 0) {
+        separatedString = ' ' + separatedString;
+      }
+    }
+
+    return separatedString;
+  }
+
   return (
     <ListingsContext.Provider
-      value={{ getAllListings, allListings, singleListing, getSingleListing }}>
+      value={{
+        getAllListings,
+        allListings,
+        singleListing,
+        getSingleListing,
+        separateThousands,
+      }}>
       {children}
     </ListingsContext.Provider>
   );

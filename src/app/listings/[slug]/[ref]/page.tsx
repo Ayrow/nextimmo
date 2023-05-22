@@ -3,11 +3,12 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useListingsContext } from '../../../../context/listings/listingsContext';
+import { IListing } from '../../../../../types/listingTypes';
 
 export async function generateStaticParams() {
   const listings = await fetch('/api/allListings').then((res) => res.json());
 
-  return listings.map((listing) => ({
+  return listings.map((listing: IListing) => ({
     ref: listing.ref,
   }));
 }
@@ -18,24 +19,9 @@ const SingleListing = ({
   params: { slug: string; ref: string };
 }) => {
   const { ref } = params;
-  const { getSingleListing, singleListing } = useListingsContext();
+  const { getSingleListing, singleListing, separateThousands } =
+    useListingsContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
-
-  function separateNumbers(number: number) {
-    const numberString = number.toString(); // Convert number to string
-
-    let separatedString = ''; // Initialize the separated string
-
-    for (let i = numberString.length - 1; i >= 0; i--) {
-      separatedString = numberString[i] + separatedString;
-
-      if ((numberString.length - i) % 3 === 0 && i !== 0) {
-        separatedString = ' ' + separatedString;
-      }
-    }
-
-    return separatedString;
-  }
 
   const displayAllTrueKeys = (object: object) => {
     const trueKeys = Object.entries(object).filter(
@@ -134,12 +120,13 @@ const SingleListing = ({
           <div className=' md:col-start-3 lg:col-start-1'>
             {singleListing?.transaction === 'vente' ? (
               <p className='text-red-500 text-2xl font-bold'>
-                {singleListing?.prix && separateNumbers(singleListing?.prix)} €
+                {singleListing?.prix && separateThousands(singleListing?.prix)}{' '}
+                €
               </p>
             ) : (
               <p className='text-red-500 text-2xl font-bold'>
                 {singleListing &&
-                  separateNumbers(singleListing?.location?.loyerMensuel)}{' '}
+                  separateThousands(singleListing?.location?.loyerMensuel)}{' '}
                 €
               </p>
             )}
