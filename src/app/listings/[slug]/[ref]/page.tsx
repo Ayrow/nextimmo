@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useListingsContext } from '../../../../context/listings/listingsContext';
 import { IListing } from '../../../../../types/listingTypes';
+import { useRouter } from 'next/navigation';
 
 export async function generateStaticParams() {
   const listings = await fetch('/api/allListings').then((res) => res.json());
@@ -21,6 +22,7 @@ const SingleListing = ({
   const { ref } = params;
   const { getSingleListing, singleListing, separateThousands } =
     useListingsContext();
+  const router = useRouter();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
 
   const displayAllTrueKeys = (object: object) => {
@@ -98,6 +100,11 @@ const SingleListing = ({
 
   return (
     <div className='bg-gray-900 px-2 lg:px-10 py-5 w-full'>
+      <button
+        className='relative px-2 py-1 bg-blue-700 rounded text-xl'
+        onClick={() => router.back()}>
+        ⇦ Retour
+      </button>
       <div className='flex flex-col-reverse lg:flex-row gap-5 w-full'>
         <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-5 px-2'>
           <div className='flex flex-col justify-center gap-5 col-span-2'>

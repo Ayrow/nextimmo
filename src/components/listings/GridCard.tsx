@@ -48,6 +48,9 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
       className='relative border rounded-2xl cursor-pointer'
       onClick={() => router.push(`/listings/${slug}/${ref}`)}>
       <div className='relative'>
+        <div className='absolute top-2 left-2 bg-blue-500 border border-sky-900 px-2 rounded-xl'>
+          {statut}
+        </div>
         {photos.length > 0 && currentPhoto > 1 && (
           <button
             className='absolute px-1 top-1/2 left-2 font-bold shadow-2xl bg-gray-900 bg-opacity-50 rounded-full text-3xl'
@@ -60,7 +63,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
           alt={`photo-${currentPhoto}`}
           width='500'
           height='500'
-          className='rounded-t-2xl'
+          className='rounded-t-2xl h-72'
         />
         {photos.length > currentPhoto && (
           <button
