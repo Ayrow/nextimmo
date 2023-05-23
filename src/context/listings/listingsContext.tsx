@@ -8,7 +8,7 @@ type ListingContextType = {
   allListings: [IListingDocument];
   singleListing: IListingDocument;
   getAllListings: () => void;
-  getSingleListing: (ref: string) => void;
+  getSingleListing: (ref: string, signal: AbortSignal) => void;
   deleteListing: (ref: string) => void;
   editListing: (ref: string) => void;
   updateListing: (ref: string) => void;
@@ -43,11 +43,12 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const getSingleListing = async (ref: string) => {
+  const getSingleListing = async (ref: string, signal: AbortSignal) => {
     console.log('getting single listing');
     try {
       const res = await fetch(`/api/listing?ref=${ref}`, {
         method: 'GET',
+        signal: signal,
         headers: {
           'Content-Type': 'application/json',
         },

@@ -195,12 +195,29 @@ const AddListing = () => {
   };
 
   useEffect(() => {
-    if (state.isEditing && singleListing) {
-      const { __v, _id, createdBy, ...rest } = singleListing;
-      setValues(rest);
-      console.log('values', values);
+    if (state.isEditing) {
+      const controller = new AbortController();
+      const signal = controller.signal;
+      getSingleListing(state.refItem, signal);
+      if (singleListing) {
+        const { __v, _id, createdBy, ...rest } = singleListing;
+        setValues(rest);
+      }
+      return () => {
+        controller.abort();
+      };
     }
-  }, []);
+  }, [state.isEditing, state.refItem]);
+
+  useEffect(() => {
+    if (singleListing) {
+      setValues(singleListing);
+    }
+
+    return () => {
+      setValues(initialState);
+    };
+  }, [singleListing]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
