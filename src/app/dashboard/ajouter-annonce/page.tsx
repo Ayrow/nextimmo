@@ -14,6 +14,7 @@ import {
 import { useListingsContext } from '../../../context/listings/listingsContext';
 import { useAppContext } from '../../../context/app/appContext';
 import SingleListing from '../../annonces/[slug]/[ref]/page';
+import BackButton from '../../../components/buttons/BackButton';
 
 const initialState: IListing = {
   ref: '',
@@ -278,6 +279,7 @@ const AddListing = () => {
   return (
     <section className='bg-gray-900'>
       <div className='py-8 px-4 mx-auto max-w-2xl lg:py-16'>
+        <BackButton />
         <h2 className='mb-4 text-xl text-center font-bold text-white'>
           {singleListing && state.isEditing
             ? `Modifier l'annonce: ${state.refItem}`
