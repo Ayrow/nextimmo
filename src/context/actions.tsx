@@ -6,3 +6,5 @@ export const SETUP_USER = 'SETUP_USER';
 export const CLEAR_USER = 'CLEAR_USER';
 export const DISPLAY_MODAL = 'DISPLAY_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
+export const EDIT_ITEM = 'EDIT_ITEM';
+export const STOP_EDITING_ITEM = 'STOP_EDITING_ITEM';

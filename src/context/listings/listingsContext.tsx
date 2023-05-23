@@ -10,6 +10,8 @@ type ListingContextType = {
   getAllListings: () => void;
   getSingleListing: (ref: string) => void;
   deleteListing: (ref: string) => void;
+  editListing: (ref: string) => void;
+  updateListing: (ref: string) => void;
   separateThousands: (number: number) => string;
 };
 
@@ -82,7 +84,7 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
     actions.closeModal();
   };
 
-  function separateThousands(number: number) {
+  const separateThousands = (number: number) => {
     const numberString = number.toString(); // Convert number to string
 
     let separatedString = ''; // Initialize the separated string
@@ -96,7 +98,11 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return separatedString;
-  }
+  };
+
+  const editListing = () => {};
+
+  const updateListing = () => {};
 
   return (
     <ListingsContext.Provider
@@ -106,6 +112,8 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
         singleListing,
         getSingleListing,
         deleteListing,
+        editListing,
+        updateListing,
         separateThousands,
       }}>
       {children}

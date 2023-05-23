@@ -6,6 +6,7 @@ import {
   CLOSE_MODAL,
   DISPLAY_ALERT,
   DISPLAY_MODAL,
+  EDIT_ITEM,
 } from '../actions';
 import appReducer from './appReducer';
 
@@ -27,6 +28,7 @@ export enum ColorTypes {
 export type AppState = {
   seenListings: string[];
   isLoading: boolean;
+  isEditing: boolean;
   showAlert: boolean;
   alertText: string;
   alertType: ColorTypes;
@@ -40,6 +42,7 @@ export type AppState = {
 const initialAppState: AppState = {
   seenListings: [],
   isLoading: false,
+  isEditing: false,
   showAlert: false,
   alertText: '',
   alertType: ColorTypes.Notification,
@@ -50,21 +53,30 @@ const initialAppState: AppState = {
   modalType: ModalTypes.Notification,
 };
 
+type ModalPropsType = {
+  modalMsg: string;
+  modalType: ModalTypes;
+  modalTitle: string;
+  refItem: string;
+};
+
 type AppActions = {
-  displayAlert: (options: { type: ColorTypes; msg: string }) => void;
+  displayAlert: ({ type, msg }: { type: ColorTypes; msg: string }) => void;
   closeModal: () => void;
-  displayModal: (options: {
-    modalMsg: string;
-    modalType: ModalTypes;
-    modalTitle: string;
-    refItem: string;
-  }) => void;
+  displayModal: ({
+    modalMsg,
+    modalType,
+    modalTitle,
+    refItem,
+  }: ModalPropsType) => void;
+  editItem: (refItem: string) => void;
 };
 
 const initialAppActions: AppActions = {
   displayAlert: () => null,
   closeModal: () => null,
   displayModal: () => null,
+  editItem: () => null,
 };
 
 const AppContext = createContext<{
@@ -81,7 +93,7 @@ const AppProvider = ({ children }) => {
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
-    }, 4000);
+    }, 2500);
   };
 
   const displayAlert = ({ type, msg }: { type: ColorTypes; msg: string }) => {
@@ -89,7 +101,12 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  const displayModal = ({ modalTitle, modalMsg, modalType, refItem }) => {
+  const displayModal = ({
+    modalTitle,
+    modalMsg,
+    modalType,
+    refItem,
+  }: ModalPropsType) => {
     dispatch({
       type: DISPLAY_MODAL,
       payload: { modalTitle, modalMsg, modalType, refItem },
@@ -100,9 +117,16 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLOSE_MODAL });
   };
 
+  const editItem = (refItem: string) => {
+    dispatch({ type: EDIT_ITEM, payload: refItem });
+  };
+
   return (
     <AppContext.Provider
-      value={{ state, actions: { displayAlert, closeModal, displayModal } }}>
+      value={{
+        state,
+        actions: { displayAlert, closeModal, displayModal, editItem },
+      }}>
       {children}
     </AppContext.Provider>
   );

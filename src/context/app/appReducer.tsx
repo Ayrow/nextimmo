@@ -3,6 +3,7 @@ import {
   DISPLAY_ALERT,
   CLOSE_MODAL,
   DISPLAY_MODAL,
+  EDIT_ITEM,
 } from '../actions';
 
 import { AppState } from './appContext';
@@ -42,6 +43,12 @@ const appReducer = (state: AppState, action: AppAction) => {
         modalMsg: '',
         modalTitle: '',
         refItem: '',
+      };
+    case EDIT_ITEM:
+      return {
+        ...state,
+        isEditing: true,
+        refItem: action.payload,
       };
     default:
       throw new Error(`There is no action: ${action.type}`);
