@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import { ColorTypes, useAppContext } from '../app/appContext';
 import { ObjectId } from 'mongoose';
 
-type UserFromDB = {
+export type UserFromDB = {
   _id: ObjectId;
   username: string;
   email: string;

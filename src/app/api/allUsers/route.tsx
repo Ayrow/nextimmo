@@ -17,9 +17,9 @@ export async function GET(request: NextRequest) {
       throw new Error('No users found');
     }
   } else {
-    const agentsAdminUsers = await User.find()
-      .where('role')
-      .all(['agent', 'admin']);
+    const agentsAdminUsers = await User.find({
+      $or: [{ role: 'admin' }, { role: 'agent' }],
+    });
     return new NextResponse(JSON.stringify(agentsAdminUsers), {
       headers: { 'Content-Type': 'application/json' },
     });

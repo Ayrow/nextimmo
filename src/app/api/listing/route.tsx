@@ -1,7 +1,6 @@
 import connectDB from '../../../../utils/connectDB';
 import Listing from '../../../../models/listingModel';
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuth } from 'firebase/auth';
 import User from '../../../../models/userModel';
 
 export async function POST(request: NextRequest) {
@@ -55,7 +54,6 @@ export async function DELETE(request: NextRequest) {
   }
 
   const listing = await Listing.findOne({ ref });
-  console.log('listing', listing);
 
   if (listing) {
     await Listing.deleteOne({ ref });

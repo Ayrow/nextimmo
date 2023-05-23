@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 const ListCard = ({ listing }: { listing: IListingDocument }) => {
   const {
     ref,
+    transaction,
     nbPieces,
     prix,
     location,
@@ -21,15 +22,12 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
     photos,
   } = listing;
 
-  const { separateThousands, getSingleListing, singleListing } =
-    useListingsContext();
+  const { separateThousands } = useListingsContext();
   const router = useRouter();
   const { actions } = useAppContext();
-  const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
+  const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}/${ref}`;
 
   const editListing = () => {
-    getSingleListing(ref);
-    console.log('singleListing', singleListing);
     actions.editItem(ref);
     router.push('/dashboard/ajouter-annonce');
   };
@@ -64,7 +62,7 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
 
       <div className='flex flex-wrap gap-5'>
         <Link
-          href={`/annonces/${slug}/${ref}`}
+          href={`/annonces/${slug}`}
           className='border rounded-xl py-2 px-5 border-blue-500 shadow-blue-500 shadow-md'>
           Voir
         </Link>
