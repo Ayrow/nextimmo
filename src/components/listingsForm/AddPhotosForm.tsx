@@ -52,10 +52,10 @@ const AddPhotosForm: React.FC<PropsType> = ({ values, setValues, photos }) => {
   }, [photos]);
 
   return (
-    <div className=' text-black w-full'>
-      <div className='flex flex-wrap gap-2'>
+    <div className='w-full text-black'>
+      <div className='flex gap-2'>
         <input
-          className='border border-black px-2 py-1 w-3/4 rounded'
+          className='border border-black px-2 py-1 rounded'
           placeholder='https://www.photo.com/azerty'
           type='url'
           name='photo'
@@ -63,10 +63,10 @@ const AddPhotosForm: React.FC<PropsType> = ({ values, setValues, photos }) => {
           value={photoLink}
         />
         <button
-          className='p-2 text-blue-800 hover:text-blue-600 text-xl border border-blue-800 hover:border-blue-600 rounded-md bg-white px-2'
+          className='p-2 text-blue-600 hover:text-blue-800 text-xl border border-blue-800 hover:border-blue-600 rounded-md bg-gray-200 hover:bg-gray-400 px-2'
           type='button'
           onClick={addLinktophotosSet}>
-          Add
+          Ajouter
         </button>
       </div>
 
@@ -75,12 +75,11 @@ const AddPhotosForm: React.FC<PropsType> = ({ values, setValues, photos }) => {
           return (
             <div key={index} className='flex gap-3 items-center'>
               <Image src={photo} alt={`${index}`} width='100' height='100' />
-              <p>{photo}</p>
               <button
-                className='text-red-800 hover:text-red-600 text-xl border border-red-800 hover:border-red-600 rounded-md px-2'
+                className='text-red-500 hover:text-red-700 text-xl border border-red-500 hover:border-red-700 rounded-md px-2'
                 type='button'
                 onClick={() => removePhoto(index)}>
-                Remove
+                Supprimer
               </button>
             </div>
           );
