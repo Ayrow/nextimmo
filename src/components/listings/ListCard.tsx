@@ -21,12 +21,15 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
     photos,
   } = listing;
 
-  const { separateThousands } = useListingsContext();
+  const { separateThousands, getSingleListing, singleListing } =
+    useListingsContext();
   const router = useRouter();
   const { actions } = useAppContext();
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
   const editListing = () => {
+    getSingleListing(ref);
+    console.log('singleListing', singleListing);
     actions.editItem(ref);
     router.push('/dashboard/ajouter-annonce');
   };

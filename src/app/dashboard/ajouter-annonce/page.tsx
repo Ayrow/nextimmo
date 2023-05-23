@@ -4,13 +4,16 @@ import { IListing } from '../../../../types/listingTypes';
 import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
 import AddPhotosForm from '../../../components/listingsForm/AddPhotosForm';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../../context/user/authContext';
 import {
   equipementsExterieur,
   equipementsInterieur,
   expositionsBien,
 } from '../../../../utils/listingDetails';
+import { useListingsContext } from '../../../context/listings/listingsContext';
+import { useAppContext } from '../../../context/app/appContext';
+import SingleListing from '../../annonces/[slug]/[ref]/page';
 
 const initialState: IListing = {
   ref: '',
@@ -95,6 +98,8 @@ const typesDeChauffage = [
 
 const AddListing = () => {
   const { firebaseUser } = useAuthContext();
+  const { state } = useAppContext();
+  const { getSingleListing, singleListing } = useListingsContext();
   const [values, setValues] = useState(initialState);
 
   const handleChange = (
@@ -184,8 +189,18 @@ const AddListing = () => {
         alert(error);
         // Add Modal for error
       }
+    } else {
+      //display error as agent/admin is not connected
     }
   };
+
+  useEffect(() => {
+    if (state.isEditing && singleListing) {
+      const { __v, _id, createdBy, ...rest } = singleListing;
+      setValues(rest);
+      console.log('values', values);
+    }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -247,7 +262,9 @@ const AddListing = () => {
     <section className='bg-gray-900'>
       <div className='py-8 px-4 mx-auto max-w-2xl lg:py-16'>
         <h2 className='mb-4 text-xl text-center font-bold text-white'>
-          Créer une annonce
+          {singleListing && state.isEditing
+            ? `Modifier l'annonce: ${state.refItem}`
+            : 'Créer une annonce'}
         </h2>
 
         <form onSubmit={handleSubmit} className='mt-10'>
@@ -521,8 +538,9 @@ const AddListing = () => {
                 value={values.typeChauffage}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option disabled>Sélectionnez le type de chauffage</option>
-                <option value='gaz'>gaz</option>
-                <option value='pac'>Pompe à chaleur</option>
+                {typesDeChauffage.map((item, index) => {
+                  return <option key={index}>{item}</option>;
+                })}
               </select>
             </div>
           </SectionWithTitle>
