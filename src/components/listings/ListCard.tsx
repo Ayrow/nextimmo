@@ -6,6 +6,7 @@ import { IListingDocument } from '../../../types/listingTypes';
 import { useListingsContext } from '../../context/listings/listingsContext';
 import Link from 'next/link';
 import { ModalTypes, useAppContext } from '../../context/app/appContext';
+import { useRouter } from 'next/navigation';
 
 const ListCard = ({ listing }: { listing: IListingDocument }) => {
   const {
@@ -20,9 +21,15 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
     photos,
   } = listing;
 
-  const { separateThousands, deleteListing } = useListingsContext();
+  const { separateThousands } = useListingsContext();
+  const router = useRouter();
   const { actions } = useAppContext();
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
+
+  const editListing = () => {
+    actions.editItem(ref);
+    router.push('/dashboard/ajouter-annonce');
+  };
 
   return (
     <div className='relative w-full border rounded-2xl flex flex-col sm:flex-row flex-wrap items-center justify-between gap-5 p-5'>
@@ -60,6 +67,7 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
         </Link>
         <button
           type='button'
+          onClick={editListing}
           className='border rounded-xl py-2 px-5 border-orange-500 shadow-orange-500 shadow-md'>
           Modifier
         </button>
