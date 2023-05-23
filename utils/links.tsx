@@ -9,14 +9,14 @@ export type LinksTypes = {
 const userLinks: LinksTypes[] = [
   {
     id: 1,
-    label: 'account',
-    path: '/account',
+    label: 'Compte',
+    path: '/compte',
     //  icon: <FaChalkboard />,
   },
   {
     id: 2,
-    label: 'saved listings',
-    path: '/saved-listings',
+    label: 'Favoris',
+    path: '/favoris',
     //  icon: <FaUserEdit />,
   },
 ];
@@ -24,20 +24,20 @@ const userLinks: LinksTypes[] = [
 const agentLinks: LinksTypes[] = [
   {
     id: 1,
-    label: 'dashboard',
+    label: 'Tableau de Bord',
     path: '/dashboard',
     //  icon: <FaChalkboard />,
   },
   {
     id: 2,
-    label: 'add listing',
-    path: '/dashboard/add-listing',
+    label: 'Ajouter Annonce',
+    path: '/dashboard/ajouter-annonce',
     //  icon: <FaSuitcase />,
   },
   {
     id: 3,
-    label: 'manage listings',
-    path: '/dashboard/manage-listings',
+    label: 'Modifier Annonces',
+    path: '/dashboard/modifier-annonces',
     //  icon: <FaSuitcase />,
   },
 ];
@@ -45,38 +45,38 @@ const agentLinks: LinksTypes[] = [
 const adminLinks: LinksTypes[] = [
   {
     id: 1,
-    label: 'dashboard',
+    label: 'Tableau de Bord',
     path: 'dashboard',
     //  icon: <FaChalkboard />,
   },
   {
     id: 2,
-    label: 'account',
-    path: 'dashboard/account',
+    label: 'Compte',
+    path: 'dashboard/compte',
     //  icon: <FaUserEdit />,
   },
   {
     id: 3,
-    label: 'users',
-    path: 'dashboard/users',
+    label: 'Utilisateurs',
+    path: 'dashboard/utilisateurs',
     //  icon: <FaSuitcase />,
   },
   {
     id: 4,
-    label: 'agents',
+    label: 'Agents',
     path: 'dashboard/agents',
     // icon: <FaHeart />,
   },
   {
     id: 5,
-    label: 'add listing',
-    path: 'dashboard/add-listing',
+    label: 'Ajouter Annonce',
+    path: 'dashboard/ajouter-annonce',
     //  icon: <FaSuitcase />,
   },
   {
     id: 6,
-    label: 'manage listings',
-    path: 'dashboard/manage-listings',
+    label: 'Modifier Annonces',
+    path: 'dashboard/modifier-annonces',
     //  icon: <FaSuitcase />,
   },
 ];

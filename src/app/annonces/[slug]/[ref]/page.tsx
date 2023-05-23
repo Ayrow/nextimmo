@@ -101,7 +101,7 @@ const SingleListing = ({
   return (
     <div className='bg-gray-900 px-2 lg:px-10 py-5 w-full'>
       <button
-        className='relative px-2 py-1 bg-blue-700 rounded text-xl'
+        className='relative px-2 py-1 bg-blue-700 rounded sm:text-xl mb-2'
         onClick={() => router.back()}>
         ⇦ Retour
       </button>

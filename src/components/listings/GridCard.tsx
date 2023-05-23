@@ -46,7 +46,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
   return (
     <div
       className='relative border rounded-2xl cursor-pointer'
-      onClick={() => router.push(`/listings/${slug}/${ref}`)}>
+      onClick={() => router.push(`/annonces/${slug}/${ref}`)}>
       <div className='relative'>
         <div className='absolute top-2 left-2 bg-blue-500 border border-sky-900 px-2 rounded-xl'>
           {statut}
@@ -85,7 +85,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
         </div>
 
         <p className='mt-5'>
-          {lieu.ville}, {lieu.codePostal}
+          {lieu.quartier}, {lieu.codePostal} {lieu.ville}
         </p>
 
         <p>ref: {ref}</p>

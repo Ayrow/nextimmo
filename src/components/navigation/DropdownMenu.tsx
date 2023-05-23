@@ -60,10 +60,11 @@ const DropdownMenu = ({
             />
           );
         })}
+
         <button
           onClick={logOut}
-          className='block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 hover:text-blue-700 text-left'>
-          Sign out
+          className='block py-2 pl-3 pr-4 rounded md:bg-transparent text-red-500 md:p-0 hover:text-red-700 text-left'>
+          Déconnexion
         </button>
       </div>
     </div>

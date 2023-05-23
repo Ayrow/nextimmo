@@ -54,7 +54,7 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
 
       <div className='flex flex-wrap gap-5'>
         <Link
-          href={`/listings/${slug}/${ref}`}
+          href={`/annonces/${slug}/${ref}`}
           className='border rounded-xl py-2 px-5 border-blue-500 shadow-blue-500 shadow-md'>
           Voir
         </Link>

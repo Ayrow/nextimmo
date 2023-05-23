@@ -29,9 +29,9 @@ const Navbar = () => {
             </li>
             <li>
               <NavLink
-                path='/listings'
-                label='Listings'
-                targetSegment='/listings'
+                path='/annonces'
+                label='Annonces'
+                targetSegment='/annonces'
               />
             </li>
             <li>
@@ -46,7 +46,7 @@ const Navbar = () => {
       </div>
       <div className='bg-sky-950 md:hidden flex gap-5 justify-center'>
         <NavLink path='/' label='Accueil' targetSegment='/' />
-        <NavLink path='/listings' label='Listings' targetSegment='/listings' />
+        <NavLink path='/annonces' label='Annonces' targetSegment='/annonces' />
         <NavLink path='/contact' label='Contact' targetSegment='/contact' />
       </div>
     </nav>
