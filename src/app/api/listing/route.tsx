@@ -49,7 +49,6 @@ export async function DELETE(request: NextRequest) {
   await connectDB();
   const { searchParams } = new URL(request.url);
   const ref = searchParams.get('ref');
-  console.log('ref', ref);
 
   if (!ref) {
     throw new Error('No listing here');

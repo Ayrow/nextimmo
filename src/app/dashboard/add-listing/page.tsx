@@ -6,6 +6,11 @@ import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle'
 import AddPhotosForm from '../../../components/listingsForm/AddPhotosForm';
 import { useState } from 'react';
 import { useAuthContext } from '../../../context/user/authContext';
+import {
+  equipementsExterieur,
+  equipementsInterieur,
+  expositionsBien,
+} from '../../../../utils/listingDetails';
 
 const initialState: IListing = {
   ref: '',
@@ -39,7 +44,7 @@ const initialState: IListing = {
       accessibilitePMR: false,
       digiCode: false,
       alarme: false,
-      Interphone: false,
+      interphone: false,
       cheminee: false,
       climatisation: false,
       gardien: false,
@@ -77,6 +82,15 @@ const biens = [
   'parking',
   'garage',
   'bureau',
+];
+
+const typesDeChauffage = [
+  'gaz',
+  'fioul',
+  'electrique',
+  'solaire',
+  'bois',
+  'pac',
 ];
 
 const AddListing = () => {
@@ -258,7 +272,7 @@ const AddListing = () => {
                 onChange={handleChange}
                 name='typeDeBien'
                 value={values.typeDeBien}
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                className='border capitalize text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option disabled>Sélectionnez le type de bien</option>
                 {biens.map((bien) => {
                   return (
@@ -296,6 +310,7 @@ const AddListing = () => {
                 <option value='disponible'>Disponible</option>
                 <option value='offreEnCours'>Offre en cours</option>
                 <option value='vendu'>Vendu</option>
+                <option value='loué'>Loué</option>
               </select>
             </div>
 
@@ -467,19 +482,24 @@ const AddListing = () => {
           </SectionWithTitle>
 
           <SectionWithTitle title='Equipements Intérieurs'>
-            <div className='gap-4 flex'>
-              <input
-                type='checkbox'
-                onChange={handleChange}
-                name='equipementsInt.cave'
-                className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
-              />
-              <label className='ml-2 text-sm font-medium text-gray-300'>
-                Cave
-              </label>
-            </div>
+            {equipementsInterieur.map((equip) => {
+              const { id, name, label } = equip;
+              return (
+                <div key={id} className='flex'>
+                  <input
+                    type='checkbox'
+                    onChange={handleChange}
+                    name={`equipementsInt.${name}`}
+                    className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
+                  />
+                  <label className='ml-2 text-sm font-medium text-gray-300'>
+                    {label}
+                  </label>
+                </div>
+              );
+            })}
 
-            <div className='sm:col-span-2'>
+            <div className='mt-5 sm:col-span-2'>
               <BasicInputWithLabel
                 label='Surface intérieure'
                 placeholder=''
@@ -507,53 +527,58 @@ const AddListing = () => {
             </div>
           </SectionWithTitle>
 
-          <div className='border-t border-sky-900 mt-12'>
-            <h3 className='py-5 uppercase'>Equipements Extérieurs</h3>
-            <div className='flex flex-col gap-6'>
-              <div className='gap-4 flex'>
-                <input
-                  type='checkbox'
-                  name='equipementsExt.balcon'
-                  onChange={handleChange}
-                  className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
-                />
-                <label className='ml-2 text-sm font-medium text-gray-300'>
-                  Balcon
-                </label>
-              </div>
+          <SectionWithTitle title='Equipements Extérieurs'>
+            {equipementsExterieur.map((equip) => {
+              const { id, name, label } = equip;
+              return (
+                <div key={id} className='flex'>
+                  <input
+                    type='checkbox'
+                    onChange={handleChange}
+                    name={`equipementsInt.${name}`}
+                    className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
+                  />
+                  <label className='ml-2 text-sm font-medium text-gray-300'>
+                    {label}
+                  </label>
+                </div>
+              );
+            })}
 
-              <div className='sm:col-span-2'>
-                <BasicInputWithLabel
-                  label='Surface extérieure'
-                  placeholder=''
-                  isRequired={false}
-                  name='surfaceExt'
-                  type='number'
-                  handleChange={handleChange}
-                  value={
-                    values.surfaceExt === undefined ? '' : values.surfaceExt
-                  }
-                />
-              </div>
-
-              <div className='sm:col-span-2'>
-                <label className='block mb-2 text-sm font-medium text-white'>
-                  Exposition
-                </label>
-                <select
-                  onChange={handleChange}
-                  name='exposition'
-                  value={values.exposition}
-                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                  <option value='nord'>nord</option>
-                  <option value='sud'>sud</option>
-                </select>
-              </div>
+            <div className='sm:col-span-2'>
+              <BasicInputWithLabel
+                label='Surface extérieure'
+                placeholder=''
+                isRequired={false}
+                name='surfaceExt'
+                type='number'
+                handleChange={handleChange}
+                value={values.surfaceExt === undefined ? '' : values.surfaceExt}
+              />
             </div>
-          </div>
 
-          <div className='border-t border-sky-900 mt-12'>
-            <h3 className='py-5 uppercase'>Bilan énergétique</h3>
+            <div className='sm:col-span-2'>
+              <label className='block mb-2 text-sm font-medium text-white'>
+                Exposition
+              </label>
+              <select
+                onChange={handleChange}
+                name='exposition'
+                value={values.exposition}
+                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                {expositionsBien.map((exposition) => {
+                  const { id, name, label } = exposition;
+                  return (
+                    <option key={id} value={name}>
+                      {label}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          </SectionWithTitle>
+
+          <SectionWithTitle title='Bilan Énergétique'>
             <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
               <div className='sm:col-span-2'>
                 <BasicInputWithLabel
@@ -583,19 +608,17 @@ const AddListing = () => {
                 />
               </div>
             </div>
-          </div>
+          </SectionWithTitle>
 
-          <div className='border-t border-sky-900 mt-12'>
-            <h3 className='py-5 uppercase'>Photos</h3>
+          <SectionWithTitle title='Photos'>
             <AddPhotosForm
               values={values}
               setValues={setValues}
               photos={values.photos}
             />
-          </div>
+          </SectionWithTitle>
 
-          <div className='border-t border-sky-900 mt-12'>
-            <h3 className='py-5 uppercase'>Honoraires</h3>
+          <SectionWithTitle title='Honoraires'>
             {values.transaction === 'vente' ? (
               <div className='flex flex-col gap-4'>
                 <div className='w-full capitalize'>
@@ -637,12 +660,17 @@ const AddListing = () => {
                 />
               </div>
             )}
-          </div>
+          </SectionWithTitle>
 
-          <div>
+          <div className='flex flex-wrap gap-5'>
+            <button
+              type='button'
+              className='inline-flex items-center px-5 py-2.5 mt-4 sm:mt-10 text-sm font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-gray-900 hover:bg-gray-800 border-sky-800 border-2'>
+              Sauvegarder Brouillon
+            </button>
             <button
               type='submit'
-              className='inline-flex items-center px-5 py-2.5 mt-4 sm:mt-10 text-sm font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-gray-900 hover:bg-gray-800 border-sky-800 border-2'>
+              className='inline-flex items-center px-5 py-2.5 mt-4 sm:mt-10 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-900 hover:bg-blue-800 border-sky-800 border-2'>
               Publier le bien
             </button>
           </div>

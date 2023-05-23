@@ -20,7 +20,7 @@ interface IEquipInt {
   accessibilitePMR: boolean;
   digiCode: boolean;
   alarme: boolean;
-  Interphone: boolean;
+  interphone: boolean;
   cheminee: boolean;
   climatisation: boolean;
   gardien: boolean;

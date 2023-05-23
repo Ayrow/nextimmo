@@ -52,7 +52,7 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     },
     statut: {
       type: String,
-      enum: ['bientot', 'disponible', 'offreEnCours', 'vendu'],
+      enum: ['bientot', 'disponible', 'offreEnCours', 'vendu', 'loué'],
     },
     surfaceInt: {
       type: Number,
@@ -80,7 +80,7 @@ const listingSchema: Schema<IListingDocument> = new Schema(
         accessibilitePMR: Boolean,
         digiCode: Boolean,
         alarme: Boolean,
-        Interphone: Boolean,
+        interphone: Boolean,
         cheminee: Boolean,
         climatisation: Boolean,
         gardien: Boolean,
@@ -121,7 +121,10 @@ const listingSchema: Schema<IListingDocument> = new Schema(
         'Un compte agent est nécessaire pour ajouter une annonce',
       ],
     },
-    draft: false,
+    draft: {
+      type: Boolean,
+      default: false,
+    },
     nbAjoutFavoris: {
       type: Number,
       default: 0,

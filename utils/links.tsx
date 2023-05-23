@@ -1,5 +1,3 @@
-'user client';
-
 // import { FaHeart, FaSuitcase, FaUserEdit, FaChalkboard } from 'react-icons/fa';
 
 export type LinksTypes = {

@@ -20,7 +20,7 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
     photos,
   } = listing;
 
-  const { separateThousands } = useListingsContext();
+  const { separateThousands, deleteListing } = useListingsContext();
   const { actions } = useAppContext();
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
