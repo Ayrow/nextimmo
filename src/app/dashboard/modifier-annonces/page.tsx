@@ -11,7 +11,13 @@ const ManageListings = () => {
   const { state } = useAppContext();
 
   useEffect(() => {
-    getAllListings();
+    const controller = new AbortController();
+    const signal = controller.signal;
+    getAllListings(signal);
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
