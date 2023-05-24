@@ -41,9 +41,16 @@ const Users = () => {
     setUserToEdit(user);
   };
 
-  const updateUser = async (user: UserFromDB) => {
+  const updateUser = async () => {
     try {
-    } catch (error) {}
+      await fetch('/api/user', {
+        method: 'PUT',
+      });
+      // PUT methode to update role
+    } catch (error) {
+      //display error
+    }
+    // cancel editing
   };
 
   useEffect(() => {

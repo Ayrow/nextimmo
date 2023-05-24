@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, deleteUser, getAuth } from 'firebase/auth';
+import { User } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import {
   GoogleAuthProvider,
@@ -30,7 +30,6 @@ type AuthContextType = {
   registerUserWithEmail: (email: string, password: string) => void;
   connectWithGoogle: () => void;
   sendPasswordReset: (email: string) => void;
-  deleteUserFromFirebase: (uid) => void;
   signOutUser: () => void;
 };
 
@@ -214,16 +213,6 @@ const AuthProvider = ({ children }) => {
     removeUserFromSessionStorage();
   };
 
-  const verifyAccountBeforeAction = async () => {};
-
-  const deleteUserFromFirebase = async (uid) => {
-    try {
-      await deleteUser(uid);
-    } catch (error) {
-      // error
-    }
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -234,7 +223,6 @@ const AuthProvider = ({ children }) => {
         signOutUser,
         signInWithEmail,
         connectWithGoogle,
-        deleteUserFromFirebase,
       }}>
       {children}
     </AuthContext.Provider>

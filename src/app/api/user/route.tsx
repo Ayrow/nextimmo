@@ -51,3 +51,21 @@ export async function GET(request: NextRequest) {
     });
   }
 }
+
+export async function PUT(request: NextRequest) {
+  await connectDB();
+  const { userToEdit } = await request.json();
+  const { email, username, role, _id } = userToEdit;
+
+  const user = await User.findOne({ _id: userToEdit._id });
+
+  if (user) {
+    user.updateOne({ email, username, role });
+    user.save();
+    return new NextResponse(JSON.stringify(user), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } else {
+    throw new Error('No user found');
+  }
+}
