@@ -41,6 +41,11 @@ const Users = () => {
     setUserToEdit(user);
   };
 
+  const updateUser = async (user: UserFromDB) => {
+    try {
+    } catch (error) {}
+  };
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -61,7 +66,7 @@ const Users = () => {
       <div className='flex flex-col gap-5 mt-10'>
         {allUsers &&
           allUsers?.map((user) => {
-            const { email, username, _id, role } = user;
+            const { email, username, role } = user;
             return (
               <div className='relative w-full border rounded-2xl flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 p-5'>
                 {state.isEditing && userToEdit ? (
