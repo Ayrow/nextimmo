@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (!values) {
-    throw new Error('please fill in all the mandatory fields');
+    throw new Error('Please fill in all the mandatory fields');
   }
 
   const user = await User.findOne({ email });

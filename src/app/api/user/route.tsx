@@ -5,10 +5,17 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   await connectDB();
   const { email, username } = await request.json();
-  const role = 'user';
 
   if (!email) {
     throw new Error('please provide all values');
+  }
+
+  let role = 'user';
+
+  const allUsers = await User.find();
+
+  if (!allUsers) {
+    role = 'admin';
   }
 
   const userAlreadyExists = await User.findOne({ email });

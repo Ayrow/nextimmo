@@ -37,7 +37,7 @@ const Users = () => {
   };
 
   const editUser = (user: UserFromDB) => {
-    actions.editItem(user.email);
+    actions.editItem(user._id);
     setUserToEdit(user);
   };
 

@@ -10,6 +10,7 @@ import {
   STOP_EDITING_ITEM,
 } from '../actions';
 import appReducer from './appReducer';
+import { ObjectId } from 'mongoose';
 
 export enum ModalTypes {
   Notification = 'notification',
@@ -70,7 +71,7 @@ type AppActions = {
     modalTitle,
     refItem,
   }: ModalPropsType) => void;
-  editItem: (refItem: string) => void;
+  editItem: (refItem: ObjectId | string) => void;
   stopEditingItem: () => void;
 };
 
@@ -120,7 +121,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLOSE_MODAL });
   };
 
-  const editItem = (refItem: string) => {
+  const editItem = (refItem: ObjectId) => {
     dispatch({ type: EDIT_ITEM, payload: refItem });
   };
 

@@ -15,6 +15,7 @@ import { useListingsContext } from '../../../context/listings/listingsContext';
 import { useAppContext } from '../../../context/app/appContext';
 import SingleListing from '../../annonces/[slug]/[ref]/page';
 import BackButton from '../../../components/buttons/BackButton';
+import { useRouter } from 'next/navigation';
 
 const initialState: IListing = {
   ref: '',
@@ -99,7 +100,7 @@ const typesDeChauffage = [
 
 const AddListing = () => {
   const { firebaseUser } = useAuthContext();
-  const { state } = useAppContext();
+  const { state, actions } = useAppContext();
   const { getSingleListing, singleListing } = useListingsContext();
   const [values, setValues] = useState(initialState);
 
@@ -171,6 +172,7 @@ const AddListing = () => {
 
   const clearForm = () => {
     setValues(initialState);
+    actions.stopEditingItem();
   };
 
   const addListing = async () => {
@@ -208,6 +210,10 @@ const AddListing = () => {
         controller.abort();
       };
     }
+    return () => {
+      actions.stopEditingItem();
+      clearForm();
+    };
   }, [state.isEditing, state.refItem]);
 
   useEffect(() => {
