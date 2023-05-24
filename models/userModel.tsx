@@ -3,6 +3,7 @@ import { Schema, model, models, Types, Document, Model } from 'mongoose';
 interface IUserDocument extends Document {
   username: string;
   email: string;
+  firebaseUID: string;
   saved: [string];
   alreadySeen: [string];
   role: string;
@@ -12,6 +13,11 @@ const userSchema: Schema<IUserDocument> = new Schema(
   {
     username: String,
     email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    firebaseUID: {
       type: String,
       required: true,
       unique: true,

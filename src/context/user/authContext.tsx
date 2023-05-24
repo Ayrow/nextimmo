@@ -30,7 +30,7 @@ type AuthContextType = {
   registerUserWithEmail: (email: string, password: string) => void;
   connectWithGoogle: () => void;
   sendPasswordReset: (email: string) => void;
-  deleteUserFromFirebase: () => void;
+  deleteUserFromFirebase: (uid) => void;
   signOutUser: () => void;
 };
 
@@ -214,11 +214,14 @@ const AuthProvider = ({ children }) => {
     removeUserFromSessionStorage();
   };
 
-  const deleteUserFromFirebase = () => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    deleteUser(user);
-    signOutUser();
+  const verifyAccountBeforeAction = async () => {};
+
+  const deleteUserFromFirebase = async (uid) => {
+    try {
+      await deleteUser(uid);
+    } catch (error) {
+      // error
+    }
   };
 
   return (
