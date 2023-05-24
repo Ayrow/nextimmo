@@ -57,10 +57,12 @@ export async function PUT(request: NextRequest) {
   const { userToEdit } = await request.json();
   const { email, username, role, _id } = userToEdit;
 
-  const user = await User.findOne({ _id: userToEdit._id });
+  const user = await User.findOne({ _id });
 
   if (user) {
-    user.updateOne({ email, username, role });
+    user.email = email;
+    user.username = username;
+    user.role = role;
     user.save();
     return new NextResponse(JSON.stringify(user), {
       headers: { 'Content-Type': 'application/json' },

@@ -11,6 +11,7 @@ const Users = () => {
   const { state, actions } = useAppContext();
   const [allUsers, setAllUsers] = useState<UserFromDB[]>(null);
   const [userToEdit, setUserToEdit] = useState<UserFromDB>(null);
+  const [userUpdated, setUserUpdated] = useState(false);
 
   const fetchAllUsers = async (role: string, signal: AbortSignal) => {
     try {
@@ -23,7 +24,6 @@ const Users = () => {
       });
       const data: UserFromDB[] = await res.json();
       setAllUsers(data);
-      console.log('data', data);
     } catch (error) {
       // display error
     }
@@ -43,14 +43,20 @@ const Users = () => {
 
   const updateUser = async () => {
     try {
-      await fetch('/api/user', {
+      const res = await fetch('/api/user', {
         method: 'PUT',
+        body: JSON.stringify({ userToEdit }),
       });
-      // PUT methode to update role
+      const data: UserFromDB = await res.json();
+      if (data) {
+        let userIndex = allUsers.findIndex((user) => user._id === data._id);
+        allUsers[userIndex] = data;
+        setAllUsers(allUsers);
+      }
     } catch (error) {
       //display error
     }
-    // cancel editing
+    actions.stopEditingItem();
   };
 
   useEffect(() => {
@@ -60,6 +66,7 @@ const Users = () => {
 
     return () => {
       controller.abort();
+      setUserUpdated(false);
       setAllUsers(null);
       setUserToEdit(null);
     };
@@ -75,7 +82,9 @@ const Users = () => {
           allUsers?.map((user) => {
             const { email, username, role } = user;
             return (
-              <div className='relative w-full border rounded-2xl flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 p-5'>
+              <div
+                key={user.email}
+                className='relative w-full border rounded-2xl flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 p-5'>
                 {state.isEditing && userToEdit ? (
                   <>
                     <div className='flex gap-3'>
@@ -119,6 +128,7 @@ const Users = () => {
                       </button>
                       <button
                         type='button'
+                        onClick={updateUser}
                         className='border rounded-xl py-2 px-5 border-green-500 shadow-green-500 shadow-md'>
                         Enregister
                       </button>
