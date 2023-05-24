@@ -71,3 +71,21 @@ export async function PUT(request: NextRequest) {
     throw new Error('No user found');
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  await connectDB();
+  const { searchParams } = new URL(request.url);
+  const email = searchParams.get('email');
+
+  const user = await User.findOne({ email });
+
+  if (user) {
+    await User.deleteOne({ user });
+
+    return new NextResponse('User deleted', {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } else {
+    throw new Error('No user found');
+  }
+}
