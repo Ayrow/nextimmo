@@ -46,6 +46,9 @@ const Users = () => {
       const res = await fetch('/api/user', {
         method: 'PUT',
         body: JSON.stringify({ userToEdit }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
       const data: UserFromDB = await res.json();
       if (data) {
@@ -57,6 +60,20 @@ const Users = () => {
       //display error
     }
     actions.stopEditingItem();
+  };
+
+  const deleteUser = async (user: UserFromDB) => {
+    try {
+      await fetch(`/api/user?id=${user._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      allUsers.filter((singleUser) => singleUser._id !== user._id);
+    } catch (error) {
+      // display error
+    }
   };
 
   useEffect(() => {
@@ -74,7 +91,7 @@ const Users = () => {
 
   return (
     <div className='p-10 bg-gray-900 w-full relative'>
-      {state.showModal && <ConfirmDeletionModal deleteItem={deleteListing} />}
+      {state.showModal && <ConfirmDeletionModal deleteItem={deleteUser} />}
       // Filter and sort section here
       <h2 className='text-center text-xl font-bold'>Manage Users</h2>
       <div className='flex flex-col gap-5 mt-10'>
