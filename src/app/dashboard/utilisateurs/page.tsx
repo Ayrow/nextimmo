@@ -28,6 +28,10 @@ const Users = () => {
     }
   };
 
+  const handleChange = () => {
+    //
+  };
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -38,6 +42,7 @@ const Users = () => {
       setAllUsers(null);
     };
   }, []);
+
   return (
     <div className='p-10 bg-gray-900 w-full relative'>
       {state.showModal && <ConfirmDeletionModal deleteItem={deleteListing} />}
@@ -51,15 +56,36 @@ const Users = () => {
               <div className='relative w-full border rounded-2xl flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 p-5'>
                 {state.isEditing ? (
                   <>
-                    <p className=''>
-                      Utilisateur: <span className='font-bold'>{username}</span>
-                    </p>
-                    <p className=''>
-                      email: <span className='font-bold'>{email}</span>
-                    </p>
-                    <p className=''>
-                      role: <span className='font-bold'>{role}</span>
-                    </p>
+                    <div className='flex gap-3'>
+                      <label htmlFor=''>Utilisateur</label>
+                      <input
+                        type='text'
+                        name='username'
+                        value={username}
+                        className='text-black'
+                      />
+                    </div>
+                    <div className='flex gap-3'>
+                      <label htmlFor=''>Email</label>
+                      <input
+                        type='text'
+                        name='email'
+                        value={email}
+                        className='text-black'
+                      />
+                    </div>
+                    <div className='flex gap-3 items-center text-black'>
+                      <label className='text-white'>Rôle</label>
+                      <select
+                        name='role'
+                        onChange={handleChange}
+                        value={role}
+                        className=''>
+                        <option value='user'>Utilisateur</option>
+                        <option value='agent'>Agent</option>
+                        <option value='admin'>Admin</option>
+                      </select>
+                    </div>
                     <div className='flex flex-wrap gap-5'>
                       <button
                         type='button'
