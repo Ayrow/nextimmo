@@ -4,6 +4,7 @@ import {
   CLOSE_MODAL,
   DISPLAY_MODAL,
   EDIT_ITEM,
+  STOP_EDITING_ITEM,
 } from '../actions';
 
 import { AppState } from './appContext';
@@ -49,6 +50,12 @@ const appReducer = (state: AppState, action: AppAction) => {
         ...state,
         isEditing: true,
         refItem: action.payload,
+      };
+    case STOP_EDITING_ITEM:
+      return {
+        ...state,
+        isEditing: false,
+        refItem: '',
       };
     default:
       throw new Error(`There is no action: ${action.type}`);

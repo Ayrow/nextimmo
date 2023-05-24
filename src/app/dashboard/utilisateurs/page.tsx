@@ -49,38 +49,65 @@ const Users = () => {
             const { email, username, _id, role } = user;
             return (
               <div className='relative w-full border rounded-2xl flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 p-5'>
-                <p className=''>
-                  Utilisateur: <span className='font-bold'>{username}</span>
-                </p>
-
-                <p className=''>
-                  email: <span className='font-bold'>{email}</span>
-                </p>
-
-                <p className=''>
-                  role: <span className='font-bold'>{role}</span>
-                </p>
-
-                <div className='flex flex-wrap gap-5'>
-                  <button
-                    type='button'
-                    className='border rounded-xl py-2 px-5 border-orange-500 shadow-orange-500 shadow-md'>
-                    Modifier
-                  </button>
-                  <button
-                    type='button'
-                    onClick={() =>
-                      actions.displayModal({
-                        modalMsg: `Êtes-vous sûr(e) de vouloir supprimer l'utilisateur'`,
-                        modalTitle: "Suppression d'utilisateur",
-                        modalType: ModalTypes.Delete,
-                        refItem: `${_id}`,
-                      })
-                    }
-                    className='border rounded-xl py-2 px-5 border-red-500 shadow-red-500 shadow-md'>
-                    Supprimer
-                  </button>
-                </div>
+                {state.isEditing ? (
+                  <>
+                    <p className=''>
+                      Utilisateur: <span className='font-bold'>{username}</span>
+                    </p>
+                    <p className=''>
+                      email: <span className='font-bold'>{email}</span>
+                    </p>
+                    <p className=''>
+                      role: <span className='font-bold'>{role}</span>
+                    </p>
+                    <div className='flex flex-wrap gap-5'>
+                      <button
+                        type='button'
+                        onClick={actions.stopEditingItem}
+                        className='border rounded-xl py-2 px-5 border-gray-500 shadow-gray-500 shadow-md'>
+                        Annuler
+                      </button>
+                      <button
+                        type='button'
+                        className='border rounded-xl py-2 px-5 border-green-500 shadow-green-500 shadow-md'>
+                        Enregister
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className=''>
+                      Utilisateur: <span className='font-bold'>{username}</span>
+                    </p>
+                    <p className=''>
+                      email: <span className='font-bold'>{email}</span>
+                    </p>
+                    <p className=''>
+                      role: <span className='font-bold'>{role}</span>
+                    </p>
+                    <div className='flex flex-wrap gap-5'>
+                      <button
+                        type='button'
+                        onClick={() => actions.editItem(email)}
+                        className='border rounded-xl py-2 px-5 border-orange-500 shadow-orange-500 shadow-md'>
+                        Modifier
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() =>
+                          actions.displayModal({
+                            modalMsg: `Êtes-vous sûr(e) de vouloir supprimer l'utilisateur`,
+                            modalTitle: "Suppression d'utilisateur",
+                            modalType: ModalTypes.Delete,
+                            refItem: `${username}`,
+                          })
+                        }
+                        className='border rounded-xl py-2 px-5 border-red-500 shadow-red-500 shadow-md'>
+                        Supprimer
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             );
           })}

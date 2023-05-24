@@ -7,6 +7,7 @@ import {
   DISPLAY_ALERT,
   DISPLAY_MODAL,
   EDIT_ITEM,
+  STOP_EDITING_ITEM,
 } from '../actions';
 import appReducer from './appReducer';
 
@@ -70,6 +71,7 @@ type AppActions = {
     refItem,
   }: ModalPropsType) => void;
   editItem: (refItem: string) => void;
+  stopEditingItem: () => void;
 };
 
 const initialAppActions: AppActions = {
@@ -77,6 +79,7 @@ const initialAppActions: AppActions = {
   closeModal: () => null,
   displayModal: () => null,
   editItem: () => null,
+  stopEditingItem: () => null,
 };
 
 const AppContext = createContext<{
@@ -121,11 +124,21 @@ const AppProvider = ({ children }) => {
     dispatch({ type: EDIT_ITEM, payload: refItem });
   };
 
+  const stopEditingItem = () => {
+    dispatch({ type: STOP_EDITING_ITEM });
+  };
+
   return (
     <AppContext.Provider
       value={{
         state,
-        actions: { displayAlert, closeModal, displayModal, editItem },
+        actions: {
+          displayAlert,
+          closeModal,
+          displayModal,
+          editItem,
+          stopEditingItem,
+        },
       }}>
       {children}
     </AppContext.Provider>
