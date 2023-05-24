@@ -10,6 +10,7 @@ const Users = () => {
   const { deleteListing } = useListingsContext();
   const { state, actions } = useAppContext();
   const [allUsers, setAllUsers] = useState<UserFromDB[]>(null);
+  const [userToEdit, setUserToEdit] = useState<UserFromDB>(null);
 
   const fetchAllUsers = async (role: string, signal: AbortSignal) => {
     try {
@@ -28,8 +29,16 @@ const Users = () => {
     }
   };
 
-  const handleChange = () => {
-    //
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setUserToEdit({ ...userToEdit, [name]: value });
+  };
+
+  const editUser = (user: UserFromDB) => {
+    actions.editItem(user.email);
+    setUserToEdit(user);
   };
 
   useEffect(() => {
@@ -40,6 +49,7 @@ const Users = () => {
     return () => {
       controller.abort();
       setAllUsers(null);
+      setUserToEdit(null);
     };
   }, []);
 
@@ -54,14 +64,15 @@ const Users = () => {
             const { email, username, _id, role } = user;
             return (
               <div className='relative w-full border rounded-2xl flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 p-5'>
-                {state.isEditing ? (
+                {state.isEditing && userToEdit ? (
                   <>
                     <div className='flex gap-3'>
                       <label htmlFor=''>Utilisateur</label>
                       <input
                         type='text'
                         name='username'
-                        value={username}
+                        onChange={handleChange}
+                        value={userToEdit.username}
                         className='text-black'
                       />
                     </div>
@@ -70,7 +81,8 @@ const Users = () => {
                       <input
                         type='text'
                         name='email'
-                        value={email}
+                        onChange={handleChange}
+                        value={userToEdit.email}
                         className='text-black'
                       />
                     </div>
@@ -79,7 +91,7 @@ const Users = () => {
                       <select
                         name='role'
                         onChange={handleChange}
-                        value={role}
+                        value={userToEdit.role}
                         className=''>
                         <option value='user'>Utilisateur</option>
                         <option value='agent'>Agent</option>
@@ -114,7 +126,7 @@ const Users = () => {
                     <div className='flex flex-wrap gap-5'>
                       <button
                         type='button'
-                        onClick={() => actions.editItem(email)}
+                        onClick={() => editUser(user)}
                         className='border rounded-xl py-2 px-5 border-orange-500 shadow-orange-500 shadow-md'>
                         Modifier
                       </button>
