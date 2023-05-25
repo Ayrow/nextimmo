@@ -4,6 +4,7 @@ import GridCard from '../../components/listings/GridCard';
 import PageBtnContainer from '../../components/buttons/PageBtnContainer';
 import { useEffect, useState } from 'react';
 import { useListingsContext } from '../../context/listings/listingsContext';
+import FiltersListingPage from '../../components/filters/FiltersListingPage';
 
 const queryParams = {
   transaction: 'vente',
@@ -80,7 +81,7 @@ const Listings = () => {
 
   return (
     <section className='bg-gray-900 py-5'>
-      // Filter and sort section here
+      <FiltersListingPage />
       <div className=''>
         <p className='font-bold text-center'>{totalNumberListings} annonces</p>
       </div>

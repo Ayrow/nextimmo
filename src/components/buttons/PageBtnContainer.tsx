@@ -44,7 +44,8 @@ const PageBtnContainer = ({ numOfPages, page, setCurrentPage }) => {
                   ? 'border p-1 rounded border-blue-300 text-blue-300'
                   : 'border p-1 rounded'
               }
-              onClick={() => setCurrentPage(page)}>
+              onClick={() => setCurrentPage(page)}
+              disabled={pageNumber === page}>
               {pageNumber}
             </button>
           );
