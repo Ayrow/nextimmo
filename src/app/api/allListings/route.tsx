@@ -4,6 +4,11 @@ import Listing from '../../../../models/listingModel';
 
 export async function GET(request: NextRequest) {
   await connectDB();
+  const { searchParams } = new URL(request.url);
+
+  const statut = searchParams.get('statut');
+
+  console.log('statut', statut);
 
   const allListings = await Listing.find();
 
