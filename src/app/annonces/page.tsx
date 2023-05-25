@@ -1,31 +1,30 @@
 'use client';
 
 import GridCard from '../../components/listings/GridCard';
-import ListCard from '../../components/listings/ListCard';
+import PageBtnContainer from '../../components/buttons/PageBtnContainer';
 import { useEffect, useState } from 'react';
 import { useListingsContext } from '../../context/listings/listingsContext';
 
 const queryParams = {
-  transaction: '',
+  transaction: 'vente',
   statut: 'disponible',
   quartier: '',
   ville: '',
   codePostal: undefined,
   typeDeBien: '',
-  minPrice: '',
-  maxPrice: '',
+  minPrice: undefined,
+  maxPrice: undefined,
   minSurfaceInt: undefined,
   maxSurfaceInt: undefined,
+  minSurfaceExt: undefined,
   nbPieces: undefined,
   nbChambres: undefined,
   nbSDB: undefined,
   typeChauffage: '',
-  equipements: [],
+  equipements: undefined,
   exposition: '',
-  page: 1,
-  numOfPages: 1,
   sort: 'latest',
-  // sortOptions: ['latest', 'oldest', 'a-z'],
+  // sortOptions: ['latest', 'oldest'],
   limit: 12,
 };
 
@@ -33,18 +32,11 @@ const Listings = () => {
   // const { allListings, getAllListings } = useListingsContext();
   const [allListings, setAllListings] = useState(null);
   const [valuesQueries, setValuesQueries] = useState(queryParams);
+  const [totalNumberListings, setTotalNumberListings] = useState(null);
+  const [totalPages, setTotalPages] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const getAllListings = async (signal: AbortSignal) => {
-    const {
-      transaction,
-      statut,
-      quartier,
-      ville,
-      codePostal,
-      typeDeBien,
-      minPrice,
-      maxPrice,
-    } = valuesQueries;
     const searchParams = new URLSearchParams();
     Object.entries(valuesQueries).forEach(([key, value]) => {
       if (value) {
@@ -61,9 +53,11 @@ const Listings = () => {
           'Content-Type': 'application/json',
         },
       });
-      const data = await res.json();
-      if (data) {
-        setAllListings(data);
+      const { allListings, totalListingsFound, numOfPages } = await res.json();
+      if (allListings) {
+        setAllListings(allListings);
+        setTotalNumberListings(totalListingsFound);
+        setTotalPages(numOfPages);
       } else {
         //display alert error fetching listings
       }
@@ -71,6 +65,7 @@ const Listings = () => {
       alert(error);
       // add Modal or alert for error
     }
+    console.log('totalPages', totalPages);
   };
 
   useEffect(() => {
@@ -86,13 +81,23 @@ const Listings = () => {
   return (
     <section className='bg-gray-900 py-5'>
       // Filter and sort section here
-      <h2 className='text-center text-xl font-bold p-5'>Listings</h2>
+      <div className=''>
+        <p className='font-bold text-center'>{totalNumberListings} annonces</p>
+      </div>
+      <h2 className='text-center text-xl font-bold p-5'>Annonces</h2>
       <div
         className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 m-10 gap-5'}>
         {allListings?.map((listing) => {
           return <GridCard key={listing.ref} listing={listing} />;
         })}
       </div>
+      {totalPages > 0 && (
+        <PageBtnContainer
+          numOfPages={totalPages}
+          page={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
     </section>
   );
 };
