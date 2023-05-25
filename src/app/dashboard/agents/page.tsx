@@ -1,7 +1,7 @@
-import React from 'react';
+import ManageUsers from '../../../components/dashboard/ManageUsers';
 
 const Agents = () => {
-  return <div>Agents</div>;
+  return <ManageUsers userRole='admin' />;
 };
 
 export default Agents;
