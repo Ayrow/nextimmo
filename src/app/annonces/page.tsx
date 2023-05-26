@@ -81,7 +81,10 @@ const Listings = () => {
 
   return (
     <section className='bg-gray-900 py-5'>
-      <FiltersListingPage />
+      <FiltersListingPage
+        valuesQueries={valuesQueries}
+        setValuesQueries={setValuesQueries}
+      />
       <div className=''>
         <p className='font-bold text-center'>{totalNumberListings} annonces</p>
       </div>
