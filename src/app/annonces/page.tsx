@@ -37,67 +37,50 @@ const Listings = () => {
   const [totalPages, setTotalPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    const delay = 300; // Debounce delay in milliseconds
-    let timeoutId;
-
-    const handleFilterChange = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        getAllListings(signal);
-      }, delay);
-    };
-
-    const getAllListings = async (signal) => {
-      const searchParams = new URLSearchParams();
-      Object.entries(valuesQueries).forEach(([key, value]) => {
-        if (value) {
-          searchParams.append(key, value);
-        }
-      });
-      const queryParams = searchParams.toString();
-
-      try {
-        const res = await fetch(`/api/allListings?${queryParams}`, {
-          method: 'GET',
-          signal: signal,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const { allListings, totalListingsFound, numOfPages } =
-          await res.json();
-        if (allListings) {
-          setAllListings(allListings);
-          setTotalNumberListings(totalListingsFound);
-          setTotalPages(numOfPages);
-        } else {
-          // Display alert error fetching listings
-        }
-      } catch (error) {
-        alert(error);
-        // Add modal or alert for error
+  const getAllListings = async (signal: AbortSignal) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(valuesQueries).forEach(([key, value]) => {
+      if (value) {
+        searchParams.append(key, value);
       }
-      console.log('totalPages', totalPages);
-    };
-
-    const filterElements = document.querySelectorAll('.filter-input');
-    filterElements.forEach((element) => {
-      element.addEventListener('input', handleFilterChange);
     });
+    const queryParams = searchParams.toString();
+
+    try {
+      const res = await fetch(`/api/allListings?${queryParams}`, {
+        method: 'GET',
+        signal: signal,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const { allListings, totalListingsFound, numOfPages } = await res.json();
+      if (allListings) {
+        setAllListings(allListings);
+        setTotalNumberListings(totalListingsFound);
+        setTotalPages(numOfPages);
+      } else {
+        //display alert error fetching listings
+      }
+    } catch (error) {
+      alert(error);
+      // add Modal or alert for error
+    }
+    console.log('totalPages', totalPages);
+  };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    getAllListings(signal);
 
     return () => {
-      filterElements.forEach((element) => {
-        element.removeEventListener('input', handleFilterChange);
-      });
-      clearTimeout(timeoutId);
+      controller.abort();
     };
-  }, [valuesQueries]);
+  }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
     setValuesQueries((prevValuesQueries) => ({
       ...prevValuesQueries,
       [name]: value,
