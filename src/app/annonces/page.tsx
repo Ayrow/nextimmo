@@ -37,53 +37,78 @@ const Listings = () => {
   const [totalPages, setTotalPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const getAllListings = async (signal: AbortSignal) => {
-    const searchParams = new URLSearchParams();
-    Object.entries(valuesQueries).forEach(([key, value]) => {
-      if (value) {
-        searchParams.append(key, value);
-      }
-    });
-    const queryParams = searchParams.toString();
-
-    try {
-      const res = await fetch(`/api/allListings?${queryParams}`, {
-        method: 'GET',
-        signal: signal,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const { allListings, totalListingsFound, numOfPages } = await res.json();
-      if (allListings) {
-        setAllListings(allListings);
-        setTotalNumberListings(totalListingsFound);
-        setTotalPages(numOfPages);
-      } else {
-        //display alert error fetching listings
-      }
-    } catch (error) {
-      alert(error);
-      // add Modal or alert for error
-    }
-    console.log('totalPages', totalPages);
-  };
-
   useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-    getAllListings(signal);
+    const delay = 300; // Debounce delay in milliseconds
+    let timeoutId;
+
+    const handleFilterChange = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        getAllListings(signal);
+      }, delay);
+    };
+
+    const getAllListings = async (signal) => {
+      const searchParams = new URLSearchParams();
+      Object.entries(valuesQueries).forEach(([key, value]) => {
+        if (value) {
+          searchParams.append(key, value);
+        }
+      });
+      const queryParams = searchParams.toString();
+
+      try {
+        const res = await fetch(`/api/allListings?${queryParams}`, {
+          method: 'GET',
+          signal: signal,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const { allListings, totalListingsFound, numOfPages } =
+          await res.json();
+        if (allListings) {
+          setAllListings(allListings);
+          setTotalNumberListings(totalListingsFound);
+          setTotalPages(numOfPages);
+        } else {
+          // Display alert error fetching listings
+        }
+      } catch (error) {
+        alert(error);
+        // Add modal or alert for error
+      }
+      console.log('totalPages', totalPages);
+    };
+
+    const filterElements = document.querySelectorAll('.filter-input');
+    filterElements.forEach((element) => {
+      element.addEventListener('input', handleFilterChange);
+    });
 
     return () => {
-      controller.abort();
+      filterElements.forEach((element) => {
+        element.removeEventListener('input', handleFilterChange);
+      });
+      clearTimeout(timeoutId);
     };
-  }, []);
+  }, [valuesQueries]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setValuesQueries((prevValuesQueries) => ({
+      ...prevValuesQueries,
+      [name]: value,
+    }));
+  };
 
   return (
     <section className='bg-gray-900 py-5'>
       <FiltersListingPage
         valuesQueries={valuesQueries}
-        setValuesQueries={setValuesQueries}
+        handleInputChange={handleInputChange}
       />
       <div className=''>
         <p className='font-bold text-center'>{totalNumberListings} annonces</p>

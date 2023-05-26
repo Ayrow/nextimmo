@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const FiltersListingPage = ({ valuesQueries, setValuesQueries }) => {
+const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   const ref = useRef<HTMLDivElement>(null);
   const {
     transaction,
@@ -40,12 +40,16 @@ const FiltersListingPage = ({ valuesQueries, setValuesQueries }) => {
     setIsCardOpen(data);
   };
 
+  const closeAllCards = () => {
+    setIsCardOpen(initialCardsState);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!ref.current || ref.current.contains(event.target as Node)) {
         return;
       }
-      setIsCardOpen(initialCardsState);
+      closeAllCards();
     };
 
     document.addEventListener('click', handleClickOutside);
@@ -79,12 +83,42 @@ const FiltersListingPage = ({ valuesQueries, setValuesQueries }) => {
               name='transaction'
               value='Acheter'
               onClick={(e) => openCloseCard(e)}>
-              {transaction}
+              {transaction === 'vente' ? 'Acheter' : 'Louer'}
             </button>
             {isCardOpen.transaction && (
-              <div className='absolute border p-4 flex gap-3 mt-4 z-50 rounded-xl bg-sky-950'>
-                <button>Acheter</button>
-                <button>Louer</button>
+              <div className='absolute border p-4 mt-4 z-50 rounded-xl bg-sky-950'>
+                <p className='text-center font-bold'>Vous souhaitez?</p>
+                <div className='flex gap-3 my-3'>
+                  <button
+                    id='filter-input'
+                    name='transaction'
+                    value='vente'
+                    onClick={(e) => handleInputChange(e)}
+                    className='border m-2 p-5 rounded-lg'>
+                    Acheter
+                  </button>
+                  <button
+                    id='filter-input'
+                    name='transaction'
+                    value='location'
+                    onClick={(e) => handleInputChange(e)}
+                    className='border m-2 p-5 rounded-lg'>
+                    Louer
+                  </button>
+                </div>
+                <div className='flex justify-between gap-10 mt-5'>
+                  <button
+                    name='transaction'
+                    value='vente'
+                    onClick={(e) => handleInputChange(e)}>
+                    Réinitialiser
+                  </button>
+                  <button
+                    onClick={closeAllCards}
+                    className='border-b border-b-transparent hover:border-b hover:border-white'>
+                    Valider
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -98,8 +132,8 @@ const FiltersListingPage = ({ valuesQueries, setValuesQueries }) => {
             </button>
             {isCardOpen.typeDeBien && (
               <div className='absolute border p-4 flex gap-3 mt-4 z-50 rounded-xl bg-sky-950'>
-                <button>Acheter</button>
-                <button>Louer</button>
+                <p>Quel(s) type(s) de bien(s)?</p>
+                <div></div>
               </div>
             )}
           </div>
