@@ -94,7 +94,10 @@ const Listings = () => {
         handleInputChange={handleInputChange}
       />
       <div className=''>
-        <p className='font-bold text-center'>{totalNumberListings} annonces</p>
+        <p className='font-bold text-center'>
+          {totalNumberListings}{' '}
+          {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvé'}
+        </p>
       </div>
       <h2 className='text-center text-xl font-bold p-5'>Annonces</h2>
       <div

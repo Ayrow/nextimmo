@@ -115,7 +115,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                   </button>
                   <button
                     onClick={closeAllCards}
-                    className='border border-b-transparent hover:border-b-2 hover:border-white'>
+                    className='border-b border-b-transparent hover:border-b hover:border-white'>
                     Valider
                   </button>
                 </div>
