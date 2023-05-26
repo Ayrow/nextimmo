@@ -77,7 +77,7 @@ const Listings = () => {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [valuesQueries]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
