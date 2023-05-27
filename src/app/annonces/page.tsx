@@ -71,6 +71,7 @@ const Listings = () => {
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
+    console.log('valuesQueries', valuesQueries);
     getAllListings(signal);
 
     return () => {
