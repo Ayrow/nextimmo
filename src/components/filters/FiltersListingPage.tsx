@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import FilterCard from './FilterCard';
 
 const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -76,18 +77,22 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
 
       {/* Desktop*/}
       <div className='relative' ref={ref}>
-        <div className='hidden md:flex m-5 border justify-between rounded-xl p-5 shadow-xl shadow-black'>
+        <div className='hidden md:flex m-5 md:flex-auto justify-between border gap-5 rounded-xl p-5 shadow-xl shadow-black'>
           <div>
             <button
               className='px-3 py-1 border rounded-lg'
               name='transaction'
-              value='Acheter'
+              value={transaction}
               onClick={(e) => openCloseCard(e)}>
               {transaction === 'vente' ? 'Acheter' : 'Louer'}
             </button>
             {isCardOpen.transaction && (
-              <div className='absolute border p-4 mt-4 z-50 rounded-xl bg-sky-950'>
-                <p className='text-center font-bold'>Vous souhaitez?</p>
+              <FilterCard
+                handleInputChange={handleInputChange}
+                name='transaction'
+                value='vente'
+                title='Vous souhaitez ?'
+                closeAllCards={closeAllCards}>
                 <div className='flex gap-3 my-3'>
                   <button
                     id='filter-input'
@@ -106,35 +111,54 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                     Louer
                   </button>
                 </div>
-                <div className='flex justify-between gap-10 mt-5'>
-                  <button
-                    name='transaction'
-                    value='vente'
-                    onClick={(e) => handleInputChange(e)}>
-                    Réinitialiser
-                  </button>
-                  <button
-                    onClick={closeAllCards}
-                    className='border-b border-b-transparent hover:border-b hover:border-white'>
-                    Valider
-                  </button>
-                </div>
-              </div>
+              </FilterCard>
             )}
           </div>
+
           <div>
             <button
               className='px-3 py-1 border rounded-lg'
               name='typeDeBien'
-              value='Type de Bien'
+              value={typeDeBien}
               onClick={(e) => openCloseCard(e)}>
-              Type de Bien
+              {typeDeBien.length > 0
+                ? typeDeBien.join(', ')
+                : 'Type(s) de bien'}
             </button>
             {isCardOpen.typeDeBien && (
-              <div className='absolute border p-4 flex gap-3 mt-4 z-50 rounded-xl bg-sky-950'>
-                <p>Quel(s) type(s) de bien(s)?</p>
-                <div></div>
-              </div>
+              <FilterCard
+                handleInputChange={handleInputChange}
+                name='typeDeBien'
+                value=''
+                title='Quel(s) type(s) de bien ?'
+                closeAllCards={closeAllCards}>
+                <div>
+                  <div className='flex my-3 items-center'>
+                    <input
+                      type='checkbox'
+                      id='filter-input'
+                      name='typeDeBien'
+                      value='maison'
+                      onClick={(e) => handleInputChange(e)}
+                      defaultChecked={typeDeBien.includes('maison')}
+                      className='border m-2 p-5 rounded-lg'
+                    />
+                    <label>Maison</label>
+                  </div>
+                  <div className='flex my-3 items-center'>
+                    <input
+                      type='checkbox'
+                      id='filter-input'
+                      name='typeDeBien'
+                      value='appartement'
+                      onClick={(e) => handleInputChange(e)}
+                      className='border m-2 p-5 rounded-lg'
+                      defaultChecked={typeDeBien.includes('appartement')}
+                    />
+                    <label>Appartement</label>
+                  </div>
+                </div>
+              </FilterCard>
             )}
           </div>
 

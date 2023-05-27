@@ -12,7 +12,7 @@ const queryParams = {
   quartier: '',
   ville: '',
   codePostal: undefined,
-  typeDeBien: '',
+  typeDeBien: ['maison'],
   minPrice: undefined,
   maxPrice: undefined,
   minSurfaceInt: undefined,
@@ -22,7 +22,7 @@ const queryParams = {
   nbChambres: undefined,
   nbSDB: undefined,
   typeChauffage: '',
-  equipements: undefined,
+  equipements: [],
   exposition: '',
   sort: 'latest',
   // sortOptions: ['latest', 'oldest'],
@@ -66,7 +66,6 @@ const Listings = () => {
       alert(error);
       // add Modal or alert for error
     }
-    console.log('totalPages', totalPages);
   };
 
   useEffect(() => {
@@ -81,10 +80,27 @@ const Listings = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setValuesQueries((prevValuesQueries) => ({
-      ...prevValuesQueries,
-      [name]: value,
-    }));
+
+    if (
+      (name === 'typeDeBien' && value !== '') ||
+      (name == 'equipements' && value !== '')
+    ) {
+      let newArray = valuesQueries[name];
+      if (valuesQueries[name].includes(value)) {
+        newArray = newArray.filter((item) => item !== value);
+      } else {
+        newArray.push(value);
+      }
+      setValuesQueries((prevValuesQueries) => ({
+        ...prevValuesQueries,
+        [name]: newArray,
+      }));
+    } else {
+      setValuesQueries((prevValuesQueries) => ({
+        ...prevValuesQueries,
+        [name]: value,
+      }));
+    }
   };
 
   return (

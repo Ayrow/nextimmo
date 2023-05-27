@@ -90,7 +90,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
 
         <p>ref: {ref}</p>
 
-        <div className='flex flex-wrap justify-around mt-5'>
+        <div className='flex flex-wrap justify-around gap-2 mt-5'>
           <button
             type='button'
             className='border rounded-xl py-2 px-5 border-red-500 text-red-500 bg-gray-950'>
