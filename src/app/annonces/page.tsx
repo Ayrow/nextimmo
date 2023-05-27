@@ -3,7 +3,7 @@
 import GridCard from '../../components/listings/GridCard';
 import PageBtnContainer from '../../components/buttons/PageBtnContainer';
 import { useEffect, useState } from 'react';
-import { useListingsContext } from '../../context/listings/listingsContext';
+
 import FiltersListingPage from '../../components/filters/FiltersListingPage';
 
 const queryParams = {
@@ -63,7 +63,7 @@ const Listings = () => {
         //display alert error fetching listings
       }
     } catch (error) {
-      alert(error);
+      console.log('error', error);
       // add Modal or alert for error
     }
   };
