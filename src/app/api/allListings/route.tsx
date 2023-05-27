@@ -38,19 +38,6 @@ export async function GET(request: NextRequest) {
   await connectDB();
   const { searchParams } = new URL(request.url);
 
-  {
-    /* searchParams.forEach((value, key) => {
-    if (
-      key !== 'page' &&
-      key !== 'numOfPages' &&
-      key !== 'sort' &&
-      key !== 'limit'
-    ) {
-      queryObject[key] = value;
-    }
-  }); */
-  }
-
   const statut = searchParams.get('statut');
   const transaction = searchParams.get('transaction');
   const quartier = searchParams.get('quartier');
@@ -123,12 +110,10 @@ export async function GET(request: NextRequest) {
 
   const checkMinMaxInterval = (min: string, max: string) => {
     if (min && max) {
-      queryObject.prix = {
-        $and: [{ $gte: parseInt(min) }, { $lte: parseInt(max) }],
-      };
+      queryObject.prix = { $gte: parseInt(min), $lte: parseInt(max) };
     } else if (min && !max) {
       queryObject.prix = { $gte: parseInt(min) };
-    } else if (max && !min) {
+    } else if (!min && max) {
       queryObject.prix = { $lte: parseInt(max) };
     }
   };

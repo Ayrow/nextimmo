@@ -63,6 +63,11 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     };
   }, []);
 
+  const prixMinMax = () => {
+    if (minPrice) {
+    }
+  };
+
   return (
     <div className='m-5'>
       {/* Mobile */}
@@ -93,7 +98,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               <FilterCard
                 handleInputChange={handleInputChange}
                 name='transaction'
-                value='vente'
+                resetValue='vente'
                 title='Vous souhaitez ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex gap-3 my-3'>
@@ -140,7 +145,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               <FilterCard
                 handleInputChange={handleInputChange}
                 name='typeDeBien'
-                value=''
+                resetValue=''
                 title='Quel(s) type(s) de bien ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex gap-5'>
@@ -150,7 +155,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                       id='filter-input'
                       name='typeDeBien'
                       value='maison'
-                      onClick={(e) => handleInputChange(e)}
+                      onChange={(e) => handleInputChange(e)}
                       checked={typeDeBien.includes('maison')}
                       className='border m-2 p-5 rounded-lg'
                     />
@@ -162,7 +167,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                       id='filter-input'
                       name='typeDeBien'
                       value='appartement'
-                      onClick={(e) => handleInputChange(e)}
+                      onChange={(e) => handleInputChange(e)}
                       className='border m-2 p-5 rounded-lg'
                       checked={typeDeBien.includes('appartement')}
                     />
@@ -181,21 +186,26 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               name='prix'
               value='prix'
               onClick={(e) => openCloseCard(e)}>
-              Prix min/max
+              {!minPrice && !maxPrice && `Prix min/max`}
+              {minPrice && !maxPrice && `A partir de ${minPrice}€`}
+              {!minPrice && maxPrice && `Jusque ${maxPrice}€`}
+              {minPrice && maxPrice && `De ${minPrice}€ à ${maxPrice}€`}
             </button>
             {isCardOpen.prix && (
               <FilterCard
                 handleInputChange={handleInputChange}
                 name='prix'
-                value='prix'
+                resetValue='prix'
                 title='Quel est votre budget ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex gap-3 my-3'>
                   <div className='relative mb-6'>
                     <input
-                      type='text'
+                      type='number'
                       id='filter-input'
                       name='minPrice'
+                      onChange={(e) => handleInputChange(e)}
+                      min={0}
                       className='border text-sm rounded-lg block w-full pr-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                       placeholder='minimum'
                     />
@@ -205,8 +215,11 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                   </div>
                   <div className='relative mb-6'>
                     <input
-                      type='text'
+                      type='number'
                       id='filter-input'
+                      name='maxPrice'
+                      onChange={(e) => handleInputChange(e)}
+                      min={0}
                       className='border text-sm rounded-lg block w-full pr-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
                       placeholder='maximum'
                     />

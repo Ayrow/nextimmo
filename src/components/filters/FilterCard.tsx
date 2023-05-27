@@ -3,7 +3,7 @@
 const FilterCard = ({
   handleInputChange,
   name,
-  value,
+  resetValue,
   title,
   children,
   closeAllCards,
@@ -13,7 +13,10 @@ const FilterCard = ({
       <p className='text-center font-bold'>{title}</p>
       {children}
       <div className='flex justify-between gap-10 mt-5'>
-        <button name={name} value={value} onClick={(e) => handleInputChange(e)}>
+        <button
+          name={name}
+          value={resetValue}
+          onClick={(e) => handleInputChange(e)}>
           Réinitialiser
         </button>
         <button

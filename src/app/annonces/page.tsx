@@ -37,7 +37,7 @@ const Listings = () => {
   const [totalPages, setTotalPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const getAllListings = async (signal: AbortSignal) => {
+  const getAllListings = async (signal: AbortSignal): Promise<void> => {
     const searchParams = new URLSearchParams();
     Object.entries(valuesQueries).forEach(([key, value]) => {
       if (value) {
@@ -69,12 +69,23 @@ const Listings = () => {
   };
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
     const controller = new AbortController();
     const signal = controller.signal;
-    console.log('valuesQueries', valuesQueries);
-    getAllListings(signal);
+
+    const fetchListings = async (): Promise<void> => {
+      await getAllListings(signal);
+    };
+
+    const debounceFetchListings = (): void => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(fetchListings, 300); // Adjust the delay as needed
+    };
+
+    debounceFetchListings();
 
     return () => {
+      clearTimeout(timeoutId);
       controller.abort();
     };
   }, [valuesQueries]);
