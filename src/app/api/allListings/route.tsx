@@ -21,7 +21,7 @@ type QueryObjectType = {
   quartier?: RegexFilter;
   ville?: RegexFilter;
   codePostal?: number;
-  typeDeBien?: string[];
+  typeDeBien?: { $in: string[] } | string;
   prix?: NumberFilter;
   surfaceInt?: NumberFilter;
   surfaceExt?: NumberFilter;
@@ -90,6 +90,15 @@ export async function GET(request: NextRequest) {
 
   if (typeChauffage) {
     queryObject.typeChauffage = typeChauffage;
+  }
+
+  if (typeDeBien) {
+    if (typeDeBien.includes(',')) {
+      const arrayTypeDeBien = typeDeBien.split(',');
+      queryObject.typeDeBien = { $in: arrayTypeDeBien };
+    } else {
+      queryObject.typeDeBien = typeDeBien;
+    }
   }
 
   const checkNbRoomsInterval = (keyNames: string[]) => {

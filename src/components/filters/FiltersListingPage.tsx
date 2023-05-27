@@ -140,7 +140,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                       name='typeDeBien'
                       value='maison'
                       onClick={(e) => handleInputChange(e)}
-                      defaultChecked={typeDeBien.includes('maison')}
+                      checked={typeDeBien.includes('maison')}
                       className='border m-2 p-5 rounded-lg'
                     />
                     <label>Maison</label>
@@ -153,7 +153,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                       value='appartement'
                       onClick={(e) => handleInputChange(e)}
                       className='border m-2 p-5 rounded-lg'
-                      defaultChecked={typeDeBien.includes('appartement')}
+                      checked={typeDeBien.includes('appartement')}
                     />
                     <label>Appartement</label>
                   </div>
