@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { IListingDocument } from '../../../types/listingTypes';
+import { IListing } from '../../../types/listingTypes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useListingsContext } from '../../context/listings/listingsContext';
 import { useRouter } from 'next/navigation';
 
-const GridCard = ({ listing }: { listing: IListingDocument }) => {
+const GridCard = ({ listing }: { listing: IListing }) => {
   const {
     ref,
     nbPieces,

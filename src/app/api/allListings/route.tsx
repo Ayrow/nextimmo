@@ -119,6 +119,7 @@ export async function GET(request: NextRequest) {
   };
 
   checkMinMaxInterval(minPrice, maxPrice);
+
   checkMinMaxInterval(minSurfaceInt, maxSurfaceInt);
   checkMinMaxInterval(minSurfaceExt, maxSurfaceExt);
 

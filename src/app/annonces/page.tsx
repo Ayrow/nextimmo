@@ -5,22 +5,46 @@ import PageBtnContainer from '../../components/buttons/PageBtnContainer';
 import { useEffect, useState } from 'react';
 
 import FiltersListingPage from '../../components/filters/FiltersListingPage';
+import { IListing } from '../../../types/listingTypes';
 
-const queryParams = {
+type QueryParamsType = {
+  transaction: string;
+  statut: string;
+  quartier: string;
+  ville: string;
+  codePostal: string;
+  typeDeBien: string[];
+  minPrice: string;
+  maxPrice: string;
+  minSurfaceInt: string;
+  maxSurfaceInt: string;
+  minSurfaceExt: string;
+  nbPieces: string;
+  nbChambres: string;
+  nbSDB: string;
+  typeChauffage: string;
+  equipements: string[];
+  exposition: string;
+  sort: string;
+  // sortOptions: ['latest', 'oldest'],
+  limit: number;
+};
+
+const queryParams: QueryParamsType = {
   transaction: 'vente',
   statut: 'disponible',
   quartier: '',
   ville: '',
-  codePostal: undefined,
+  codePostal: '',
   typeDeBien: ['maison'],
-  minPrice: undefined,
-  maxPrice: undefined,
-  minSurfaceInt: undefined,
-  maxSurfaceInt: undefined,
-  minSurfaceExt: undefined,
-  nbPieces: undefined,
-  nbChambres: undefined,
-  nbSDB: undefined,
+  minPrice: '',
+  maxPrice: '',
+  minSurfaceInt: '',
+  maxSurfaceInt: '',
+  minSurfaceExt: '',
+  nbPieces: '',
+  nbChambres: '',
+  nbSDB: '',
   typeChauffage: '',
   equipements: [],
   exposition: '',
@@ -31,17 +55,17 @@ const queryParams = {
 
 const Listings = () => {
   // const { allListings, getAllListings } = useListingsContext();
-  const [allListings, setAllListings] = useState(null);
+  const [allListings, setAllListings] = useState<IListing[]>(null);
   const [valuesQueries, setValuesQueries] = useState(queryParams);
-  const [totalNumberListings, setTotalNumberListings] = useState(null);
-  const [totalPages, setTotalPages] = useState(null);
+  const [totalNumberListings, setTotalNumberListings] = useState<number>(null);
+  const [totalPages, setTotalPages] = useState<number>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
   const getAllListings = async (signal: AbortSignal): Promise<void> => {
     const searchParams = new URLSearchParams();
     Object.entries(valuesQueries).forEach(([key, value]) => {
       if (value) {
-        searchParams.append(key, value);
+        searchParams.append(key, String(value));
       }
     });
     const queryParams = searchParams.toString();
@@ -92,12 +116,15 @@ const Listings = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+    const regexMixCharNumb = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
+    const regexOnlyChar = /[a-zA-Z]/;
+    const regexOnlyNumber = /^\d+$/;
 
     if (
       (name === 'typeDeBien' && value !== '') ||
       (name == 'equipements' && value !== '')
     ) {
-      let newArray = valuesQueries[name];
+      let newArray: string[] = valuesQueries[name];
       if (valuesQueries[name].includes(value)) {
         newArray = newArray.filter((item) => item !== value);
       } else {
