@@ -69,7 +69,6 @@ const Listings = () => {
       }
     });
     const queryParams = searchParams.toString();
-
     try {
       const res = await fetch(`/api/allListings?${queryParams}`, {
         method: 'GET',
@@ -136,12 +135,19 @@ const Listings = () => {
         ...prevValuesQueries,
         [name]: newArray,
       }));
+    } else if (name === 'prix') {
+      setValuesQueries((prevValuesQueries) => ({
+        ...prevValuesQueries,
+        minPrice: value,
+        maxPrice: value,
+      }));
     } else {
       setValuesQueries((prevValuesQueries) => ({
         ...prevValuesQueries,
         [name]: value,
       }));
     }
+    console.log('valuesQueries', valuesQueries);
   };
 
   return (

@@ -18,9 +18,11 @@ type PiecesFilter = number | { $and: [{ $gte: number }, { $lte: number }] };
 type QueryObjectType = {
   transaction: string;
   statut: string;
-  quartier?: RegexFilter;
-  ville?: RegexFilter;
-  codePostal?: number;
+  lieu?: {
+    quartier?: any;
+    ville?: any;
+    codePostal?: any;
+  };
   typeDeBien?: { $in: string[] } | string;
   prix?: NumberFilter;
   surfaceInt?: NumberFilter;
@@ -45,6 +47,7 @@ export async function GET(request: NextRequest) {
   const quartier = searchParams.get('quartier');
   const ville = searchParams.get('ville');
   const codePostal = searchParams.get('codePostal');
+
   const typeDeBien = searchParams.get('typeDeBien');
 
   const minPrice = searchParams.get('minPrice');
@@ -68,15 +71,18 @@ export async function GET(request: NextRequest) {
   };
 
   if (quartier) {
-    queryObject.quartier = { $regex: quartier, $options: 'i' };
+    const regex = new RegExp(quartier, 'i');
+    queryObject['lieu.quartier'] = { $regex: regex };
   }
 
   if (ville) {
-    queryObject.ville = { $regex: ville, $options: 'i' };
+    const regex = new RegExp(ville, 'i');
+    queryObject['lieu.ville'] = { $regex: regex };
   }
 
   if (codePostal) {
-    queryObject.codePostal = parseInt(codePostal);
+    const regex = new RegExp(codePostal, 'i');
+    queryObject['lieu.codePostal'] = { $regex: regex };
   }
 
   if (typeChauffage) {
@@ -100,10 +106,8 @@ export async function GET(request: NextRequest) {
           queryObject[keyName] = parseInt(keyName);
         } else {
           queryObject[keyName] = {
-            $and: [
-              { $gte: parseInt(arrayPieces[0]) },
-              { $lte: parseInt(arrayPieces[arrayPieces.length - 1]) },
-            ],
+            $gte: parseInt(arrayPieces[0]),
+            $lte: parseInt(arrayPieces[arrayPieces.length - 1]),
           };
         }
       }
@@ -131,7 +135,6 @@ export async function GET(request: NextRequest) {
   };
 
   checkMinMaxInterval(minPrice, maxPrice);
-
   checkMinMaxInterval(minSurfaceInt, maxSurfaceInt);
   checkMinMaxInterval(minSurfaceExt, maxSurfaceExt);
 

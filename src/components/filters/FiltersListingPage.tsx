@@ -32,6 +32,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   const initialCardsState = {
     transaction: false,
     typeDeBien: false,
+    localisation: false,
     prix: false,
   };
 
@@ -203,7 +204,52 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
             )}
           </div>
 
-          <button className='px-3 py-1 border rounded-lg'>Localisation</button>
+          <div>
+            <button
+              className='px-3 py-1 border rounded-lg'
+              name='localisation'
+              onClick={openCloseCard}>
+              Localisation
+            </button>
+            {isCardOpen.localisation && (
+              <FilterCard
+                handleInputChange={handleInputChange}
+                name='localisation'
+                resetValue=''
+                title='A quel endroit ?'
+                closeAllCards={closeAllCards}>
+                <div className='relative flex gap-5 my-5'>
+                  <input
+                    type='text'
+                    id='filter-input'
+                    name='quartier'
+                    value={quartier}
+                    onChange={(e) => handleInputChange(e)}
+                    className='border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
+                    placeholder='Quartier'
+                  />
+                  <input
+                    type='text'
+                    id='filter-input'
+                    name='ville'
+                    value={ville}
+                    onChange={(e) => handleInputChange(e)}
+                    className='border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
+                    placeholder='Ville'
+                  />
+                  <input
+                    type='text'
+                    id='filter-input'
+                    name='codePostal'
+                    value={codePostal}
+                    onChange={(e) => handleInputChange(e)}
+                    className='border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
+                    placeholder='Code Postal'
+                  />
+                </div>
+              </FilterCard>
+            )}
+          </div>
 
           <div>
             <button
@@ -216,8 +262,8 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
             {isCardOpen.prix && (
               <FilterCard
                 handleInputChange={handleInputChange}
-                name='minPrice'
-                resetValue={0}
+                name='prix'
+                resetValue=''
                 title='Quel est votre budget ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex gap-3 my-3'>
