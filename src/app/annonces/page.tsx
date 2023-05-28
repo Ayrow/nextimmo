@@ -141,13 +141,19 @@ const Listings = () => {
         minPrice: value,
         maxPrice: value,
       }));
+    } else if (name === 'localisation') {
+      setValuesQueries((prevValuesQueries) => ({
+        ...prevValuesQueries,
+        quartier: value,
+        ville: value,
+        codePostal: value,
+      }));
     } else {
       setValuesQueries((prevValuesQueries) => ({
         ...prevValuesQueries,
         [name]: value,
       }));
     }
-    console.log('valuesQueries', valuesQueries);
   };
 
   return (

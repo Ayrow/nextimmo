@@ -209,7 +209,9 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               className='px-3 py-1 border rounded-lg'
               name='localisation'
               onClick={openCloseCard}>
-              Localisation
+              {quartier || ville || codePostal
+                ? `${quartier} ${ville} ${codePostal}`
+                : 'Localisation'}
             </button>
             {isCardOpen.localisation && (
               <FilterCard
