@@ -38,6 +38,8 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     nbPieces: false,
   };
 
+  const NbRooms = ['1', '2', '3', '4', '5', '6'];
+
   const [isCardOpen, setIsCardOpen] = useState(initialCardsState);
 
   const openCloseCard = (e) => {
@@ -67,6 +69,30 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
+
+  const renderRoomNumberText = (
+    arrayNumberRoom: string[],
+    typeOfRoom: string
+  ) => {
+    if (arrayNumberRoom.length > 0) {
+      if (arrayNumberRoom.length === 1 && arrayNumberRoom.includes('1')) {
+        return `${arrayNumberRoom} ${typeOfRoom}`;
+      } else if (
+        arrayNumberRoom.length === 1 &&
+        !arrayNumberRoom.includes('1')
+      ) {
+        return `${arrayNumberRoom} ${typeOfRoom}s`;
+      } else {
+        if (!arrayNumberRoom.includes('6')) {
+          return `${arrayNumberRoom.sort().join(', ')} ${typeOfRoom}s`;
+        } else if (arrayNumberRoom.includes('6')) {
+          return `${arrayNumberRoom.sort().join(', ')} ${typeOfRoom}s et +`;
+        }
+      }
+    } else {
+      return 'Nombre de Pièces';
+    }
+  };
 
   const renderNumberTextOnly = (text: string, min: string, max: string) => {
     if (!min && !max) {
@@ -136,7 +162,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                     value='vente'
                     onClick={(e) => handleInputChange(e)}
                     className={
-                      transaction == 'vente'
+                      transaction === 'vente'
                         ? 'border m-2 p-5 rounded-lg bg-gray-600'
                         : 'border m-2 p-5 rounded-lg'
                     }>
@@ -148,7 +174,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                     value='location'
                     onClick={(e) => handleInputChange(e)}
                     className={
-                      transaction == 'location'
+                      transaction === 'location'
                         ? 'border m-2 p-5 rounded-lg bg-gray-600'
                         : 'border m-2 p-5 rounded-lg'
                     }>
@@ -173,7 +199,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               <FilterCard
                 handleInputChange={handleInputChange}
                 name='typeDeBien'
-                resetValue=''
+                resetValue={[]}
                 title='Quel(s) type(s) de bien ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex gap-5'>
@@ -360,7 +386,43 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               </FilterCard>
             )}
           </div>
-          <button className='px-3 py-1 border rounded-lg'>Pièces</button>
+
+          <div>
+            <button
+              className='px-3 py-1 border rounded-lg'
+              name='nbPieces'
+              onClick={(e) => openCloseCard(e)}>
+              {renderRoomNumberText(nbPieces, 'pièce')}
+            </button>
+            {isCardOpen.nbPieces && (
+              <FilterCard
+                handleInputChange={handleInputChange}
+                name='nbPieces'
+                resetValue=''
+                title='Combien de pièces ?'
+                closeAllCards={closeAllCards}>
+                <div className='flex gap-2 my-3'>
+                  {NbRooms.map((nb) => {
+                    return (
+                      <button
+                        id='filter-input'
+                        name='nbPieces'
+                        value={nb}
+                        onClick={(e) => handleInputChange(e)}
+                        className={
+                          nbPieces.includes(nb)
+                            ? 'border px-3 py-1 rounded-lg bg-gray-600'
+                            : 'border px-3 py-1 rounded-lg'
+                        }>
+                        {nb !== '6' ? nb : '6 +'}
+                      </button>
+                    );
+                  })}
+                </div>
+              </FilterCard>
+            )}
+          </div>
+
           <button className='px-3 py-1 text-red-500'>Recherche Avancée</button>
         </div>
         {/* Modal for each button */}

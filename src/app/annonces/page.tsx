@@ -19,7 +19,7 @@ type QueryParamsType = {
   minSurfaceInt: string;
   maxSurfaceInt: string;
   minSurfaceExt: string;
-  nbPieces: string;
+  nbPieces: string[];
   nbChambres: string;
   nbSDB: string;
   typeChauffage: string;
@@ -42,7 +42,7 @@ const queryParams: QueryParamsType = {
   minSurfaceInt: '',
   maxSurfaceInt: '',
   minSurfaceExt: '',
-  nbPieces: '',
+  nbPieces: [],
   nbChambres: '',
   nbSDB: '',
   typeChauffage: '',
@@ -123,14 +123,20 @@ const Listings = () => {
 
     if (
       (name === 'typeDeBien' && value !== '') ||
-      (name == 'equipements' && value !== '')
+      (name == 'equipements' && value !== '') ||
+      (name === 'nbPieces' && value !== '')
     ) {
-      let newArray: string[] = valuesQueries[name];
+      let newArray: string[] =
+        valuesQueries[name] === '' ? [] : valuesQueries[name];
+
       if (valuesQueries[name].includes(value)) {
         newArray = newArray.filter((item) => item !== value);
       } else {
-        newArray.push(value);
+        if (valuesQueries[name]) {
+          newArray.push(value);
+        }
       }
+
       setValuesQueries((prevValuesQueries) => ({
         ...prevValuesQueries,
         [name]: newArray,

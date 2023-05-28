@@ -27,7 +27,7 @@ type QueryObjectType = {
   prix?: NumberFilter;
   surfaceInt?: NumberFilter;
   surfaceExt?: NumberFilter;
-  nbPieces?: PiecesFilter;
+  nbPieces?: any;
   nbChambres?: PiecesFilter;
   nbSDB?: PiecesFilter;
   typeChauffage?: string;
@@ -99,23 +99,29 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  const checkNbRoomsInterval = (keyNames: string[]) => {
-    keyNames.forEach((keyName) => {
-      if (keyName) {
-        const arrayPieces = keyName.split(',').sort();
-        if (arrayPieces.length === 1) {
-          queryObject[keyName] = parseInt(keyName);
-        } else {
-          queryObject[keyName] = {
-            $gte: parseInt(arrayPieces[0]),
-            $lte: parseInt(arrayPieces[arrayPieces.length - 1]),
-          };
-        }
-      }
-    });
+  const checkNbRoomsInterval = (keyValue: string, keyName: string) => {
+    if (keyValue.length == 1) {
+      queryObject[keyName] = keyValue;
+    } else {
+      let arrayPieces = keyValue.split(',').sort();
+      queryObject[keyName] = {
+        $gte: parseInt(arrayPieces[0]),
+        $lte: parseInt(arrayPieces[arrayPieces.length - 1]),
+      };
+    }
   };
 
-  checkNbRoomsInterval([nbPieces, nbChambres, nbSDB]);
+  if (nbPieces) {
+    checkNbRoomsInterval(nbPieces, 'nbPieces');
+  }
+
+  if (nbChambres) {
+    checkNbRoomsInterval(nbChambres, 'nbChambres');
+  }
+
+  if (nbSDB) {
+    checkNbRoomsInterval(nbSDB, 'nbSDB');
+  }
 
   const checkMinMaxInterval = (min: string, max: string, name: string) => {
     if (regexContainsChar.test(min)) {
