@@ -34,6 +34,8 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     typeDeBien: false,
     localisation: false,
     prix: false,
+    surfaceInt: false,
+    nbPieces: false,
   };
 
   const [isCardOpen, setIsCardOpen] = useState(initialCardsState);
@@ -304,7 +306,60 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
             )}
           </div>
 
-          <button className='px-3 py-1 border rounded-lg'>Surface</button>
+          <div>
+            <button
+              className='px-3 py-1 border rounded-lg'
+              name='surfaceInt'
+              value='surfaceInt'
+              onClick={openCloseCard}>
+              {renderNumberTextOnly(
+                'Surface min/max',
+                minSurfaceInt,
+                maxSurfaceInt
+              )}
+            </button>
+            {isCardOpen.surfaceInt && (
+              <FilterCard
+                handleInputChange={handleInputChange}
+                name='surfaceInt'
+                resetValue=''
+                title='Quelle surface Intérieure ?'
+                closeAllCards={closeAllCards}>
+                <div className='flex gap-3 my-3'>
+                  <div className='relative mb-6'>
+                    <input
+                      type='text'
+                      id='filter-input'
+                      name='minSurfaceInt'
+                      value={minSurfaceInt}
+                      onChange={(e) => handleInputChange(e)}
+                      min={0}
+                      className='border text-sm rounded-lg block w-full pr-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
+                      placeholder='minimum'
+                    />
+                    <div className='absolute inset-y-0 right-3 flex items-center pl-3 pointer-events-none'>
+                      <span className='w-5 h-5'>m2</span>
+                    </div>
+                  </div>
+                  <div className='relative mb-6'>
+                    <input
+                      type='text'
+                      id='filter-input'
+                      name='maxSurfaceInt'
+                      value={maxSurfaceInt}
+                      onChange={(e) => handleInputChange(e)}
+                      min={0}
+                      className='border text-sm rounded-lg block w-full pr-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
+                      placeholder='maximum'
+                    />
+                    <div className='absolute inset-y-0 right-3 flex items-center pl-3 pointer-events-none'>
+                      <span className='w-5 h-5'>m2</span>
+                    </div>
+                  </div>
+                </div>
+              </FilterCard>
+            )}
+          </div>
           <button className='px-3 py-1 border rounded-lg'>Pièces</button>
           <button className='px-3 py-1 text-red-500'>Recherche Avancée</button>
         </div>

@@ -141,6 +141,12 @@ const Listings = () => {
         minPrice: value,
         maxPrice: value,
       }));
+    } else if (name === 'surfaceInt') {
+      setValuesQueries((prevValuesQueries) => ({
+        ...prevValuesQueries,
+        minSurfaceInt: value,
+        maxSurfaceInt: value,
+      }));
     } else if (name === 'localisation') {
       setValuesQueries((prevValuesQueries) => ({
         ...prevValuesQueries,

@@ -60,6 +60,7 @@ export async function GET(request: NextRequest) {
   const nbPieces = searchParams.get('nbPieces');
   const nbChambres = searchParams.get('nbChambres');
   const nbSDB = searchParams.get('nbSDB');
+
   const typeChauffage = searchParams.get('typeChauffage');
   const equipements = searchParams.get('equipements');
   const exposition = searchParams.get('exposition');
@@ -116,7 +117,7 @@ export async function GET(request: NextRequest) {
 
   checkNbRoomsInterval([nbPieces, nbChambres, nbSDB]);
 
-  const checkMinMaxInterval = (min: string, max: string) => {
+  const checkMinMaxInterval = (min: string, max: string, name: string) => {
     if (regexContainsChar.test(min)) {
       min = '';
     }
@@ -126,17 +127,16 @@ export async function GET(request: NextRequest) {
     }
 
     if (min && max) {
-      queryObject.prix = { $gte: parseInt(min), $lte: parseInt(max) };
+      queryObject[name] = { $gte: parseInt(min), $lte: parseInt(max) };
     } else if (min && !max) {
-      queryObject.prix = { $gte: parseInt(min) };
+      queryObject[name] = { $gte: parseInt(min) };
     } else if (!min && max) {
-      queryObject.prix = { $lte: parseInt(max) };
+      queryObject[name] = { $lte: parseInt(max) };
     }
   };
-
-  checkMinMaxInterval(minPrice, maxPrice);
-  checkMinMaxInterval(minSurfaceInt, maxSurfaceInt);
-  checkMinMaxInterval(minSurfaceExt, maxSurfaceExt);
+  checkMinMaxInterval(minPrice, maxPrice, 'prix');
+  checkMinMaxInterval(minSurfaceInt, maxSurfaceInt, 'surfaceInt');
+  checkMinMaxInterval(minSurfaceExt, maxSurfaceExt, 'surfaceExt');
 
   const sort = searchParams.get('sort');
 
