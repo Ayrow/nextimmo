@@ -80,8 +80,10 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
       } else {
         return `maximum ${max}`;
       }
-    } else {
-      if (regexContainsChar.test(min)) {
+    } else if (min && max) {
+      if (regexContainsChar.test(min) && regexContainsChar.test(max)) {
+        return text;
+      } else if (regexContainsChar.test(min)) {
         return `maximum ${max}`;
       } else if (regexContainsChar.test(max)) {
         return `minimum ${min}`;
@@ -209,7 +211,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               name='prix'
               value='prix'
               onClick={openCloseCard}>
-              {renderNumberTextOnly('Prix min/max', minPrice, maxPrice)} €
+              {renderNumberTextOnly('Prix min/max', minPrice, maxPrice)}
             </button>
             {isCardOpen.prix && (
               <FilterCard

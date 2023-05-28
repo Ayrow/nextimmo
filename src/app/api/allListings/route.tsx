@@ -34,6 +34,8 @@ type QueryObjectType = {
   draft: boolean;
 };
 
+const regexContainsChar = /[a-zA-Z]/;
+
 export async function GET(request: NextRequest) {
   await connectDB();
   const { searchParams } = new URL(request.url);
@@ -44,12 +46,14 @@ export async function GET(request: NextRequest) {
   const ville = searchParams.get('ville');
   const codePostal = searchParams.get('codePostal');
   const typeDeBien = searchParams.get('typeDeBien');
+
   const minPrice = searchParams.get('minPrice');
   const maxPrice = searchParams.get('maxPrice');
   const minSurfaceInt = searchParams.get('minSurfaceInt');
   const maxSurfaceInt = searchParams.get('maxSurfaceInt');
   const minSurfaceExt = searchParams.get('minSurfaceExt');
   const maxSurfaceExt = searchParams.get('maxSurfaceExt');
+
   const nbPieces = searchParams.get('nbPieces');
   const nbChambres = searchParams.get('nbChambres');
   const nbSDB = searchParams.get('nbSDB');
@@ -109,6 +113,14 @@ export async function GET(request: NextRequest) {
   checkNbRoomsInterval([nbPieces, nbChambres, nbSDB]);
 
   const checkMinMaxInterval = (min: string, max: string) => {
+    if (regexContainsChar.test(min)) {
+      min = '';
+    }
+
+    if (regexContainsChar.test(max)) {
+      max = '';
+    }
+
     if (min && max) {
       queryObject.prix = { $gte: parseInt(min), $lte: parseInt(max) };
     } else if (min && !max) {
