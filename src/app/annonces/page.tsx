@@ -87,8 +87,10 @@ const Listings = () => {
         //display alert error fetching listings
       }
     } catch (error) {
-      console.log('error', error);
-      // add Modal or alert for error
+      if (error !== 'AbortError') {
+        console.log('error', error);
+        // add Modal or alert for error
+      }
     }
   };
 
