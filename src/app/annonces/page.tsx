@@ -24,7 +24,8 @@ type QueryParamsType = {
   nbChambres: string[];
   nbSDB: string;
   typeChauffage: string;
-  equipements: string[];
+  equipementsInt: string[];
+  equipementsExt: string[];
   exposition: string;
   sort: string;
   // sortOptions: ['latest', 'oldest'],
@@ -48,7 +49,8 @@ const queryParams: QueryParamsType = {
   nbChambres: [],
   nbSDB: '',
   typeChauffage: '',
-  equipements: [],
+  equipementsInt: [],
+  equipementsExt: [],
   exposition: '',
   sort: 'latest',
   // sortOptions: ['latest', 'oldest'],
@@ -125,25 +127,28 @@ const Listings = () => {
 
     if (
       (name === 'typeDeBien' && value !== '') ||
-      (name == 'equipements' && value !== '') ||
+      (name == 'equipementsInt' && value !== '') ||
+      (name == 'equipementsExt' && value !== '') ||
       (name === 'nbPieces' && value !== '') ||
       (name === 'nbChambres' && value !== '')
     ) {
+      const newValue = value.replace(/\s/g, '').replace('é', 'e');
+      console.log('newValue', newValue);
       let newArray: string[] =
         valuesQueries[name] === '' ? [] : valuesQueries[name];
 
       if (valuesQueries[name].includes(value)) {
-        newArray = newArray.filter((item) => item !== value);
+        newArray = newArray.filter((item) => item !== newValue);
       } else {
         if (valuesQueries[name]) {
-          newArray.push(value);
+          newArray.push(newValue);
         }
       }
-
       setValuesQueries((prevValuesQueries) => ({
         ...prevValuesQueries,
         [name]: newArray,
       }));
+      console.log('valuesQueries', valuesQueries);
     } else if (name === 'prix') {
       setValuesQueries((prevValuesQueries) => ({
         ...prevValuesQueries,

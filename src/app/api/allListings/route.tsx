@@ -31,7 +31,10 @@ type QueryObjectType = {
   nbChambres?: PiecesFilter;
   nbSDB?: PiecesFilter;
   typeChauffage?: string;
-  equipements?: string[];
+  equipements?: {
+    intérieur?: string[];
+    extérieur?: string[];
+  };
   exposition?: string[];
   draft: boolean;
 };
@@ -62,7 +65,8 @@ export async function GET(request: NextRequest) {
   const nbSDB = searchParams.get('nbSDB');
 
   const typeChauffage = searchParams.get('typeChauffage');
-  const equipements = searchParams.get('equipements');
+  const equipementsInt = searchParams.get('equipementsInt');
+  const equipementsExt = searchParams.get('equipementsExt');
   const exposition = searchParams.get('exposition');
 
   const queryObject: QueryObjectType = {
@@ -90,6 +94,15 @@ export async function GET(request: NextRequest) {
     queryObject.typeChauffage = typeChauffage;
   }
 
+  const checkArrayIncludeElement = (element, prop: string) => {
+    if (element.includes(',')) {
+      const arrayelement = element.split(',');
+      queryObject[prop] = { $in: arrayelement };
+    } else {
+      queryObject[prop] = element;
+    }
+  };
+
   if (typeDeBien) {
     if (typeDeBien.includes(',')) {
       const arrayTypeDeBien = typeDeBien.split(',');
@@ -97,6 +110,13 @@ export async function GET(request: NextRequest) {
     } else {
       queryObject.typeDeBien = typeDeBien;
     }
+  }
+
+  if (equipementsInt) {
+    checkArrayIncludeElement(
+      equipementsInt,
+      `equipements.intérieur[equipementsInt]`
+    );
   }
 
   const checkNbRoomsInterval = (keyValue: string, keyName: string) => {

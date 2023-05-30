@@ -27,7 +27,8 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     nbChambres,
     nbSDB,
     typeChauffage,
-    equipements,
+    equipementsInt,
+    equipementsExt,
     exposition,
     sort,
     limit,
@@ -43,7 +44,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     rechercheAvancee: false,
   };
 
-  const NbRooms = ['1', '2', '3', '4', '5', '6'];
+  const nbRooms = ['1', '2', '3', '4', '5', '6'];
   const allTypesDeBien = [
     'maison',
     'appartement',
@@ -53,21 +54,24 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     'garage',
     'bureau',
   ];
-  const allEquipements = [
+  const allEquipementsInt = [
     'cave',
     'garage',
     'veranda',
     'ascenseur',
-    'plainPied',
-    'accessibilitePMR',
+    'plain Pied',
+    'accessibilité PMR',
     'digiCode',
     'alarme',
     'interphone',
-    'cheminee',
+    'cheminée',
     'climatisation',
     'gardien',
-    'toiletteSepare',
-    'cuisineEquipee',
+    'toilette Séparé',
+    'cuisine Équipée',
+  ];
+
+  const allEquipementsExt = [
     'balcon',
     'terrasse',
     'piscine',
@@ -75,6 +79,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     'stationnement',
     'portail',
   ];
+
   const allTypesChauffage = [
     'gaz',
     'fioul',
@@ -393,7 +398,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 title='Combien de pièces ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex flex-wrap gap-3 my-3'>
-                  {NbRooms.map((nb) => {
+                  {nbRooms.map((nb) => {
                     return (
                       <button
                         id='filter-input'
@@ -423,38 +428,16 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               Recherche Avancée
             </button>
             {isCardOpen.rechercheAvancee && (
-              <div className='absolute w-1/2 right-0 border p-4 mt-4 mr-2 z-50 rounded-xl bg-sky-950'>
-                <p className='text-center font-bold'>Affiner votre recherche</p>
-                <div>
-                  <p className='font-bold my-3'>Combien de Chambres?</p>
-                  <div className='flex gap-2'>
-                    {NbRooms.map((nb) => {
-                      return (
-                        <button
-                          id='filter-input'
-                          name='nbChambres'
-                          value={nb}
-                          onClick={(e) => handleInputChange(e)}
-                          className={
-                            nbChambres.includes(nb)
-                              ? 'border px-3 py-1 rounded-lg bg-gray-600'
-                              : 'border px-3 py-1 rounded-lg'
-                          }>
-                          {nb !== '6' ? nb : '6 +'}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className='flex justify-end gap-10 mt-5'>
-                  <button
-                    onClick={closeAllCards}
-                    className='border-b border-b-transparent hover:border-b hover:border-white'>
-                    Valider
-                  </button>
-                </div>
-              </div>
+              <AdvancedSearchCardDesktop
+                nbRooms={nbRooms}
+                equipementsInt={equipementsInt}
+                equipementsExt={equipementsExt}
+                handleInputChange={handleInputChange}
+                nbChambres={nbChambres}
+                closeAllCards={closeAllCards}
+                allEquipementsInt={allEquipementsInt}
+                allEquipementsExt={allEquipementsExt}
+              />
             )}
           </div>
         </div>
