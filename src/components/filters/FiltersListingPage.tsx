@@ -5,6 +5,7 @@ import FilterCard from './FilterCard';
 import FilterButton from './FilterButton';
 import FilterCheckbox from './FilterCheckbox';
 import FilterText from './FilterText';
+import AdvancedSearchCardDesktop from './AdvancedSearchCardDesktop';
 
 const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -421,7 +422,40 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               onClick={openCloseCard}>
               Recherche Avancée
             </button>
-            {isCardOpen.rechercheAvancee && <div>Card with the rest</div>}
+            {isCardOpen.rechercheAvancee && (
+              <div className='absolute w-1/2 right-0 border p-4 mt-4 mr-2 z-50 rounded-xl bg-sky-950'>
+                <p className='text-center font-bold'>Affiner votre recherche</p>
+                <div>
+                  <p className='font-bold my-3'>Combien de Chambres?</p>
+                  <div className='flex gap-2'>
+                    {NbRooms.map((nb) => {
+                      return (
+                        <button
+                          id='filter-input'
+                          name='nbChambres'
+                          value={nb}
+                          onClick={(e) => handleInputChange(e)}
+                          className={
+                            nbChambres.includes(nb)
+                              ? 'border px-3 py-1 rounded-lg bg-gray-600'
+                              : 'border px-3 py-1 rounded-lg'
+                          }>
+                          {nb !== '6' ? nb : '6 +'}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className='flex justify-end gap-10 mt-5'>
+                  <button
+                    onClick={closeAllCards}
+                    className='border-b border-b-transparent hover:border-b hover:border-white'>
+                    Valider
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
