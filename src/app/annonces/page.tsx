@@ -133,7 +133,6 @@ const Listings = () => {
       (name === 'nbChambres' && value !== '')
     ) {
       const newValue = value.replace(/\s/g, '').replace('é', 'e');
-      console.log('newValue', newValue);
       let newArray: string[] =
         valuesQueries[name] === '' ? [] : valuesQueries[name];
 
@@ -148,7 +147,6 @@ const Listings = () => {
         ...prevValuesQueries,
         [name]: newArray,
       }));
-      console.log('valuesQueries', valuesQueries);
     } else if (name === 'prix') {
       setValuesQueries((prevValuesQueries) => ({
         ...prevValuesQueries,

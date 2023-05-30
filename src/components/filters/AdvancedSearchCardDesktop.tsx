@@ -1,6 +1,6 @@
-import React from 'react';
-import FilterCard from './FilterCard';
-import FilterButton from './FilterButton';
+'use client';
+
+import { useState } from 'react';
 
 const AdvancedSearchCardDesktop = ({
   nbRooms,
@@ -12,6 +12,8 @@ const AdvancedSearchCardDesktop = ({
   nbChambres,
   closeAllCards,
 }) => {
+  const [showMore, setShowMore] = useState(false);
+
   return (
     <div className='absolute w-1/2 right-0 border p-4 mt-4 mr-2 z-50 rounded-xl bg-sky-950'>
       <p className='text-center font-bold'>Affiner votre recherche</p>
@@ -58,25 +60,28 @@ const AdvancedSearchCardDesktop = ({
             );
           })}
         </div>
-        <div className='flex flex-wrap gap-5'>
-          {allEquipementsExt.map((equipement) => {
-            return (
-              <button
-                id='filter-input'
-                name='equipementsExt'
-                value={equipement}
-                onClick={handleInputChange}
-                className={
-                  equipementsExt.includes(`${equipement}`)
-                    ? 'border p-2 rounded-lg text-sm bg-gray-600'
-                    : 'border p-2 text-sm rounded-lg'
-                }>
-                {`${equipement}`}
-              </button>
-            );
-          })}
+        <div className='flex flex-wrap mt-5 gap-5'>
+          {showMore &&
+            allEquipementsExt.map((equipement) => {
+              return (
+                <button
+                  id='filter-input'
+                  name='equipementsExt'
+                  value={equipement}
+                  onClick={handleInputChange}
+                  className={
+                    equipementsExt.includes(`${equipement}`)
+                      ? 'border p-2 rounded-lg text-sm bg-gray-600 capitalize'
+                      : 'border p-2 text-sm rounded-lg capitalize'
+                  }>
+                  {`${equipement}`}
+                </button>
+              );
+            })}
         </div>
-        <button className='my-5'>+ Voir plus</button>
+        <button className='my-5' onClick={() => setShowMore(!showMore)}>
+          {showMore ? '- Voir Moins' : '+ Voir Plus'}
+        </button>
       </div>
 
       <div className='flex justify-end gap-10 mt-5'>
