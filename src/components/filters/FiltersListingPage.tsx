@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import FilterCard from './FilterCard';
 import FilterButton from './FilterButton';
 import FilterCheckbox from './FilterCheckbox';
-import FilterNumber from './FilterNumber';
+import FilterText from './FilterText';
 
 const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -43,6 +43,46 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   };
 
   const NbRooms = ['1', '2', '3', '4', '5', '6'];
+  const allTypesDeBien = [
+    'maison',
+    'appartement',
+    'terrain',
+    'immeuble',
+    'parking',
+    'garage',
+    'bureau',
+  ];
+  const allEquipements = [
+    'cave',
+    'garage',
+    'veranda',
+    'ascenseur',
+    'plainPied',
+    'accessibilitePMR',
+    'digiCode',
+    'alarme',
+    'interphone',
+    'cheminee',
+    'climatisation',
+    'gardien',
+    'toiletteSepare',
+    'cuisineEquipee',
+    'balcon',
+    'terrasse',
+    'piscine',
+    'jardin',
+    'stationnement',
+    'portail',
+  ];
+  const allTypesChauffage = [
+    'gaz',
+    'fioul',
+    'electrique',
+    'solaire',
+    'bois',
+    'pac',
+  ];
+  const allExpositions = ['nord', 'sud', 'est', 'ouest', 'vueMer', 'procheMer'];
 
   const [isCardOpen, setIsCardOpen] = useState(initialCardsState);
 
@@ -148,7 +188,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
 
       {/* Desktop*/}
       <div className='relative' ref={ref}>
-        <div className='hidden md:flex m-5 md:flex-auto justify-between border gap-5 rounded-xl p-5 shadow-xl shadow-black'>
+        <div className='hidden md:flex md:flex-wrap m-5 md:flex-auto justify-between border gap-5 rounded-xl p-5 shadow-xl shadow-black'>
           <div>
             <button
               className='px-3 py-1 border rounded-lg'
@@ -201,19 +241,18 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 resetValue={[]}
                 title='Quel(s) type(s) de bien ?'
                 closeAllCards={closeAllCards}>
-                <div className='flex gap-5'>
-                  <FilterCheckbox
-                    name='typeDeBien'
-                    value='maison'
-                    handleInputChange={handleInputChange}
-                    isChecked={typeDeBien.includes('maison')}
-                  />
-                  <FilterCheckbox
-                    name='typeDeBien'
-                    value='appartement'
-                    handleInputChange={handleInputChange}
-                    isChecked={typeDeBien.includes('appartement')}
-                  />
+                <div className='flex flex-wrap gap-5'>
+                  {allTypesDeBien.map((type) => {
+                    return (
+                      <FilterCheckbox
+                        key={type}
+                        name='typeDeBien'
+                        value={`${type}`}
+                        handleInputChange={handleInputChange}
+                        isChecked={typeDeBien.includes(`${type}`)}
+                      />
+                    );
+                  })}
                 </div>
               </FilterCard>
             )}
@@ -236,32 +275,26 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 title='A quel endroit ?'
                 closeAllCards={closeAllCards}>
                 <div className='relative flex gap-5 my-5'>
-                  <input
-                    type='text'
-                    id='filter-input'
+                  <FilterText
                     name='quartier'
                     value={quartier}
-                    onChange={(e) => handleInputChange(e)}
-                    className='border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
-                    placeholder='Quartier'
+                    handleInputChange={handleInputChange}
+                    placeholder='quartier'
+                    symbol=''
                   />
-                  <input
-                    type='text'
-                    id='filter-input'
+                  <FilterText
                     name='ville'
                     value={ville}
-                    onChange={(e) => handleInputChange(e)}
-                    className='border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
+                    handleInputChange={handleInputChange}
                     placeholder='Ville'
+                    symbol=''
                   />
-                  <input
-                    type='text'
-                    id='filter-input'
+                  <FilterText
                     name='codePostal'
                     value={codePostal}
-                    onChange={(e) => handleInputChange(e)}
-                    className='border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
+                    handleInputChange={handleInputChange}
                     placeholder='Code Postal'
+                    symbol=''
                   />
                 </div>
               </FilterCard>
@@ -284,14 +317,14 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 title='Quel est votre budget ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex gap-3 my-3'>
-                  <FilterNumber
+                  <FilterText
                     name='minPrice'
                     value={minPrice}
                     placeholder='minimum'
                     symbol='€'
                     handleInputChange={handleInputChange}
                   />
-                  <FilterNumber
+                  <FilterText
                     name='maxPrice'
                     value={maxPrice}
                     placeholder='maximum'
@@ -324,36 +357,21 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 title='Quelle surface Intérieure ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex gap-3 my-3'>
-                  <div className='relative mb-6'>
-                    <input
-                      type='text'
-                      id='filter-input'
-                      name='minSurfaceInt'
-                      value={minSurfaceInt}
-                      onChange={(e) => handleInputChange(e)}
-                      min={0}
-                      className='border text-sm rounded-lg block w-full pr-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
-                      placeholder='minimum'
-                    />
-                    <div className='absolute inset-y-0 right-3 flex items-center pl-3 pointer-events-none'>
-                      <span className='w-5 h-5'>m2</span>
-                    </div>
-                  </div>
-                  <div className='relative mb-6'>
-                    <input
-                      type='text'
-                      id='filter-input'
-                      name='maxSurfaceInt'
-                      value={maxSurfaceInt}
-                      onChange={(e) => handleInputChange(e)}
-                      min={0}
-                      className='border text-sm rounded-lg block w-full pr-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
-                      placeholder='maximum'
-                    />
-                    <div className='absolute inset-y-0 right-3 flex items-center pl-3 pointer-events-none'>
-                      <span className='w-5 h-5'>m2</span>
-                    </div>
-                  </div>
+                  <FilterText
+                    name='minSurfaceInt'
+                    value={minSurfaceInt}
+                    placeholder='minimum'
+                    symbol='m2'
+                    handleInputChange={handleInputChange}
+                  />
+
+                  <FilterText
+                    name='maxSurfaceInt'
+                    value={maxSurfaceInt}
+                    placeholder='minimum'
+                    symbol='m2'
+                    handleInputChange={handleInputChange}
+                  />
                 </div>
               </FilterCard>
             )}
@@ -373,7 +391,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 resetValue=''
                 title='Combien de pièces ?'
                 closeAllCards={closeAllCards}>
-                <div className='flex gap-2 my-3'>
+                <div className='flex flex-wrap gap-3 my-3'>
                   {NbRooms.map((nb) => {
                     return (
                       <button
