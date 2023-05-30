@@ -19,6 +19,7 @@ type QueryParamsType = {
   minSurfaceInt: string;
   maxSurfaceInt: string;
   minSurfaceExt: string;
+  maxSurfaceExt: string;
   nbPieces: string[];
   nbChambres: string;
   nbSDB: string;
@@ -42,6 +43,7 @@ const queryParams: QueryParamsType = {
   minSurfaceInt: '',
   maxSurfaceInt: '',
   minSurfaceExt: '',
+  maxSurfaceExt: '',
   nbPieces: [],
   nbChambres: '',
   nbSDB: '',

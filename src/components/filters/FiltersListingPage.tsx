@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import FilterCard from './FilterCard';
+import FilterButton from './FilterButton';
 
 const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -36,6 +37,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     prix: false,
     surfaceInt: false,
     nbPieces: false,
+    rechercheAvancee: false,
   };
 
   const NbRooms = ['1', '2', '3', '4', '5', '6'];
@@ -156,30 +158,20 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 title='Vous souhaitez ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex gap-3 my-3'>
-                  <button
-                    id='filter-input'
+                  <FilterButton
                     name='transaction'
                     value='vente'
-                    onClick={(e) => handleInputChange(e)}
-                    className={
-                      transaction === 'vente'
-                        ? 'border m-2 p-5 rounded-lg bg-gray-600'
-                        : 'border m-2 p-5 rounded-lg'
-                    }>
-                    Acheter
-                  </button>
-                  <button
-                    id='filter-input'
+                    displayName='Acheter'
+                    handleInputChange={handleInputChange}
+                    classCheck={transaction === 'vente'}
+                  />
+                  <FilterButton
                     name='transaction'
                     value='location'
-                    onClick={(e) => handleInputChange(e)}
-                    className={
-                      transaction === 'location'
-                        ? 'border m-2 p-5 rounded-lg bg-gray-600'
-                        : 'border m-2 p-5 rounded-lg'
-                    }>
-                    Louer
-                  </button>
+                    displayName='Louer'
+                    handleInputChange={handleInputChange}
+                    classCheck={transaction === 'location'}
+                  />
                 </div>
               </FilterCard>
             )}
@@ -423,9 +415,17 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
             )}
           </div>
 
-          <button className='px-3 py-1 text-red-500'>Recherche Avancée</button>
+          <div>
+            <button
+              className='px-3 py-1 text-red-500'
+              name='rechercheAvancee'
+              value='rechercheAvancee'
+              onClick={openCloseCard}>
+              Recherche Avancée
+            </button>
+            {isCardOpen.rechercheAvancee && <div>Card with the rest</div>}
+          </div>
         </div>
-        {/* Modal for each button */}
       </div>
     </div>
   );
