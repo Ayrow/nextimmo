@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import FilterCard from './FilterCard';
 import FilterButton from './FilterButton';
 import FilterCheckbox from './FilterCheckbox';
+import FilterNumber from './FilterNumber';
 
 const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -97,30 +98,35 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     }
   };
 
-  const renderNumberTextOnly = (text: string, min: string, max: string) => {
+  const renderNumberTextOnly = (
+    text: string,
+    min: string,
+    max: string,
+    symbol: string
+  ) => {
     if (!min && !max) {
       return text;
     } else if (min && !max) {
       if (regexContainsChar.test(min)) {
         return text;
       } else {
-        return `A partir de ${min}€`;
+        return `A partir de ${min} ${symbol}`;
       }
     } else if (!min && max) {
       if (regexContainsChar.test(max)) {
         return text;
       } else {
-        return `maximum ${max}`;
+        return `maximum ${max} ${symbol}`;
       }
     } else if (min && max) {
       if (regexContainsChar.test(min) && regexContainsChar.test(max)) {
         return text;
       } else if (regexContainsChar.test(min)) {
-        return `maximum ${max}`;
+        return `maximum ${max} ${symbol}`;
       } else if (regexContainsChar.test(max)) {
-        return `minimum ${min}`;
+        return `minimum ${min} ${symbol}`;
       } else {
-        return `${min} à ${max}`;
+        return `${min} à ${max} ${symbol}`;
       }
     }
   };
@@ -268,7 +274,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               name='prix'
               value='prix'
               onClick={openCloseCard}>
-              {renderNumberTextOnly('Prix min/max', minPrice, maxPrice)}
+              {renderNumberTextOnly('Prix min/max', minPrice, maxPrice, '€')}
             </button>
             {isCardOpen.prix && (
               <FilterCard
@@ -278,36 +284,20 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 title='Quel est votre budget ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex gap-3 my-3'>
-                  <div className='relative mb-6'>
-                    <input
-                      type='text'
-                      id='filter-input'
-                      name='minPrice'
-                      value={minPrice}
-                      onChange={(e) => handleInputChange(e)}
-                      min={0}
-                      className='border text-sm rounded-lg block w-full pr-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
-                      placeholder='minimum'
-                    />
-                    <div className='absolute inset-y-0 right-0 flex items-center pl-3 pointer-events-none'>
-                      <span className='w-5 h-5'>€</span>
-                    </div>
-                  </div>
-                  <div className='relative mb-6'>
-                    <input
-                      type='text'
-                      id='filter-input'
-                      name='maxPrice'
-                      value={maxPrice}
-                      onChange={(e) => handleInputChange(e)}
-                      min={0}
-                      className='border text-sm rounded-lg block w-full pr-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500'
-                      placeholder='maximum'
-                    />
-                    <div className='absolute inset-y-0 right-0 flex items-center pl-3 pointer-events-none'>
-                      <span className='w-5 h-5'>€</span>
-                    </div>
-                  </div>
+                  <FilterNumber
+                    name='minPrice'
+                    value={minPrice}
+                    placeholder='minimum'
+                    symbol='€'
+                    handleInputChange={handleInputChange}
+                  />
+                  <FilterNumber
+                    name='maxPrice'
+                    value={maxPrice}
+                    placeholder='maximum'
+                    symbol='€'
+                    handleInputChange={handleInputChange}
+                  />
                 </div>
               </FilterCard>
             )}
@@ -322,7 +312,8 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               {renderNumberTextOnly(
                 'Surface min/max',
                 minSurfaceInt,
-                maxSurfaceInt
+                maxSurfaceInt,
+                'm2'
               )}
             </button>
             {isCardOpen.surfaceInt && (
