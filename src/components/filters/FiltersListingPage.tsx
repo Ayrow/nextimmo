@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import FilterCard from './FilterCard';
 import FilterButton from './FilterButton';
+import FilterCheckbox from './FilterCheckbox';
 
 const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -195,30 +196,18 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 title='Quel(s) type(s) de bien ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex gap-5'>
-                  <div className='flex my-3 items-center'>
-                    <input
-                      type='checkbox'
-                      id='filter-input'
-                      name='typeDeBien'
-                      value='maison'
-                      onChange={(e) => handleInputChange(e)}
-                      checked={typeDeBien.includes('maison')}
-                      className='border m-2 p-5 rounded-lg'
-                    />
-                    <label>Maison</label>
-                  </div>
-                  <div className='flex my-3 items-center'>
-                    <input
-                      type='checkbox'
-                      id='filter-input'
-                      name='typeDeBien'
-                      value='appartement'
-                      onChange={(e) => handleInputChange(e)}
-                      className='border m-2 p-5 rounded-lg'
-                      checked={typeDeBien.includes('appartement')}
-                    />
-                    <label>Appartement</label>
-                  </div>
+                  <FilterCheckbox
+                    name='typeDeBien'
+                    value='maison'
+                    handleInputChange={handleInputChange}
+                    isChecked={typeDeBien.includes('maison')}
+                  />
+                  <FilterCheckbox
+                    name='typeDeBien'
+                    value='appartement'
+                    handleInputChange={handleInputChange}
+                    isChecked={typeDeBien.includes('appartement')}
+                  />
                 </div>
               </FilterCard>
             )}
