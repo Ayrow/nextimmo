@@ -11,35 +11,9 @@ interface ILieu {
   codePostal: number;
 }
 
-interface IEquipInt {
-  cave: boolean;
-  garage: boolean;
-  veranda: boolean;
-  ascenseur: boolean;
-  plainPied: boolean;
-  accessibilitePMR: boolean;
-  digiCode: boolean;
-  alarme: boolean;
-  interphone: boolean;
-  cheminee: boolean;
-  climatisation: boolean;
-  gardien: boolean;
-  toiletteSepare: boolean;
-  cuisineEquipee: boolean;
-}
-
-interface IEquipExt {
-  balcon: boolean;
-  terrasse: boolean;
-  piscine: boolean;
-  jardin: boolean;
-  stationnement: boolean;
-  portail: boolean;
-}
-
 interface IEquip {
-  interieur: IEquipInt;
-  exterieur: IEquipExt;
+  interieur: string[] | string;
+  exterieur: string[] | string;
 }
 
 interface IHonoraires {

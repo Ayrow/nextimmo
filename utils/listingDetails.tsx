@@ -4,6 +4,44 @@ export type ListingDetailsTypes = {
   label: string;
 };
 
+const typeDeBien: ListingDetailsTypes[] = [
+  {
+    id: 1,
+    name: 'maison',
+    label: 'Maison',
+  },
+  {
+    id: 2,
+    name: 'appartement',
+    label: 'Appartement',
+  },
+  {
+    id: 3,
+    name: 'terrain',
+    label: 'Terrain',
+  },
+  {
+    id: 4,
+    name: 'Immeuble',
+    label: 'Immeuble',
+  },
+  {
+    id: 5,
+    name: 'parking',
+    label: 'Parking',
+  },
+  {
+    id: 6,
+    name: 'garage',
+    label: 'Garage',
+  },
+  {
+    id: 7,
+    name: 'bureau',
+    label: 'Bureau',
+  },
+];
+
 const equipementsInterieur: ListingDetailsTypes[] = [
   {
     id: 1,
@@ -143,4 +181,43 @@ const expositionsBien: ListingDetailsTypes[] = [
   },
 ];
 
-export { equipementsInterieur, equipementsExterieur, expositionsBien };
+const typeChauffage: ListingDetailsTypes[] = [
+  {
+    id: 1,
+    name: 'gaz',
+    label: 'Gaz',
+  },
+  {
+    id: 2,
+    name: 'fioul',
+    label: 'Fioul',
+  },
+  {
+    id: 3,
+    name: 'électrique',
+    label: 'Électrique',
+  },
+  {
+    id: 4,
+    name: 'solaire',
+    label: 'Solaire',
+  },
+  {
+    id: 5,
+    name: 'bois',
+    label: 'Bois',
+  },
+  {
+    id: 6,
+    name: 'pac',
+    label: 'Pompe à Chaleur',
+  },
+];
+
+export {
+  equipementsInterieur,
+  equipementsExterieur,
+  expositionsBien,
+  typeChauffage,
+  typeDeBien,
+};

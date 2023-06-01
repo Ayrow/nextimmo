@@ -10,6 +10,8 @@ import {
   equipementsExterieur,
   equipementsInterieur,
   expositionsBien,
+  typeDeBien,
+  typeChauffage,
 } from '../../../../utils/listingDetails';
 import { useListingsContext } from '../../../context/listings/listingsContext';
 import { useAppContext } from '../../../context/app/appContext';
@@ -40,30 +42,8 @@ const initialState: IListing = {
   surfaceInt: undefined,
   surfaceExt: undefined,
   equipements: {
-    interieur: {
-      cave: false,
-      garage: false,
-      veranda: false,
-      ascenseur: false,
-      plainPied: false,
-      accessibilitePMR: false,
-      digiCode: false,
-      alarme: false,
-      interphone: false,
-      cheminee: false,
-      climatisation: false,
-      gardien: false,
-      toiletteSepare: false,
-      cuisineEquipee: false,
-    },
-    exterieur: {
-      balcon: false,
-      terrasse: false,
-      piscine: false,
-      jardin: false,
-      stationnement: false,
-      portail: false,
-    },
+    interieur: [],
+    exterieur: [],
   },
   typeChauffage: 'Sélectionnez le type de chauffage',
   exposition: '',
@@ -78,25 +58,6 @@ const initialState: IListing = {
   },
   draft: false,
 };
-
-const biens = [
-  'maison',
-  'appartement',
-  'terrain',
-  'immeuble',
-  'parking',
-  'garage',
-  'bureau',
-];
-
-const typesDeChauffage = [
-  'gaz',
-  'fioul',
-  'electrique',
-  'solaire',
-  'bois',
-  'pac',
-];
 
 const AddListing = () => {
   const { firebaseUser } = useAuthContext();
@@ -139,35 +100,31 @@ const AddListing = () => {
           [honorairesField]: value,
         },
       };
-    } else if (name.startsWith('equipementsInt')) {
-      let equipementsIntField = name.split('.')[1];
+    } else if (name.startsWith('interieur' || 'exterieur')) {
+      let equipementsField = name.split('.')[1];
+      const newValue = value.replace(/\s/g, '').replace('é', 'e');
+      const typeOfEquipement = name.split('.')[0];
+      let newArray = values.equipements[name];
+
+      if (values.equipements[typeOfEquipement].includes(newValue)) {
+        newArray = newArray.filter((item) => item !== newValue);
+      } else {
+        if (values.equipements[typeOfEquipement]) {
+          newArray.push(newValue);
+        }
+      }
+
       data = {
         ...data,
         equipements: {
           ...data.equipements,
-          interieur: {
-            ...data.equipements.interieur,
-            [equipementsIntField]: value,
-          },
-        },
-      };
-    } else if (name.startsWith('equipementsExt')) {
-      let equipementsExtField = name.split('.')[1];
-      data = {
-        ...data,
-        equipements: {
-          ...data.equipements,
-          exterieur: {
-            ...data.equipements.exterieur,
-            [equipementsExtField]: value,
-          },
+          [equipementsField]: newArray,
         },
       };
     } else {
       data = { ...data, [name]: value };
     }
     setValues(data);
-    console.log('values', values);
   };
 
   const clearForm = () => {
@@ -316,10 +273,11 @@ const AddListing = () => {
                 value={values.typeDeBien}
                 className='border capitalize text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option disabled>Sélectionnez le type de bien</option>
-                {biens.map((bien) => {
+                {typeDeBien.map((bien) => {
+                  const { id, name, label } = bien;
                   return (
-                    <option key={bien} value={bien}>
-                      {bien}
+                    <option key={id} value={name}>
+                      {label}
                     </option>
                   );
                 })}
@@ -531,7 +489,7 @@ const AddListing = () => {
                   <input
                     type='checkbox'
                     onChange={handleChange}
-                    name={`equipementsInt.${name}`}
+                    name={`interieur.${name}`}
                     className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
                   />
                   <label className='ml-2 text-sm font-medium text-gray-300'>
@@ -563,8 +521,9 @@ const AddListing = () => {
                 value={values.typeChauffage}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option disabled>Sélectionnez le type de chauffage</option>
-                {typesDeChauffage.map((item, index) => {
-                  return <option key={index}>{item}</option>;
+                {typeChauffage.map((item) => {
+                  const { id, label } = item;
+                  return <option key={id}>{label}</option>;
                 })}
               </select>
             </div>
@@ -578,7 +537,7 @@ const AddListing = () => {
                   <input
                     type='checkbox'
                     onChange={handleChange}
-                    name={`equipementsInt.${name}`}
+                    name={`exterieur.${name}`}
                     className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
                   />
                   <label className='ml-2 text-sm font-medium text-gray-300'>
