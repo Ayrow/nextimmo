@@ -71,30 +71,16 @@ const listingSchema: Schema<IListingDocument> = new Schema(
       },
     },
     equipements: {
-      intérieur: {
-        cave: Boolean,
-        garage: Boolean,
-        veranda: Boolean,
-        ascenseur: Boolean,
-        plainPied: Boolean,
-        accessibilitePMR: Boolean,
-        digiCode: Boolean,
-        alarme: Boolean,
-        interphone: Boolean,
-        cheminee: Boolean,
-        climatisation: Boolean,
-        gardien: Boolean,
-        toiletteSepare: Boolean,
-        cuisineEquipee: Boolean,
-      },
-      extérieur: {
-        balcon: Boolean,
-        terrasse: Boolean,
-        piscine: Boolean,
-        jardin: Boolean,
-        stationnement: Boolean,
-        portail: Boolean,
-      },
+      interieur: [
+        {
+          type: String,
+        },
+      ],
+      exterieur: [
+        {
+          type: String,
+        },
+      ],
     },
     typeChauffage: {
       type: String,
