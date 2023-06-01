@@ -113,10 +113,15 @@ export async function GET(request: NextRequest) {
   }
 
   if (equipementsInt) {
-    checkArrayIncludeElement(
-      equipementsInt,
-      `equipements.intérieur[equipementsInt]`
-    );
+    checkArrayIncludeElement(equipementsInt, `equipements.intérieur`);
+  }
+
+  if (equipementsExt) {
+    checkArrayIncludeElement(equipementsExt, `equipements.extérieur`);
+  }
+
+  if (exposition) {
+    checkArrayIncludeElement(exposition, 'exposition');
   }
 
   const checkNbRoomsInterval = (keyValue: string, keyName: string) => {

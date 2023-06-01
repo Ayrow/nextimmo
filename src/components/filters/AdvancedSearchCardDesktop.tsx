@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import FilterText from './FilterText';
+import FilterCheckbox from './FilterCheckbox';
 
 const AdvancedSearchCardDesktop = ({
   nbRooms,
@@ -14,6 +15,8 @@ const AdvancedSearchCardDesktop = ({
   closeAllCards,
   minSurfaceExt,
   maxSurfaceExt,
+  allExpositions,
+  exposition,
 }) => {
   const [showMore, setShowMore] = useState(false);
 
@@ -23,9 +26,10 @@ const AdvancedSearchCardDesktop = ({
       <div>
         <p className='font-bold my-3'>Combien de Chambres?</p>
         <div className='flex gap-2'>
-          {nbRooms.map((nb) => {
+          {nbRooms.map((nb: string) => {
             return (
               <button
+                key={nb}
                 id='filter-input'
                 name='nbChambres'
                 value={nb}
@@ -44,9 +48,10 @@ const AdvancedSearchCardDesktop = ({
       <div>
         <p className='font-bold my-5'>Quels équipements?</p>
         <div className='flex flex-wrap gap-5'>
-          {allEquipementsInt.map((equipement) => {
+          {allEquipementsInt.map((equipement: string) => {
             return (
               <button
+                key={equipement}
                 id='filter-input'
                 name='equipementsInt'
                 value={equipement.replace(/\s/g, '').replace('é', 'e')}
@@ -65,9 +70,10 @@ const AdvancedSearchCardDesktop = ({
         </div>
         <div className='flex flex-wrap mt-5 gap-5'>
           {showMore &&
-            allEquipementsExt.map((equipement) => {
+            allEquipementsExt.map((equipement: string) => {
               return (
                 <button
+                  key={equipement}
                   id='filter-input'
                   name='equipementsExt'
                   value={equipement}
@@ -107,6 +113,26 @@ const AdvancedSearchCardDesktop = ({
             symbol='m2'
             handleInputChange={handleInputChange}
           />
+        </div>
+      </div>
+
+      <div>
+        <p className='font-bold my-5'>Quelle exposition?</p>
+
+        <div>
+          <div className='flex flex-wrap gap-5'>
+            {allExpositions.map((singleExp) => {
+              return (
+                <FilterCheckbox
+                  key={singleExp}
+                  name='exposition'
+                  value={`${singleExp}`}
+                  handleInputChange={handleInputChange}
+                  isChecked={exposition.includes(singleExp.replace(/\s/g, ''))}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
 

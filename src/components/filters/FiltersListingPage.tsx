@@ -89,7 +89,14 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     'bois',
     'pac',
   ];
-  const allExpositions = ['nord', 'sud', 'est', 'ouest', 'vueMer', 'procheMer'];
+  const allExpositions = [
+    'nord',
+    'sud',
+    'est',
+    'ouest',
+    'vue Mer',
+    'proche Mer',
+  ];
 
   const [isCardOpen, setIsCardOpen] = useState(initialCardsState);
 
@@ -440,6 +447,8 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 allEquipementsExt={allEquipementsExt}
                 minSurfaceExt={minSurfaceExt}
                 maxSurfaceExt={maxSurfaceExt}
+                allExpositions={allExpositions}
+                exposition={exposition}
               />
             )}
           </div>

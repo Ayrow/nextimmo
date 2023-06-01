@@ -26,7 +26,7 @@ type QueryParamsType = {
   typeChauffage: string;
   equipementsInt: string[];
   equipementsExt: string[];
-  exposition: string;
+  exposition: string[];
   sort: string;
   // sortOptions: ['latest', 'oldest'],
   limit: number;
@@ -51,7 +51,7 @@ const queryParams: QueryParamsType = {
   typeChauffage: '',
   equipementsInt: [],
   equipementsExt: [],
-  exposition: '',
+  exposition: [],
   sort: 'latest',
   // sortOptions: ['latest', 'oldest'],
   limit: 12,
@@ -130,13 +130,13 @@ const Listings = () => {
       (name == 'equipementsInt' && value !== '') ||
       (name == 'equipementsExt' && value !== '') ||
       (name === 'nbPieces' && value !== '') ||
-      (name === 'nbChambres' && value !== '')
+      (name === 'nbChambres' && value !== '') ||
+      (name === 'exposition' && value !== '')
     ) {
       const newValue = value.replace(/\s/g, '').replace('é', 'e');
       let newArray: string[] =
         valuesQueries[name] === '' ? [] : valuesQueries[name];
-
-      if (valuesQueries[name].includes(value)) {
+      if (valuesQueries[name].includes(newValue)) {
         newArray = newArray.filter((item) => item !== newValue);
       } else {
         if (valuesQueries[name]) {
