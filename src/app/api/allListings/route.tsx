@@ -104,20 +104,15 @@ export async function GET(request: NextRequest) {
   };
 
   if (typeDeBien) {
-    if (typeDeBien.includes(',')) {
-      const arrayTypeDeBien = typeDeBien.split(',');
-      queryObject.typeDeBien = { $in: arrayTypeDeBien };
-    } else {
-      queryObject.typeDeBien = typeDeBien;
-    }
+    checkArrayIncludeElement(typeDeBien, `typeDeBien`);
   }
 
   if (equipementsInt) {
-    checkArrayIncludeElement(equipementsInt, `equipements.intérieur`);
+    checkArrayIncludeElement(equipementsInt, `equipements.interieur`);
   }
 
   if (equipementsExt) {
-    checkArrayIncludeElement(equipementsExt, `equipements.extérieur`);
+    checkArrayIncludeElement(equipementsExt, `equipements.exterieur`);
   }
 
   if (exposition) {
