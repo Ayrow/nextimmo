@@ -45,7 +45,6 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const getSingleListing = async (ref: string, signal: AbortSignal) => {
-    console.log('getting single listing');
     setSingleListing(null);
     try {
       const res = await fetch(`/api/listing?ref=${ref}`, {

@@ -23,7 +23,7 @@ type QueryParamsType = {
   nbPieces: string[];
   nbChambres: string[];
   nbSDB: string;
-  typeChauffage: string;
+  typeChauffage: string[];
   equipementsInt: string[];
   equipementsExt: string[];
   exposition: string[];
@@ -48,7 +48,7 @@ const queryParams: QueryParamsType = {
   nbPieces: [],
   nbChambres: [],
   nbSDB: '',
-  typeChauffage: '',
+  typeChauffage: [],
   equipementsInt: [],
   equipementsExt: [],
   exposition: [],
@@ -131,7 +131,8 @@ const Listings = () => {
       (name === 'nbPieces' && value !== '') ||
       (name === 'nbSDB' && value !== '') ||
       (name === 'nbChambres' && value !== '') ||
-      (name === 'exposition' && value !== '')
+      (name === 'exposition' && value !== '') ||
+      (name === 'typeChauffage' && value !== '')
     ) {
       const newValue = value.replace(/\s/g, '').replace('é', 'e');
       let newArray: string[] =

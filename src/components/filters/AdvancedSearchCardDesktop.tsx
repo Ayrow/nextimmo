@@ -8,6 +8,7 @@ import {
   listEquipementsExterieur,
   listEquipementsInterieur,
   listExpositionsBien,
+  listTypeChauffage,
 } from '../../../utils/listingDetails';
 
 const AdvancedSearchCardDesktop = ({
@@ -27,7 +28,7 @@ const AdvancedSearchCardDesktop = ({
   return (
     <div className='absolute w-1/2 right-0 border p-4 mt-4 mr-2 z-50 rounded-xl bg-sky-950'>
       <p className='text-center font-bold'>Affiner votre recherche</p>
-      <div>
+      <div className='mt-5'>
         <p className='font-bold my-3'>Combien de Chambres ?</p>
         <div className='flex gap-2'>
           {nbRooms.map((nb: string) => {
@@ -49,7 +50,7 @@ const AdvancedSearchCardDesktop = ({
           })}
         </div>
       </div>
-      <div>
+      <div className='mt-5'>
         <p className='font-bold my-3'>Combien de Salle de bain / eau ?</p>
         <div className='flex gap-2'>
           {nbRooms.map((nb: string) => {
@@ -74,19 +75,17 @@ const AdvancedSearchCardDesktop = ({
       <div>
         <p className='font-bold my-5'>Quels équipements?</p>
         <div className='flex flex-wrap gap-5'>
-          {listEquipementsInterieur.map((equipement) => {
+          {listEquipementsExterieur.map((equipement) => {
             const { id, name, label } = equipement;
             return (
               <button
                 key={id}
                 id='filter-input'
-                name='equipementsInt'
-                value={name.replace(/\s/g, '').replace('é', 'e')}
+                name='equipementsExt'
+                value={name}
                 onClick={handleInputChange}
                 className={
-                  equipementsInt.includes(
-                    `${equipement}`.replace(/\s/g, '').replace('é', 'e')
-                  )
+                  equipementsExt.includes(`${name}`)
                     ? 'border p-2 rounded-lg text-sm bg-gray-600 capitalize'
                     : 'border p-2 text-sm rounded-lg capitalize'
                 }>
@@ -94,20 +93,20 @@ const AdvancedSearchCardDesktop = ({
               </button>
             );
           })}
-        </div>
-        <div className='flex flex-wrap mt-5 gap-5'>
           {showMore &&
-            listEquipementsExterieur.map((equipement) => {
+            listEquipementsInterieur.map((equipement) => {
               const { id, name, label } = equipement;
               return (
                 <button
                   key={id}
                   id='filter-input'
-                  name='equipementsExt'
-                  value={name}
+                  name='equipementsInt'
+                  value={name.replace(/\s/g, '').replace('é', 'e')}
                   onClick={handleInputChange}
                   className={
-                    equipementsExt.includes(`${name}`)
+                    equipementsInt.includes(
+                      `${equipement}`.replace(/\s/g, '').replace('é', 'e')
+                    )
                       ? 'border p-2 rounded-lg text-sm bg-gray-600 capitalize'
                       : 'border p-2 text-sm rounded-lg capitalize'
                   }>
@@ -117,7 +116,7 @@ const AdvancedSearchCardDesktop = ({
             })}
         </div>
 
-        <button className='' onClick={() => setShowMore(!showMore)}>
+        <button className='mt-5' onClick={() => setShowMore(!showMore)}>
           {showMore ? '- Voir Moins' : '+ Voir Plus'}
         </button>
       </div>
@@ -146,18 +145,40 @@ const AdvancedSearchCardDesktop = ({
 
       <div>
         <p className='font-bold my-5'>Quelle exposition?</p>
-
         <div>
           <div className='flex flex-wrap gap-5'>
             {listExpositionsBien.map((singleExp) => {
-              const { id, label } = singleExp;
+              const { id, name, label } = singleExp;
               return (
                 <FilterCheckbox
                   key={id}
                   name='exposition'
-                  value={`${label}.replace(/\s/g, '')`}
+                  value={name}
+                  label={label}
                   handleInputChange={handleInputChange}
-                  isChecked={exposition.includes(label.replace(/\s/g, ''))}
+                  isChecked={exposition.includes(name)}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p className='font-bold my-5'>Quel type de chauffage ?</p>
+
+        <div>
+          <div className='flex flex-wrap gap-5'>
+            {listTypeChauffage.map((element) => {
+              const { id, label, name } = element;
+              return (
+                <FilterCheckbox
+                  key={id}
+                  name='exposition'
+                  value={name}
+                  label={label}
+                  handleInputChange={handleInputChange}
+                  isChecked={exposition.includes(name)}
                 />
               );
             })}

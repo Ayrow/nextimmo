@@ -1,6 +1,12 @@
-const FilterCheckbox = ({ name, value, isChecked, handleInputChange }) => {
+const FilterCheckbox = ({
+  name,
+  value,
+  isChecked,
+  handleInputChange,
+  label,
+}) => {
   return (
-    <div className='flex my-3 items-center'>
+    <div className='flex gap-2 items-center'>
       <input
         type='checkbox'
         id='filter-input'
@@ -8,9 +14,9 @@ const FilterCheckbox = ({ name, value, isChecked, handleInputChange }) => {
         value={value}
         onChange={handleInputChange}
         checked={isChecked}
-        className='border m-2 p-5 rounded-lg'
+        className='border rounded-lg'
       />
-      <label className='capitalize'>{value}</label>
+      <label className='capitalize'>{label}</label>
     </div>
   );
 };

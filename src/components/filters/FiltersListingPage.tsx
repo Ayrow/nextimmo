@@ -205,16 +205,17 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 resetValue={[]}
                 title='Quel(s) type(s) de bien ?'
                 closeAllCards={closeAllCards}>
-                <div className='flex flex-wrap gap-5'>
+                <div className='flex mt-5 flex-wrap gap-5'>
                   {listTypeDeBien.map((type) => {
                     const { id, name, label } = type;
                     return (
                       <FilterCheckbox
                         key={id}
                         name='typeDeBien'
-                        value={`${name}`}
+                        value={name}
+                        label={label}
                         handleInputChange={handleInputChange}
-                        isChecked={typeDeBien.includes(`${name}`)}
+                        isChecked={typeDeBien.includes(name)}
                       />
                     );
                   })}

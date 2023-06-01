@@ -210,7 +210,7 @@ const listTypeChauffage: ListingDetailsTypes[] = [
   {
     id: 6,
     name: 'pac',
-    label: 'Pompe à Chaleur',
+    label: 'Pompe À Chaleur',
   },
 ];
 

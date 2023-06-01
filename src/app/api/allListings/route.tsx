@@ -30,7 +30,7 @@ type QueryObjectType = {
   nbPieces?: any;
   nbChambres?: PiecesFilter;
   nbSDB?: PiecesFilter;
-  typeChauffage?: string;
+  typeChauffage?: string[];
   equipements?: {
     intérieur?: string[];
     extérieur?: string[];
@@ -90,10 +90,6 @@ export async function GET(request: NextRequest) {
     queryObject['lieu.codePostal'] = { $regex: regex };
   }
 
-  if (typeChauffage) {
-    queryObject.typeChauffage = typeChauffage;
-  }
-
   const checkArrayIncludeElement = (element: string, prop: string) => {
     if (element.includes(',')) {
       const arrayelement = element.split(',');
@@ -105,6 +101,10 @@ export async function GET(request: NextRequest) {
 
   if (typeDeBien) {
     checkArrayIncludeElement(typeDeBien, `typeDeBien`);
+  }
+
+  if (typeChauffage) {
+    checkArrayIncludeElement(typeChauffage, 'typeChauffage');
   }
 
   if (equipementsInt) {
