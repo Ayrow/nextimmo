@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
     queryObject.typeChauffage = typeChauffage;
   }
 
-  const checkArrayIncludeElement = (element, prop: string) => {
+  const checkArrayIncludeElement = (element: string, prop: string) => {
     if (element.includes(',')) {
       const arrayelement = element.split(',');
       queryObject[prop] = { $in: arrayelement };

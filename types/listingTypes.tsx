@@ -12,8 +12,8 @@ interface ILieu {
 }
 
 interface IEquip {
-  interieur: string[] | string;
-  exterieur: string[] | string;
+  interieur: string[];
+  exterieur: string[];
 }
 
 interface IHonoraires {

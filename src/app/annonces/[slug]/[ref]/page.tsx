@@ -24,13 +24,6 @@ const SingleListing = ({
     useListingsContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
 
-  const displayAllTrueKeys = (object: object) => {
-    const trueKeys = Object.entries(object).filter(
-      ([key, value]) => value === true
-    );
-    return trueKeys;
-  };
-
   let displayNoteDPE = '';
   let displayNoteGES = '';
 
@@ -110,6 +103,7 @@ const SingleListing = ({
     return (
       <div className='bg-gray-900 px-2 lg:px-10 py-5 w-full'>
         <BackButton />
+
         <div className='flex flex-col-reverse lg:flex-row gap-5 w-full'>
           <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-5 px-2'>
             <div className='flex flex-col justify-center gap-5 col-span-2'>
@@ -216,26 +210,24 @@ const SingleListing = ({
               <h3 className='font-bold'>Interieur</h3>
               <div className='flex flex-wrap gap-10'>
                 {singleListing?.equipements?.interieur &&
-                  displayAllTrueKeys(singleListing?.equipements?.interieur).map(
-                    ([key, value]) => (
-                      <p key={key} className='capitalize'>
-                        {key}
+                  singleListing.equipements.interieur.map((item) => {
+                    return (
+                      <p key={item} className='capitalize'>
+                        {item}
                       </p>
-                    )
-                  )}
+                    );
+                  })}
               </div>
             </div>
             <div className='flex flex-col gap-5 border-b pb-5'>
               <h3 className='font-bold'>Exterieur</h3>
               <div className='flex flex-wrap gap-10'>
                 {singleListing?.equipements?.exterieur &&
-                  displayAllTrueKeys(singleListing?.equipements?.exterieur).map(
-                    ([key, value]) => (
-                      <p key={key} className='capitalize'>
-                        {key}
-                      </p>
-                    )
-                  )}
+                  singleListing?.equipements?.exterieur.map((item) => (
+                    <p key={item} className='capitalize'>
+                      {item}
+                    </p>
+                  ))}
               </div>
             </div>
             <div className='flex flex-col gap-5 border-b pb-5'>
