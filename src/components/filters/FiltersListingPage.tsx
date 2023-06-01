@@ -6,6 +6,7 @@ import FilterButton from './FilterButton';
 import FilterCheckbox from './FilterCheckbox';
 import FilterText from './FilterText';
 import AdvancedSearchCardDesktop from './AdvancedSearchCardDesktop';
+import { listTypeDeBien } from '../../../utils/listingDetails';
 
 const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -46,57 +47,6 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   };
 
   const nbRooms = ['1', '2', '3', '4', '5', '6'];
-  const allTypesDeBien = [
-    'maison',
-    'appartement',
-    'terrain',
-    'immeuble',
-    'parking',
-    'garage',
-    'bureau',
-  ];
-  const allEquipementsInt = [
-    'cave',
-    'garage',
-    'veranda',
-    'ascenseur',
-    'plain Pied',
-    'accessibilité PMR',
-    'digiCode',
-    'alarme',
-    'interphone',
-    'cheminée',
-    'climatisation',
-    'gardien',
-    'toilette Séparé',
-    'cuisine Équipée',
-  ];
-
-  const allEquipementsExt = [
-    'balcon',
-    'terrasse',
-    'piscine',
-    'jardin',
-    'stationnement',
-    'portail',
-  ];
-
-  const allTypesChauffage = [
-    'gaz',
-    'fioul',
-    'electrique',
-    'solaire',
-    'bois',
-    'pac',
-  ];
-  const allExpositions = [
-    'nord',
-    'sud',
-    'est',
-    'ouest',
-    'vue Mer',
-    'proche Mer',
-  ];
 
   const [isCardOpen, setIsCardOpen] = useState(initialCardsState);
 
@@ -256,14 +206,15 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 title='Quel(s) type(s) de bien ?'
                 closeAllCards={closeAllCards}>
                 <div className='flex flex-wrap gap-5'>
-                  {allTypesDeBien.map((type) => {
+                  {listTypeDeBien.map((type) => {
+                    const { id, name, label } = type;
                     return (
                       <FilterCheckbox
-                        key={type}
+                        key={id}
                         name='typeDeBien'
-                        value={`${type}`}
+                        value={`${name}`}
                         handleInputChange={handleInputChange}
-                        isChecked={typeDeBien.includes(`${type}`)}
+                        isChecked={typeDeBien.includes(`${name}`)}
                       />
                     );
                   })}
@@ -443,12 +394,10 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 handleInputChange={handleInputChange}
                 nbChambres={nbChambres}
                 closeAllCards={closeAllCards}
-                allEquipementsInt={allEquipementsInt}
-                allEquipementsExt={allEquipementsExt}
                 minSurfaceExt={minSurfaceExt}
                 maxSurfaceExt={maxSurfaceExt}
-                allExpositions={allExpositions}
                 exposition={exposition}
+                nbSDB={nbSDB}
               />
             )}
           </div>

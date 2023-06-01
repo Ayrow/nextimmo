@@ -192,11 +192,11 @@ const SingleListing = ({
           <div className='flex flex-col gap-5 border-b pb-5'>
             <h3 className='font-bold'>L'essentiel</h3>
             <div className='flex flex-wrap gap-10'>
-              <p>{singleListing?.nbPieces} pièces</p>
+              <p>{singleListing?.nbPieces} pièce(s)</p>
               <p>Surface: {singleListing?.surfaceInt} m²</p>
 
               {singleListing?.nbChambres > 0 && (
-                <p>{singleListing?.nbChambres} chambres</p>
+                <p>{singleListing?.nbChambres} chambre(s)</p>
               )}
 
               <p>{singleListing?.nbSDB} salle de bain/eau</p>

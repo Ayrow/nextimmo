@@ -4,7 +4,7 @@ export type ListingDetailsTypes = {
   label: string;
 };
 
-const typeDeBien: ListingDetailsTypes[] = [
+const listTypeDeBien: ListingDetailsTypes[] = [
   {
     id: 1,
     name: 'maison',
@@ -42,7 +42,7 @@ const typeDeBien: ListingDetailsTypes[] = [
   },
 ];
 
-const equipementsInterieur: ListingDetailsTypes[] = [
+const listEquipementsInterieur: ListingDetailsTypes[] = [
   {
     id: 1,
     name: 'cave',
@@ -115,7 +115,7 @@ const equipementsInterieur: ListingDetailsTypes[] = [
   },
 ];
 
-const equipementsExterieur: ListingDetailsTypes[] = [
+const listEquipementsExterieur: ListingDetailsTypes[] = [
   {
     id: 1,
     name: 'balcon',
@@ -148,7 +148,7 @@ const equipementsExterieur: ListingDetailsTypes[] = [
   },
 ];
 
-const expositionsBien: ListingDetailsTypes[] = [
+const listExpositionsBien: ListingDetailsTypes[] = [
   {
     id: 1,
     name: 'nord',
@@ -181,7 +181,7 @@ const expositionsBien: ListingDetailsTypes[] = [
   },
 ];
 
-const typeChauffage: ListingDetailsTypes[] = [
+const listTypeChauffage: ListingDetailsTypes[] = [
   {
     id: 1,
     name: 'gaz',
@@ -215,9 +215,9 @@ const typeChauffage: ListingDetailsTypes[] = [
 ];
 
 export {
-  equipementsInterieur,
-  equipementsExterieur,
-  expositionsBien,
-  typeChauffage,
-  typeDeBien,
+  listEquipementsInterieur,
+  listEquipementsExterieur,
+  listExpositionsBien,
+  listTypeChauffage,
+  listTypeDeBien,
 };

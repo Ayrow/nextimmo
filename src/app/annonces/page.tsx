@@ -124,12 +124,12 @@ const Listings = () => {
     const regexMixCharNumb = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
     const regexOnlyChar = /[a-zA-Z]/;
     const regexOnlyNumber = /^\d+$/;
-
     if (
       (name === 'typeDeBien' && value !== '') ||
       (name == 'equipementsInt' && value !== '') ||
       (name == 'equipementsExt' && value !== '') ||
       (name === 'nbPieces' && value !== '') ||
+      (name === 'nbSDB' && value !== '') ||
       (name === 'nbChambres' && value !== '') ||
       (name === 'exposition' && value !== '')
     ) {
