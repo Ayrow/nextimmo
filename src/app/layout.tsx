@@ -23,7 +23,7 @@ export default function RootLayout({
       <AppProvider>
         <AuthProvider>
           <ListingsProvider>
-            <body className={inter.className}>
+            <body className={`relative ${inter.className}`}>
               <Navbar />
               {children}
               <Footer />

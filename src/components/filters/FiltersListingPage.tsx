@@ -5,16 +5,17 @@ import FilterCard from './FilterCard';
 import FilterButton from './FilterButton';
 import FilterCheckbox from './FilterCheckbox';
 import FilterText from './FilterText';
-import AdvancedSearchCardDesktop from './AdvancedSearchCardDesktop';
-import { listTypeDeBien } from '../../../utils/listingDetails';
+import AdvancedSearch from './AdvancedSearch';
+import { listTypeDeBien, nbRooms } from '../../../utils/listingDetails';
+import BasicSearch from './BasicSearch';
 
 const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
   const ref = useRef<HTMLDivElement>(null);
   const regexMixCharNumb = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
   const regexContainsChar = /[a-zA-Z]/;
+
   const {
     transaction,
-    statut,
     quartier,
     ville,
     codePostal,
@@ -32,8 +33,6 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     equipementsInt,
     equipementsExt,
     exposition,
-    sort,
-    limit,
   } = valuesQueries;
 
   const initialCardsState = {
@@ -46,8 +45,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     rechercheAvancee: false,
   };
 
-  const nbRooms = ['1', '2', '3', '4', '5', '6'];
-
+  const [isMobileFilterOpen, setISMobileFilterOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(initialCardsState);
 
   const openCloseCard = (e) => {
@@ -140,13 +138,57 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
       {/* Mobile */}
       <div>
         <div className='md:hidden flex justify-end gap-5'>
-          <button className='border px-2 rounded-lg'>Filtrer</button>
+          <button
+            className='border px-2 rounded-lg'
+            onClick={() => setISMobileFilterOpen(true)}>
+            Filtrer
+          </button>
           <div>
             <button className='border px-2 rounded-lg'>Plus récent </button>
             {/* dropDown for sorting */}
           </div>
         </div>
-
+        {isMobileFilterOpen && (
+          <div className='md:hidden absolute z-50 inset-0 p-10 text-center w-full h-full bg-gray-900'>
+            <div className='flex justify-end'>
+              <button
+                className='text-md gap-5 border rounded-xl p-2 hover:bg-gray-700'
+                onClick={() => setISMobileFilterOpen(false)}>
+                Fermer [X]
+              </button>
+            </div>
+            <p className='mt-5 mb-7 text-xl'>Affinez votre recherche</p>
+            <BasicSearch
+              handleInputChange={handleInputChange}
+              transaction={transaction}
+              typeDeBien={typeDeBien}
+              quartier={quartier}
+              ville={ville}
+              codePostal={codePostal}
+              nbPieces={nbPieces}
+            />
+            <AdvancedSearch
+              nbRooms={nbRooms}
+              equipementsInt={equipementsInt}
+              equipementsExt={equipementsExt}
+              handleInputChange={handleInputChange}
+              nbChambres={nbChambres}
+              closeAllCards={closeAllCards}
+              minSurfaceExt={minSurfaceExt}
+              maxSurfaceExt={maxSurfaceExt}
+              exposition={exposition}
+              nbSDB={nbSDB}
+              typeChauffage={typeChauffage}
+            />
+            <div className='mt-10'>
+              <button
+                onClick={closeAllCards}
+                className='border-b border-b-transparent hover:border-b hover:border-white text-xl font-bold'>
+                - Valider -
+              </button>
+            </div>
+          </div>
+        )}
         {/* Modal with filters */}
       </div>
 
@@ -158,7 +200,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               className='px-3 py-1 border rounded-lg'
               name='transaction'
               value={transaction}
-              onClick={(e) => openCloseCard(e)}>
+              onClick={openCloseCard}>
               {transaction === 'vente' ? 'Acheter' : 'Louer'}
             </button>
             {isCardOpen.transaction && (
@@ -166,8 +208,8 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 handleInputChange={handleInputChange}
                 name='transaction'
                 resetValue='vente'
-                title='Vous souhaitez ?'
                 closeAllCards={closeAllCards}>
+                <p className='text-center font-bold'>Vous souhaitez ?</p>
                 <div className='flex gap-3 my-3'>
                   <FilterButton
                     name='transaction'
@@ -193,7 +235,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               className='px-3 py-1 border rounded-lg'
               name='typeDeBien'
               value={typeDeBien}
-              onClick={(e) => openCloseCard(e)}>
+              onClick={openCloseCard}>
               {typeDeBien.length > 0
                 ? typeDeBien.join(', ')
                 : 'Type(s) de bien'}
@@ -203,8 +245,10 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 handleInputChange={handleInputChange}
                 name='typeDeBien'
                 resetValue={[]}
-                title='Quel(s) type(s) de bien ?'
                 closeAllCards={closeAllCards}>
+                <p className='text-center font-bold'>
+                  Quel(s) type(s) de bien ?
+                </p>
                 <div className='flex mt-5 flex-wrap gap-5'>
                   {listTypeDeBien.map((type) => {
                     const { id, name, label } = type;
@@ -238,14 +282,14 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 handleInputChange={handleInputChange}
                 name='localisation'
                 resetValue=''
-                title='A quel endroit ?'
                 closeAllCards={closeAllCards}>
+                <p className='text-center font-bold'>À quel endroit ?</p>
                 <div className='relative flex gap-5 my-5'>
                   <FilterText
                     name='quartier'
                     value={quartier}
                     handleInputChange={handleInputChange}
-                    placeholder='quartier'
+                    placeholder='Quartier'
                     symbol=''
                   />
                   <FilterText
@@ -280,8 +324,8 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 handleInputChange={handleInputChange}
                 name='prix'
                 resetValue=''
-                title='Quel est votre budget ?'
                 closeAllCards={closeAllCards}>
+                <p className='text-center font-bold'>Quel est votre budget ?</p>
                 <div className='flex gap-3 my-3'>
                   <FilterText
                     name='minPrice'
@@ -320,8 +364,10 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 handleInputChange={handleInputChange}
                 name='surfaceInt'
                 resetValue=''
-                title='Quelle surface Intérieure ?'
                 closeAllCards={closeAllCards}>
+                <p className='text-center font-bold'>
+                  Quelle surface Intérieure ?
+                </p>
                 <div className='flex gap-3 my-3'>
                   <FilterText
                     name='minSurfaceInt'
@@ -347,7 +393,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
             <button
               className='px-3 py-1 border rounded-lg'
               name='nbPieces'
-              onClick={(e) => openCloseCard(e)}>
+              onClick={openCloseCard}>
               {renderRoomNumberText(nbPieces, 'pièce')}
             </button>
             {isCardOpen.nbPieces && (
@@ -355,8 +401,8 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 handleInputChange={handleInputChange}
                 name='nbPieces'
                 resetValue=''
-                title='Combien de pièces ?'
                 closeAllCards={closeAllCards}>
+                <p className='text-center font-bold'>Combien de pièces ?</p>
                 <div className='flex flex-wrap gap-3 my-3'>
                   {nbRooms.map((nb) => {
                     return (
@@ -388,18 +434,29 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
               Recherche Avancée
             </button>
             {isCardOpen.rechercheAvancee && (
-              <AdvancedSearchCardDesktop
-                nbRooms={nbRooms}
-                equipementsInt={equipementsInt}
-                equipementsExt={equipementsExt}
-                handleInputChange={handleInputChange}
-                nbChambres={nbChambres}
-                closeAllCards={closeAllCards}
-                minSurfaceExt={minSurfaceExt}
-                maxSurfaceExt={maxSurfaceExt}
-                exposition={exposition}
-                nbSDB={nbSDB}
-              />
+              <div className='absolute w-1/2 right-0 border p-4 mt-4 mr-2 z-50 rounded-xl bg-sky-950'>
+                <p className='text-center font-bold'>Affiner votre recherche</p>
+                <AdvancedSearch
+                  nbRooms={nbRooms}
+                  equipementsInt={equipementsInt}
+                  equipementsExt={equipementsExt}
+                  handleInputChange={handleInputChange}
+                  nbChambres={nbChambres}
+                  closeAllCards={closeAllCards}
+                  minSurfaceExt={minSurfaceExt}
+                  maxSurfaceExt={maxSurfaceExt}
+                  exposition={exposition}
+                  nbSDB={nbSDB}
+                  typeChauffage={typeChauffage}
+                />
+                <div className='flex justify-end gap-10 mt-5'>
+                  <button
+                    onClick={closeAllCards}
+                    className='border-b border-b-transparent hover:border-b hover:border-white'>
+                    Valider
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         </div>

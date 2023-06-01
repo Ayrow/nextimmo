@@ -4,14 +4,13 @@ import { useState } from 'react';
 import FilterText from './FilterText';
 import FilterCheckbox from './FilterCheckbox';
 import {
-  ListingDetailsTypes,
   listEquipementsExterieur,
   listEquipementsInterieur,
   listExpositionsBien,
   listTypeChauffage,
 } from '../../../utils/listingDetails';
 
-const AdvancedSearchCardDesktop = ({
+const AdvancedSearch = ({
   nbRooms,
   equipementsInt,
   equipementsExt,
@@ -22,13 +21,13 @@ const AdvancedSearchCardDesktop = ({
   maxSurfaceExt,
   exposition,
   nbSDB,
+  typeChauffage,
 }) => {
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <div className='absolute w-1/2 right-0 border p-4 mt-4 mr-2 z-50 rounded-xl bg-sky-950'>
-      <p className='text-center font-bold'>Affiner votre recherche</p>
-      <div className='mt-5'>
+    <div className='flex flex-col items-center'>
+      <div className='my-5'>
         <p className='font-bold my-3'>Combien de Chambres ?</p>
         <div className='flex gap-2'>
           {nbRooms.map((nb: string) => {
@@ -50,7 +49,8 @@ const AdvancedSearchCardDesktop = ({
           })}
         </div>
       </div>
-      <div className='mt-5'>
+
+      <div className='my-5'>
         <p className='font-bold my-3'>Combien de Salle de bain / eau ?</p>
         <div className='flex gap-2'>
           {nbRooms.map((nb: string) => {
@@ -72,9 +72,10 @@ const AdvancedSearchCardDesktop = ({
           })}
         </div>
       </div>
-      <div>
+
+      <div className='my-5'>
         <p className='font-bold my-5'>Quels équipements?</p>
-        <div className='flex flex-wrap gap-5'>
+        <div className='flex flex-wrap gap-5 justify-center'>
           {listEquipementsExterieur.map((equipement) => {
             const { id, name, label } = equipement;
             return (
@@ -121,7 +122,7 @@ const AdvancedSearchCardDesktop = ({
         </button>
       </div>
 
-      <div>
+      <div className='my-5'>
         <p className='font-bold my-5'>Quelle surface de terrain?</p>
 
         <div className='flex gap-3 my-3'>
@@ -143,10 +144,10 @@ const AdvancedSearchCardDesktop = ({
         </div>
       </div>
 
-      <div>
+      <div className='my-5'>
         <p className='font-bold my-5'>Quelle exposition?</p>
         <div>
-          <div className='flex flex-wrap gap-5'>
+          <div className='flex flex-wrap gap-5 justify-center'>
             {listExpositionsBien.map((singleExp) => {
               const { id, name, label } = singleExp;
               return (
@@ -164,37 +165,29 @@ const AdvancedSearchCardDesktop = ({
         </div>
       </div>
 
-      <div>
+      <div className='my-5'>
         <p className='font-bold my-5'>Quel type de chauffage ?</p>
 
         <div>
-          <div className='flex flex-wrap gap-5'>
+          <div className='flex flex-wrap gap-5 justify-center'>
             {listTypeChauffage.map((element) => {
               const { id, label, name } = element;
               return (
                 <FilterCheckbox
                   key={id}
-                  name='exposition'
+                  name='typeChauffage'
                   value={name}
                   label={label}
                   handleInputChange={handleInputChange}
-                  isChecked={exposition.includes(name)}
+                  isChecked={typeChauffage.includes(name)}
                 />
               );
             })}
           </div>
         </div>
       </div>
-
-      <div className='flex justify-end gap-10 mt-5'>
-        <button
-          onClick={closeAllCards}
-          className='border-b border-b-transparent hover:border-b hover:border-white'>
-          Valider
-        </button>
-      </div>
     </div>
   );
 };
 
-export default AdvancedSearchCardDesktop;
+export default AdvancedSearch;

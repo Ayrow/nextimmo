@@ -137,6 +137,7 @@ const Listings = () => {
       const newValue = value.replace(/\s/g, '').replace('é', 'e');
       let newArray: string[] =
         valuesQueries[name] === '' ? [] : valuesQueries[name];
+      console.log('newArray', newArray);
       if (valuesQueries[name].includes(newValue)) {
         newArray = newArray.filter((item) => item !== newValue);
       } else {

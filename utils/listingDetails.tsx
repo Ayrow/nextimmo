@@ -4,6 +4,8 @@ export type ListingDetailsTypes = {
   label: string;
 };
 
+const nbRooms = ['1', '2', '3', '4', '5', '6'];
+
 const listTypeDeBien: ListingDetailsTypes[] = [
   {
     id: 1,
@@ -194,7 +196,7 @@ const listTypeChauffage: ListingDetailsTypes[] = [
   },
   {
     id: 3,
-    name: 'électrique',
+    name: 'electrique',
     label: 'Électrique',
   },
   {
@@ -220,4 +222,5 @@ export {
   listExpositionsBien,
   listTypeChauffage,
   listTypeDeBien,
+  nbRooms,
 };

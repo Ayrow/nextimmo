@@ -4,13 +4,11 @@ const FilterCard = ({
   handleInputChange,
   name,
   resetValue,
-  title,
   children,
   closeAllCards,
 }) => {
   return (
     <div className='absolute border p-4 mt-4 z-50 rounded-xl bg-sky-950'>
-      <p className='text-center font-bold'>{title}</p>
       {children}
       <div className='flex justify-between gap-10 mt-5'>
         <button
