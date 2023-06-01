@@ -242,12 +242,10 @@ const SingleListing = ({
               <h3 className='font-bold'>Autre</h3>
               <div className='flex flex-wrap gap-10'>
                 {singleListing?.dateConstruction && (
-                  <p>{singleListing?.dateConstruction}</p>
+                  <p>Date de construction: {singleListing?.dateConstruction}</p>
                 )}
-                {singleListing?.nbEtages > 1 ? (
+                {singleListing?.nbEtages > 1 && (
                   <p>Composé de {singleListing?.nbEtages} étages</p>
-                ) : (
-                  <p>Plain-pied</p>
                 )}
                 <p>Chauffage: {singleListing?.typeChauffage}</p>
               </div>

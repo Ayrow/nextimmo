@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import FilterText from './FilterText';
 
 const AdvancedSearchCardDesktop = ({
   nbRooms,
@@ -11,6 +12,8 @@ const AdvancedSearchCardDesktop = ({
   handleInputChange,
   nbChambres,
   closeAllCards,
+  minSurfaceExt,
+  maxSurfaceExt,
 }) => {
   const [showMore, setShowMore] = useState(false);
 
@@ -79,9 +82,32 @@ const AdvancedSearchCardDesktop = ({
               );
             })}
         </div>
-        <button className='my-5' onClick={() => setShowMore(!showMore)}>
+
+        <button className='' onClick={() => setShowMore(!showMore)}>
           {showMore ? '- Voir Moins' : '+ Voir Plus'}
         </button>
+      </div>
+
+      <div>
+        <p className='font-bold my-5'>Quelle surface de terrain?</p>
+
+        <div className='flex gap-3 my-3'>
+          <FilterText
+            name='minSurfaceExt'
+            value={minSurfaceExt}
+            placeholder='minimum'
+            symbol='m2'
+            handleInputChange={handleInputChange}
+          />
+
+          <FilterText
+            name='maxSurfaceExt'
+            value={maxSurfaceExt}
+            placeholder='maximum'
+            symbol='m2'
+            handleInputChange={handleInputChange}
+          />
+        </div>
       </div>
 
       <div className='flex justify-end gap-10 mt-5'>

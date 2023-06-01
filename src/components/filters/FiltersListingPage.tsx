@@ -23,6 +23,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
     minSurfaceInt,
     maxSurfaceInt,
     minSurfaceExt,
+    maxSurfaceExt,
     nbPieces,
     nbChambres,
     nbSDB,
@@ -374,7 +375,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                   <FilterText
                     name='maxSurfaceInt'
                     value={maxSurfaceInt}
-                    placeholder='minimum'
+                    placeholder='maximum'
                     symbol='m2'
                     handleInputChange={handleInputChange}
                   />
@@ -437,6 +438,8 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 closeAllCards={closeAllCards}
                 allEquipementsInt={allEquipementsInt}
                 allEquipementsExt={allEquipementsExt}
+                minSurfaceExt={minSurfaceExt}
+                maxSurfaceExt={maxSurfaceExt}
               />
             )}
           </div>
