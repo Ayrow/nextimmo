@@ -30,6 +30,7 @@ type QueryParamsType = {
   sort: string;
   // sortOptions: ['latest', 'oldest'],
   limit: number;
+  page: number;
 };
 
 const sortOptions = [
@@ -60,7 +61,8 @@ const queryParams: QueryParamsType = {
   equipementsExt: [],
   exposition: [],
   sort: 'plus récente',
-  limit: 12,
+  limit: 2,
+  page: 1,
 };
 
 const Listings = () => {
@@ -69,7 +71,7 @@ const Listings = () => {
   const [valuesQueries, setValuesQueries] = useState(queryParams);
   const [totalNumberListings, setTotalNumberListings] = useState<number>(null);
   const [totalPages, setTotalPages] = useState<number>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [isSortingDropdownOpen, setIsSortingDropdownOpen] = useState(false);
 
   const getAllListings = async (signal: AbortSignal): Promise<void> => {
@@ -97,10 +99,7 @@ const Listings = () => {
         //display alert error fetching listings
       }
     } catch (error) {
-      if (error !== 'AbortError') {
-        console.log('error', error);
-        // add Modal or alert for error
-      }
+      console.log('error', error);
     }
   };
 
@@ -144,7 +143,6 @@ const Listings = () => {
       const newValue = value.replace(/\s/g, '').replace('é', 'e');
       let newArray: string[] =
         valuesQueries[name] === '' ? [] : valuesQueries[name];
-      console.log('newArray', newArray);
       if (valuesQueries[name].includes(newValue)) {
         newArray = newArray.filter((item) => item !== newValue);
       } else {
@@ -221,7 +219,9 @@ const Listings = () => {
         </div>
       </div>
       <div
-        className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 m-10 gap-5'}>
+        className={
+          'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 m-10 gap-5'
+        }>
         {allListings?.map((listing) => {
           return <GridCard key={listing.ref} listing={listing} />;
         })}
@@ -229,8 +229,9 @@ const Listings = () => {
       {totalPages > 0 && (
         <PageBtnContainer
           numOfPages={totalPages}
-          page={currentPage}
-          setCurrentPage={setCurrentPage}
+          page={valuesQueries.page}
+          handleInputChange={handleInputChange}
+          // setCurrentPage={setCurrentPage}
         />
       )}
     </section>
