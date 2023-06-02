@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
               Vous y trouverez forcément la future maison de vos rêves!
             </p>
             <Link
-              href='#'
+              href='/annonces'
               className='inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 focus:ring-primary-900'>
               Voir les annonces
               <svg
@@ -30,7 +30,7 @@ const Hero: React.FC = () => {
               </svg>
             </Link>
             <Link
-              href='#'
+              href='/contact'
               className='inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center border rounded-lg focus:ring-4 text-white border-gray-700 hover:bg-gray-700 focus:ring-gray-800'>
               Nous contacter
             </Link>
