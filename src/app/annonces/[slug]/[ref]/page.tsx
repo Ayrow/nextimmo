@@ -5,6 +5,11 @@ import { useEffect, useState } from 'react';
 import { useListingsContext } from '../../../../context/listings/listingsContext';
 import { IListing } from '../../../../../types/listingTypes';
 import BackButton from '../../../../components/buttons/BackButton';
+import {
+  listEquipementsExterieur,
+  listEquipementsInterieur,
+  listTypeChauffage,
+} from '../../../../../utils/listingDetails';
 
 export async function generateStaticParams() {
   const listings = await fetch('/api/allListings').then((res) => res.json());
@@ -209,25 +214,33 @@ const SingleListing = ({
             <div className='flex flex-col gap-5 border-b pb-5'>
               <h3 className='font-bold'>Interieur</h3>
               <div className='flex flex-wrap gap-10'>
-                {singleListing?.equipements?.interieur &&
-                  singleListing.equipements.interieur.map((item) => {
+                {listEquipementsInterieur.map((element) => {
+                  if (
+                    singleListing?.equipements?.interieur.includes(element.name)
+                  ) {
                     return (
-                      <p key={item} className='capitalize'>
-                        {item}
+                      <p key={element.id} className='capitalize'>
+                        {element.label}
                       </p>
                     );
-                  })}
+                  }
+                })}
               </div>
             </div>
             <div className='flex flex-col gap-5 border-b pb-5'>
               <h3 className='font-bold'>Exterieur</h3>
               <div className='flex flex-wrap gap-10'>
-                {singleListing?.equipements?.exterieur &&
-                  singleListing?.equipements?.exterieur.map((item) => (
-                    <p key={item} className='capitalize'>
-                      {item}
-                    </p>
-                  ))}
+                {listEquipementsExterieur.map((element) => {
+                  if (
+                    singleListing?.equipements?.exterieur.includes(element.name)
+                  ) {
+                    return (
+                      <p key={element.id} className='capitalize'>
+                        {element.label}
+                      </p>
+                    );
+                  }
+                })}
               </div>
             </div>
             <div className='flex flex-col gap-5 border-b pb-5'>
@@ -239,7 +252,16 @@ const SingleListing = ({
                 {singleListing?.nbEtages > 1 && (
                   <p>Composé de {singleListing?.nbEtages} étages</p>
                 )}
-                <p>Chauffage: {singleListing?.typeChauffage}</p>
+                {singleListing?.typeChauffage && (
+                  <p>
+                    Chauffage:{' '}
+                    {listTypeChauffage.map((element) => {
+                      if (element.name === singleListing?.typeChauffage) {
+                        return element.label;
+                      }
+                    })}
+                  </p>
+                )}
               </div>
             </div>
             <div className='flex flex-col gap-5 border-b pb-5'>
