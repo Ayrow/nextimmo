@@ -186,6 +186,9 @@ const Listings = () => {
   return (
     <section className='bg-gray-900 py-5'>
       <FiltersListingPage
+        sortOptions={sortOptions}
+        isSortingDropdownOpen={isSortingDropdownOpen}
+        setIsSortingDropdownOpen={setIsSortingDropdownOpen}
         valuesQueries={valuesQueries}
         handleInputChange={handleInputChange}
       />
@@ -194,14 +197,14 @@ const Listings = () => {
           {totalNumberListings}{' '}
           {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvée'}
         </p>
-        <div className='relative'>
+        <div className='hidden relative md:grid'>
           <button
             className='border capitalize rounded-xl px-2 py-1 w-40 flex gap-5 justify-around'
             onClick={() => setIsSortingDropdownOpen(!isSortingDropdownOpen)}>
             {valuesQueries.sort} {isSortingDropdownOpen ? '⇑' : '⇓'}
           </button>
           {isSortingDropdownOpen && (
-            <div className='absolute border rounded-md left-0 mt-2 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
+            <div className='absolute border rounded-md left-0 mt-10 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
               {sortOptions.map((sort) => {
                 return (
                   <button

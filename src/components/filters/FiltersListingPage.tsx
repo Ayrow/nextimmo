@@ -9,7 +9,13 @@ import AdvancedSearch from './AdvancedSearch';
 import { listTypeDeBien, nbRooms } from '../../../utils/listingDetails';
 import BasicSearch from './BasicSearch';
 
-const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
+const FiltersListingPage = ({
+  valuesQueries,
+  handleInputChange,
+  sortOptions,
+  isSortingDropdownOpen,
+  setIsSortingDropdownOpen,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const regexMixCharNumb = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
   const regexContainsChar = /[a-zA-Z]/;
@@ -143,9 +149,27 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
             onClick={() => setISMobileFilterOpen(true)}>
             Filtrer
           </button>
-          <div>
-            <button className='border px-2 rounded-lg'>Plus récent </button>
-            {/* dropDown for sorting */}
+          <div className='relative'>
+            <button
+              className='border capitalize rounded-xl px-2 py-1 w-40 flex gap-5 justify-around'
+              onClick={() => setIsSortingDropdownOpen(!isSortingDropdownOpen)}>
+              {valuesQueries.sort} {isSortingDropdownOpen ? '⇑' : '⇓'}
+            </button>
+            {isSortingDropdownOpen && (
+              <div className='absolute border rounded-md left-0 mt-2 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
+                {sortOptions.map((sort) => {
+                  return (
+                    <button
+                      className='capitalize'
+                      name='sort'
+                      value={sort}
+                      onClick={handleInputChange}>
+                      {sort}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
         {isMobileFilterOpen && (
