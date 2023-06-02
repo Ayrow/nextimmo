@@ -26,10 +26,10 @@ const AdvancedSearch = ({
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <div className='flex flex-col items-center'>
-      <div className='my-5'>
-        <p className='font-bold my-3'>Combien de Chambres ?</p>
-        <div className='flex gap-2'>
+    <div className='flex flex-col gap-10'>
+      <div className='mt-10'>
+        <p className='font-bold mb-3'>Combien de Chambres ?</p>
+        <div className='flex gap-3'>
           {nbRooms.map((nb: string) => {
             return (
               <button
@@ -50,9 +50,9 @@ const AdvancedSearch = ({
         </div>
       </div>
 
-      <div className='my-5'>
-        <p className='font-bold my-3'>Combien de Salle de bain / eau ?</p>
-        <div className='flex gap-2'>
+      <div>
+        <p className='font-bold mb-3'>Combien de Salle de bain / eau ?</p>
+        <div className='flex gap-3'>
           {nbRooms.map((nb: string) => {
             return (
               <button
@@ -73,9 +73,9 @@ const AdvancedSearch = ({
         </div>
       </div>
 
-      <div className='my-5'>
-        <p className='font-bold my-5'>Quels équipements?</p>
-        <div className='flex flex-wrap gap-5 justify-center'>
+      <div>
+        <p className='font-bold mb-3'>Quels équipements?</p>
+        <div className='flex flex-wrap gap-3'>
           {listEquipementsExterieur.map((equipement) => {
             const { id, name, label } = equipement;
             return (
@@ -122,10 +122,10 @@ const AdvancedSearch = ({
         </button>
       </div>
 
-      <div className='my-5'>
-        <p className='font-bold my-5'>Quelle surface de terrain?</p>
+      <div className=''>
+        <p className='font-bold mb-3'>Quelle surface de terrain?</p>
 
-        <div className='flex gap-3 my-3'>
+        <div className='flex gap-3'>
           <FilterText
             name='minSurfaceExt'
             value={minSurfaceExt}
@@ -144,10 +144,10 @@ const AdvancedSearch = ({
         </div>
       </div>
 
-      <div className='my-5'>
-        <p className='font-bold my-5'>Quelle exposition?</p>
+      <div className=''>
+        <p className='font-bold mb-3'>Quelle exposition?</p>
         <div>
-          <div className='flex flex-wrap gap-5 justify-center'>
+          <div className='flex flex-wrap gap-5'>
             {listExpositionsBien.map((singleExp) => {
               const { id, name, label } = singleExp;
               return (
@@ -165,25 +165,23 @@ const AdvancedSearch = ({
         </div>
       </div>
 
-      <div className='my-5'>
-        <p className='font-bold my-5'>Quel type de chauffage ?</p>
+      <div className=''>
+        <p className='font-bold mb-3'>Quel type de chauffage ?</p>
 
-        <div>
-          <div className='flex flex-wrap gap-5 justify-center'>
-            {listTypeChauffage.map((element) => {
-              const { id, label, name } = element;
-              return (
-                <FilterCheckbox
-                  key={id}
-                  name='typeChauffage'
-                  value={name}
-                  label={label}
-                  handleInputChange={handleInputChange}
-                  isChecked={typeChauffage.includes(name)}
-                />
-              );
-            })}
-          </div>
+        <div className='flex flex-wrap gap-5'>
+          {listTypeChauffage.map((element) => {
+            const { id, label, name } = element;
+            return (
+              <FilterCheckbox
+                key={id}
+                name='typeChauffage'
+                value={name}
+                label={label}
+                handleInputChange={handleInputChange}
+                isChecked={typeChauffage.includes(name)}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

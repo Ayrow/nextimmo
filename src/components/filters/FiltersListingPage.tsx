@@ -149,7 +149,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
           </div>
         </div>
         {isMobileFilterOpen && (
-          <div className='md:hidden absolute z-50 inset-0 p-10 text-center w-full h-full bg-gray-900'>
+          <div className='md:hidden absolute z-50 inset-0 p-10 w-full h-full bg-gray-900'>
             <div className='flex justify-end'>
               <button
                 className='text-md gap-5 border rounded-xl p-2 hover:bg-gray-700'
@@ -210,7 +210,7 @@ const FiltersListingPage = ({ valuesQueries, handleInputChange }) => {
                 resetValue='vente'
                 closeAllCards={closeAllCards}>
                 <p className='text-center font-bold'>Vous souhaitez ?</p>
-                <div className='flex gap-3 my-3'>
+                <div className='flex gap-3 m-3'>
                   <FilterButton
                     name='transaction'
                     value='vente'

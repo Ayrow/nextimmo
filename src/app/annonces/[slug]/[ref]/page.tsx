@@ -204,7 +204,7 @@ const SingleListing = ({
                 <p>{singleListing?.nbChambres} chambre(s)</p>
               )}
 
-              <p>{singleListing?.nbSDB} salle de bain/eau</p>
+              <p>{singleListing?.nbSDB} salle(s) de bain/eau</p>
               {singleListing?.surfaceExt > 0 && (
                 <p>Terrain {singleListing?.surfaceExt} m²</p>
               )}

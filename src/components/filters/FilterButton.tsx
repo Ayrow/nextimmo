@@ -13,8 +13,8 @@ const FilterButton = ({
       onClick={handleInputChange}
       className={
         classCheck
-          ? 'border m-2 p-5 rounded-lg bg-gray-600'
-          : 'border m-2 p-5 rounded-lg'
+          ? 'border p-5 rounded-lg bg-gray-600'
+          : 'border p-5 rounded-lg'
       }>
       {displayName}
     </button>

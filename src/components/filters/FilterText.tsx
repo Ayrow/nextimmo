@@ -6,7 +6,7 @@ const FilterText = ({
   handleInputChange,
 }) => {
   return (
-    <div className='relative mb-6'>
+    <div className='relative'>
       <input
         type='text'
         id='filter-input'
