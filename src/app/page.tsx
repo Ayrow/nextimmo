@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Hero from '../components/Hero';
-import BasicHouseSearch from '../components/BasicHouseSearch';
+import BasicHomepageSearch from '../components/BasicHomepageSearch';
 
 const Home: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ const Home: React.FC = () => {
         <h2 className='mb-4 text-4xl font-bold text-white'>
           Trouvez votre future maison :
         </h2>
-        <BasicHouseSearch />
+        <BasicHomepageSearch />
       </section>
     </main>
   );

@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 
 import FiltersListingPage from '../../components/filters/FiltersListingPage';
 import { IListing } from '../../../types/listingTypes';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-type QueryParamsType = {
+export type QueryParamsType = {
   transaction: string;
   statut: string;
   quartier: string;
@@ -28,7 +29,6 @@ type QueryParamsType = {
   equipementsExt: string[];
   exposition: string[];
   sort: string;
-  // sortOptions: ['latest', 'oldest'],
   limit: number;
   page: number;
 };
@@ -66,9 +66,32 @@ const queryParams: QueryParamsType = {
 };
 
 const Listings = () => {
+  const params = Object.fromEntries(useSearchParams());
   // const { allListings, getAllListings } = useListingsContext();
   const [allListings, setAllListings] = useState<IListing[]>(null);
-  const [valuesQueries, setValuesQueries] = useState(queryParams);
+  let paramsObject: QueryParamsType = queryParams;
+  if (params) {
+    const searchParams = useSearchParams();
+    paramsObject = Array.from(searchParams.entries()).reduce(
+      (obj, [key, value]) => {
+        if (obj[key]) {
+          if (Array.isArray(obj[key])) {
+            obj[key].push(value);
+          } else {
+            obj[key] = [obj[key], value];
+          }
+        } else {
+          obj[key] = value;
+        }
+        return obj;
+      },
+      {} as QueryParamsType
+    );
+  }
+
+  const [valuesQueries, setValuesQueries] = useState(
+    Object.keys(params).length === 0 ? queryParams : paramsObject
+  );
   const [totalNumberListings, setTotalNumberListings] = useState<number>(null);
   const [totalPages, setTotalPages] = useState<number>(null);
   // const [currentPage, setCurrentPage] = useState(1);
@@ -76,6 +99,7 @@ const Listings = () => {
 
   const getAllListings = async (signal: AbortSignal): Promise<void> => {
     const searchParams = new URLSearchParams();
+
     Object.entries(valuesQueries).forEach(([key, value]) => {
       if (value) {
         searchParams.append(key, String(value));
@@ -114,7 +138,7 @@ const Listings = () => {
 
     const debounceFetchListings = (): void => {
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(fetchListings, 300); // Adjust the delay as needed
+      timeoutId = setTimeout(fetchListings, 200); // Adjust the delay as needed
     };
 
     debounceFetchListings();
@@ -153,25 +177,6 @@ const Listings = () => {
       setValuesQueries((prevValuesQueries) => ({
         ...prevValuesQueries,
         [name]: newArray,
-      }));
-    } else if (name === 'prix') {
-      setValuesQueries((prevValuesQueries) => ({
-        ...prevValuesQueries,
-        minPrice: value,
-        maxPrice: value,
-      }));
-    } else if (name === 'surfaceInt') {
-      setValuesQueries((prevValuesQueries) => ({
-        ...prevValuesQueries,
-        minSurfaceInt: value,
-        maxSurfaceInt: value,
-      }));
-    } else if (name === 'localisation') {
-      setValuesQueries((prevValuesQueries) => ({
-        ...prevValuesQueries,
-        quartier: value,
-        ville: value,
-        codePostal: value,
       }));
     } else {
       setValuesQueries((prevValuesQueries) => ({
@@ -219,9 +224,7 @@ const Listings = () => {
         </div>
       </div>
       <div
-        className={
-          'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 m-10 gap-5'
-        }>
+        className={'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 m-10 gap-5'}>
         {allListings?.map((listing) => {
           return <GridCard key={listing.ref} listing={listing} />;
         })}

@@ -86,7 +86,7 @@ const FiltersListingPage = ({
     arrayNumberRoom: string[],
     typeOfRoom: string
   ) => {
-    if (arrayNumberRoom.length > 0) {
+    if (arrayNumberRoom?.length > 0) {
       if (arrayNumberRoom.length === 1 && arrayNumberRoom.includes('1')) {
         return `${arrayNumberRoom} ${typeOfRoom}`;
       } else if (
@@ -218,7 +218,7 @@ const FiltersListingPage = ({
 
       {/* Desktop*/}
       <div className='relative' ref={ref}>
-        <div className='hidden md:flex md:flex-wrap m-5 md:flex-auto justify-between border gap-5 rounded-xl p-5 shadow-xl shadow-black'>
+        <div className='hidden md:flex md:flex-wrap m-5 md:flex-auto border gap-5 rounded-xl p-5 shadow-xl shadow-black'>
           <div>
             <button
               className='px-3 py-1 border rounded-lg'
@@ -256,7 +256,7 @@ const FiltersListingPage = ({
 
           <div>
             <button
-              className='px-3 py-1 border rounded-lg'
+              className='px-3 py-1 border capitalize rounded-lg'
               name='typeDeBien'
               value={typeDeBien}
               onClick={openCloseCard}>
@@ -294,7 +294,7 @@ const FiltersListingPage = ({
 
           <div>
             <button
-              className='px-3 py-1 border rounded-lg'
+              className='px-3 py-1 border rounded-lg capitalize'
               name='localisation'
               onClick={openCloseCard}>
               {quartier || ville || codePostal
