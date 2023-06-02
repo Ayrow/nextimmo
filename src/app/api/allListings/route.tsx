@@ -168,11 +168,16 @@ export async function GET(request: NextRequest) {
 
   let result = Listing.find(queryObject).lean();
 
-  if (sort === 'oldest') {
+  if (sort === 'plus récente') {
     result = result.sort({ createdAt: 1 });
-  } else if (sort === 'latest') {
+  } else if (sort === 'plus ancienne') {
     result = result.sort({ createdAt: -1 });
+  } else if (sort === 'prix croissant') {
+    result = result.sort({ prix: 1 });
+  } else if (sort === 'prix décroissant') {
+    result = result.sort({ prix: -1 });
   }
+
   const page = parseInt(searchParams.get('page')) || 1;
   const limit = parseInt(searchParams.get('limit')) || 12;
   const skip = (page - 1) * limit;

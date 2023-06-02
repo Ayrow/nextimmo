@@ -32,6 +32,13 @@ type QueryParamsType = {
   limit: number;
 };
 
+const sortOptions = [
+  'plus récente',
+  'plus ancienne',
+  'prix croissant',
+  'prix décroissant',
+];
+
 const queryParams: QueryParamsType = {
   transaction: 'vente',
   statut: 'disponible',
@@ -52,8 +59,7 @@ const queryParams: QueryParamsType = {
   equipementsInt: [],
   equipementsExt: [],
   exposition: [],
-  sort: 'latest',
-  // sortOptions: ['latest', 'oldest'],
+  sort: 'plus récente',
   limit: 12,
 };
 
@@ -64,6 +70,7 @@ const Listings = () => {
   const [totalNumberListings, setTotalNumberListings] = useState<number>(null);
   const [totalPages, setTotalPages] = useState<number>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isSortingDropdownOpen, setIsSortingDropdownOpen] = useState(false);
 
   const getAllListings = async (signal: AbortSignal): Promise<void> => {
     const searchParams = new URLSearchParams();
@@ -182,13 +189,34 @@ const Listings = () => {
         valuesQueries={valuesQueries}
         handleInputChange={handleInputChange}
       />
-      <div className=''>
-        <p className='font-bold text-center'>
+      <div className='flex gap-10 items-center'>
+        <p className='font-bold ml-10'>
           {totalNumberListings}{' '}
-          {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvé'}
+          {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvée'}
         </p>
+        <div className='relative'>
+          <button
+            className='border capitalize rounded-xl px-2 py-1 w-40 flex gap-5 justify-around'
+            onClick={() => setIsSortingDropdownOpen(!isSortingDropdownOpen)}>
+            {valuesQueries.sort} {isSortingDropdownOpen ? '⇑' : '⇓'}
+          </button>
+          {isSortingDropdownOpen && (
+            <div className='absolute border rounded-md left-0 mt-2 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
+              {sortOptions.map((sort) => {
+                return (
+                  <button
+                    className='capitalize'
+                    name='sort'
+                    value={sort}
+                    onClick={handleInputChange}>
+                    {sort}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
-      <h2 className='text-center text-xl font-bold p-5'>Annonces</h2>
       <div
         className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 m-10 gap-5'}>
         {allListings?.map((listing) => {
