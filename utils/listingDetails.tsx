@@ -1,3 +1,5 @@
+import { QueryParamsType } from '../types/listingTypes';
+
 export type ListingDetailsTypes = {
   id: number;
   name: string;
@@ -216,6 +218,31 @@ const listTypeChauffage: ListingDetailsTypes[] = [
   },
 ];
 
+const queryParams: QueryParamsType = {
+  transaction: 'vente',
+  statut: 'disponible',
+  quartier: '',
+  ville: '',
+  codePostal: '',
+  typeDeBien: ['maison'],
+  minPrice: '',
+  maxPrice: '',
+  minSurfaceInt: '',
+  maxSurfaceInt: '',
+  minSurfaceExt: '',
+  maxSurfaceExt: '',
+  nbPieces: [],
+  nbChambres: [],
+  nbSDB: '',
+  typeChauffage: [],
+  equipementsInt: [],
+  equipementsExt: [],
+  exposition: [],
+  sort: 'plus récente',
+  limit: 2,
+  page: 1,
+};
+
 export {
   listEquipementsInterieur,
   listEquipementsExterieur,
@@ -223,4 +250,5 @@ export {
   listTypeChauffage,
   listTypeDeBien,
   nbRooms,
+  queryParams,
 };

@@ -3,35 +3,9 @@
 import { useState } from 'react';
 import AdvancedSearch from '../../components/filters/AdvancedSearch';
 import BasicSearch from '../../components/filters/BasicSearch';
-import { QueryParamsType } from '../annonces/page';
-import { nbRooms } from '../../../utils/listingDetails';
+import { nbRooms, queryParams } from '../../../utils/listingDetails';
 import FilterText from '../../components/filters/FilterText';
 import Link from 'next/link';
-
-const queryParams: QueryParamsType = {
-  transaction: 'vente',
-  statut: 'disponible',
-  quartier: '',
-  ville: '',
-  codePostal: '',
-  typeDeBien: ['maison', 'appartement'],
-  minPrice: '',
-  maxPrice: '',
-  minSurfaceInt: '',
-  maxSurfaceInt: '',
-  minSurfaceExt: '',
-  maxSurfaceExt: '',
-  nbPieces: '',
-  nbChambres: '',
-  nbSDB: '',
-  typeChauffage: '',
-  equipementsInt: '',
-  equipementsExt: '',
-  exposition: '',
-  sort: 'plus récente',
-  limit: 2,
-  page: 1,
-};
 
 const RechercheAvancee = () => {
   const [valuesQueries, setValuesQueries] = useState(queryParams);

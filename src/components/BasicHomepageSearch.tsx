@@ -3,36 +3,10 @@
 import { useState } from 'react';
 import FilterButton from './filters/FilterButton';
 import FilterText from './filters/FilterText';
-import { listTypeDeBien } from '../../utils/listingDetails';
+import { listTypeDeBien, queryParams } from '../../utils/listingDetails';
 import FilterCheckbox from './filters/FilterCheckbox';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { QueryParamsType } from '../app/annonces/page';
-
-const queryParams: QueryParamsType = {
-  transaction: 'vente',
-  statut: 'disponible',
-  quartier: '',
-  ville: '',
-  codePostal: '',
-  typeDeBien: ['maison', 'appartement'],
-  minPrice: '',
-  maxPrice: '',
-  minSurfaceInt: '',
-  maxSurfaceInt: '',
-  minSurfaceExt: '',
-  maxSurfaceExt: '',
-  nbPieces: [],
-  nbChambres: [],
-  nbSDB: '',
-  typeChauffage: [],
-  equipementsInt: [],
-  equipementsExt: [],
-  exposition: [],
-  sort: 'plus récente',
-  limit: 2,
-  page: 1,
-};
 
 const BasicHomepageSearch: React.FC = () => {
   const [valuesQueries, setValuesQueries] = useState(queryParams);
@@ -70,7 +44,7 @@ const BasicHomepageSearch: React.FC = () => {
   };
 
   return (
-    <div className='border rounded-xl shadow-lg bg-sky-900 shadow-gray-900 p-10 flex flex-col items-center gap-5'>
+    <div className='m-5 p-5 border rounded-xl shadow-lg bg-sky-900 shadow-gray-900 flex flex-col items-center gap-5'>
       <div className='flex justify-center gap-3'>
         <FilterButton
           handleInputChange={handleInputChange}

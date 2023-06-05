@@ -48,6 +48,31 @@ export interface IListing {
   draft: boolean;
 }
 
+export type QueryParamsType = {
+  transaction: string;
+  statut: string;
+  quartier: string;
+  ville: string;
+  codePostal: string;
+  typeDeBien: string[];
+  minPrice: string;
+  maxPrice: string;
+  minSurfaceInt: string;
+  maxSurfaceInt: string;
+  minSurfaceExt: string;
+  maxSurfaceExt: string;
+  nbPieces: string[] | string;
+  nbChambres: string[] | string;
+  nbSDB: string;
+  typeChauffage: string[] | string;
+  equipementsInt: string[] | string;
+  equipementsExt: string[] | string;
+  exposition: string[] | string;
+  sort: string;
+  limit: number;
+  page: number;
+};
+
 export interface IListingDocument extends Document, IListing {
   createdBy: ObjectId;
   nbAjoutFavoris: number;

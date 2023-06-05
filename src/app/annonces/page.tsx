@@ -5,33 +5,9 @@ import PageBtnContainer from '../../components/buttons/PageBtnContainer';
 import { useEffect, useState } from 'react';
 
 import FiltersListingPage from '../../components/filters/FiltersListingPage';
-import { IListing } from '../../../types/listingTypes';
+import { IListing, QueryParamsType } from '../../../types/listingTypes';
 import { useRouter, useSearchParams } from 'next/navigation';
-
-export type QueryParamsType = {
-  transaction: string;
-  statut: string;
-  quartier: string;
-  ville: string;
-  codePostal: string;
-  typeDeBien: string[];
-  minPrice: string;
-  maxPrice: string;
-  minSurfaceInt: string;
-  maxSurfaceInt: string;
-  minSurfaceExt: string;
-  maxSurfaceExt: string;
-  nbPieces: string[] | string;
-  nbChambres: string[] | string;
-  nbSDB: string;
-  typeChauffage: string[] | string;
-  equipementsInt: string[] | string;
-  equipementsExt: string[] | string;
-  exposition: string[] | string;
-  sort: string;
-  limit: number;
-  page: number;
-};
+import { queryParams } from '../../../utils/listingDetails';
 
 const sortOptions = [
   'plus récente',
@@ -39,31 +15,6 @@ const sortOptions = [
   'prix croissant',
   'prix décroissant',
 ];
-
-const queryParams: QueryParamsType = {
-  transaction: 'vente',
-  statut: 'disponible',
-  quartier: '',
-  ville: '',
-  codePostal: '',
-  typeDeBien: ['maison'],
-  minPrice: '',
-  maxPrice: '',
-  minSurfaceInt: '',
-  maxSurfaceInt: '',
-  minSurfaceExt: '',
-  maxSurfaceExt: '',
-  nbPieces: [],
-  nbChambres: [],
-  nbSDB: '',
-  typeChauffage: [],
-  equipementsInt: [],
-  equipementsExt: [],
-  exposition: [],
-  sort: 'plus récente',
-  limit: 2,
-  page: 1,
-};
 
 const Listings = () => {
   const params = Object.fromEntries(useSearchParams());
