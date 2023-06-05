@@ -6,16 +6,31 @@ import FilterText from './filters/FilterText';
 import { listTypeDeBien, queryParams } from '../../utils/listingDetails';
 import FilterCheckbox from './filters/FilterCheckbox';
 import Link from 'next/link';
+import {
+  EventTargetType,
+  HandleInputChangeType,
+} from '../../types/functionTypes';
 
 const BasicHomepageSearch: React.FC = () => {
   const [valuesQueries, setValuesQueries] = useState(queryParams);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
+  const handleInputChange: HandleInputChangeType = (event) => {
+    const { name, value } = event.target as EventTargetType;
     if (name === 'typeDeBien' && value !== '') {
       const newValue = value.replace(/\s/g, '').replace('é', 'e');
-      let newArray: string[] =
-        valuesQueries[name] === '' ? [] : valuesQueries[name];
+
+      let newArray: string[];
+      if (valuesQueries[name] === '') {
+        newArray = [];
+      } else if (
+        typeof valuesQueries[name] === 'string' &&
+        valuesQueries[name] !== ''
+      ) {
+        newArray.push(valuesQueries[name] as string);
+      } else {
+        newArray = valuesQueries[name] as string[];
+      }
+
       if (valuesQueries[name].includes(newValue)) {
         newArray = newArray.filter((item) => item !== newValue);
       } else {

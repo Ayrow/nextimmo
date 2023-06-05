@@ -2,8 +2,8 @@
 
 import React, {
   Dispatch,
+  MutableRefObject,
   SetStateAction,
-  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -15,6 +15,8 @@ import AdvancedSearch from './AdvancedSearch';
 import { listTypeDeBien, nbRooms } from '../../../utils/listingDetails';
 import BasicSearch from './BasicSearch';
 import { QueryParamsType } from '../../../types/listingTypes';
+import { EventTargetType } from '../../../types/functionTypes';
+import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
 
 const FiltersListingPage = ({
   valuesQueries,
@@ -29,9 +31,8 @@ const FiltersListingPage = ({
   isSortingDropdownOpen: boolean;
   setIsSortingDropdownOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const regexMixCharNumb = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
   const regexContainsChar = /[a-zA-Z]/;
+  const ref = useRef<HTMLDivElement>(null);
 
   const {
     transaction,
@@ -71,8 +72,10 @@ const FiltersListingPage = ({
   const [isMobileFilterOpen, setISMobileFilterOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(initialCardsState);
 
-  const openCloseCard = (e) => {
-    const { name } = e.target;
+  const openCloseCard = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const { name } = e.target as EventTargetType;
     const data = {
       ...initialCardsState,
       [name]: !isCardOpen[name],
@@ -84,20 +87,7 @@ const FiltersListingPage = ({
     setIsCardOpen(initialCardsState);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!ref.current || ref.current.contains(event.target as Node)) {
-        return;
-      }
-      closeAllCards();
-    };
-
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
+  useCloseOnOutsideClick(closeAllCards, ref);
 
   const renderRoomNumberText = (
     arrayNumberRoom: string[] | string,

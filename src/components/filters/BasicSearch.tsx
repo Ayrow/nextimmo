@@ -90,7 +90,7 @@ const BasicSearch = ({
                 id='filter-input'
                 name='nbPieces'
                 value={nb}
-                onClick={(e) => handleInputChange(e)}
+                onChange={handleInputChange}
                 className={
                   nbPieces?.includes(nb)
                     ? 'border px-3 py-1 rounded-lg bg-gray-600'

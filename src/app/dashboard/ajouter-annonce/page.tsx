@@ -7,17 +7,18 @@ import AddPhotosForm from '../../../components/listingsForm/AddPhotosForm';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../../context/user/authContext';
 import {
-  equipementsExterieur,
-  equipementsInterieur,
-  expositionsBien,
-  typeDeBien,
-  typeChauffage,
+  listEquipementsExterieur,
+  listEquipementsInterieur,
+  listExpositionsBien,
+  listTypeDeBien,
+  listTypeChauffage,
 } from '../../../../utils/listingDetails';
 import { useListingsContext } from '../../../context/listings/listingsContext';
 import { useAppContext } from '../../../context/app/appContext';
 import SingleListing from '../../annonces/[slug]/[ref]/page';
 import BackButton from '../../../components/buttons/BackButton';
 import { useRouter } from 'next/navigation';
+import { HandleInputChangeType } from '../../../../types/functionTypes';
 
 const initialState: IListing = {
   ref: '',
@@ -65,13 +66,12 @@ const AddListing = () => {
   const { getSingleListing, singleListing } = useListingsContext();
   const [values, setValues] = useState(initialState);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
+  const handleChange: HandleInputChangeType = (e) => {
     let data = { ...values };
-    const { name, value } = e.target;
+    const { name, value } = e.target as
+      | HTMLInputElement
+      | HTMLSelectElement
+      | HTMLTextAreaElement;
 
     if (name.startsWith('lieu')) {
       let lieuField = name.split('.')[1];
@@ -273,7 +273,7 @@ const AddListing = () => {
                 value={values.typeDeBien}
                 className='border capitalize text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option disabled>Sélectionnez le type de bien</option>
-                {typeDeBien.map((bien) => {
+                {listTypeDeBien.map((bien) => {
                   const { id, name, label } = bien;
                   return (
                     <option key={id} value={name}>
@@ -482,7 +482,7 @@ const AddListing = () => {
           </SectionWithTitle>
 
           <SectionWithTitle title='Equipements Intérieurs'>
-            {equipementsInterieur.map((equip) => {
+            {listEquipementsInterieur.map((equip) => {
               const { id, name, label } = equip;
               return (
                 <div key={id} className='flex'>
@@ -521,7 +521,7 @@ const AddListing = () => {
                 value={values.typeChauffage}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option disabled>Sélectionnez le type de chauffage</option>
-                {typeChauffage.map((item) => {
+                {listTypeChauffage.map((item) => {
                   const { id, label } = item;
                   return <option key={id}>{label}</option>;
                 })}
@@ -530,7 +530,7 @@ const AddListing = () => {
           </SectionWithTitle>
 
           <SectionWithTitle title='Equipements Extérieurs'>
-            {equipementsExterieur.map((equip) => {
+            {listEquipementsExterieur.map((equip) => {
               const { id, name, label } = equip;
               return (
                 <div key={id} className='flex'>
@@ -568,7 +568,7 @@ const AddListing = () => {
                 name='exposition'
                 value={values.exposition}
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                {expositionsBien.map((exposition) => {
+                {listExpositionsBien.map((exposition) => {
                   const { id, name, label } = exposition;
                   return (
                     <option key={id} value={name}>

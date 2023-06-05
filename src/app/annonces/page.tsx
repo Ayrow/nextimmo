@@ -2,12 +2,17 @@
 
 import GridCard from '../../components/listings/GridCard';
 import PageBtnContainer from '../../components/buttons/PageBtnContainer';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import FiltersListingPage from '../../components/filters/FiltersListingPage';
 import { IListing, QueryParamsType } from '../../../types/listingTypes';
 import { useSearchParams } from 'next/navigation';
 import { queryParams } from '../../../utils/listingDetails';
+import {
+  EventTargetType,
+  HandleInputChangeType,
+} from '../../../types/functionTypes';
+import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
 
 const sortOptions: string[] = [
   'plus récente',
@@ -17,6 +22,7 @@ const sortOptions: string[] = [
 ];
 
 const Listings = () => {
+  const ref = useRef<HTMLDivElement>(null);
   const params = Object.fromEntries(useSearchParams());
   const [allListings, setAllListings] = useState<IListing[]>(null);
   let paramsObject: QueryParamsType = queryParams;
@@ -44,7 +50,7 @@ const Listings = () => {
   );
   const [totalNumberListings, setTotalNumberListings] = useState<number>(null);
   const [totalPages, setTotalPages] = useState<number>(null);
-  // const [currentPage, setCurrentPage] = useState(1);
+
   const [isSortingDropdownOpen, setIsSortingDropdownOpen] = useState(false);
 
   const getAllListings = async (signal: AbortSignal): Promise<void> => {
@@ -77,6 +83,12 @@ const Listings = () => {
     }
   };
 
+  const closeDropdown = () => {
+    setIsSortingDropdownOpen(false);
+  };
+
+  useCloseOnOutsideClick(closeDropdown, ref);
+
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     const controller = new AbortController();
@@ -99,11 +111,8 @@ const Listings = () => {
     };
   }, [valuesQueries]);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    const regexMixCharNumb = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
-    const regexOnlyChar = /[a-zA-Z]/;
-    const regexOnlyNumber = /^\d+$/;
+  const handleInputChange: HandleInputChangeType = (event) => {
+    const { name, value } = event.target as EventTargetType;
 
     if (
       (name === 'typeDeBien' && value !== '') ||
@@ -124,9 +133,9 @@ const Listings = () => {
         typeof valuesQueries[name] === 'string' &&
         valuesQueries[name] !== ''
       ) {
-        newArray.push(valuesQueries[name]);
+        newArray.push(valuesQueries[name] as string);
       } else {
-        newArray = valuesQueries[name];
+        newArray = valuesQueries[name] as string[];
       }
 
       if (valuesQueries[name]?.includes(newValue)) {
@@ -162,7 +171,7 @@ const Listings = () => {
           {totalNumberListings}{' '}
           {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvée'}
         </p>
-        <div className='hidden relative md:grid'>
+        <div className='hidden relative md:grid' ref={ref}>
           <button
             className='border capitalize rounded-xl px-2 py-1 w-40 flex gap-5 justify-around'
             onClick={() => setIsSortingDropdownOpen(!isSortingDropdownOpen)}>
@@ -176,7 +185,7 @@ const Listings = () => {
                     className='capitalize'
                     name='sort'
                     value={sort}
-                    onClick={handleInputChange}>
+                    onClick={(e) => handleInputChange(e)}>
                     {sort}
                   </button>
                 );
