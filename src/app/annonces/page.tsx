@@ -179,9 +179,10 @@ const Listings = () => {
           </button>
           {isSortingDropdownOpen && (
             <div className='absolute border rounded-md left-0 mt-10 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
-              {sortOptions.map((sort) => {
+              {sortOptions.map((sort, index) => {
                 return (
                   <button
+                    key={index}
                     className='capitalize'
                     name='sort'
                     value={sort}
