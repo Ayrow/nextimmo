@@ -157,9 +157,10 @@ const FiltersListingPage = ({
             </button>
             {isSortingDropdownOpen && (
               <div className='absolute border rounded-md left-0 mt-2 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
-                {sortOptions.map((sort) => {
+                {sortOptions.map((sort: string, index: number) => {
                   return (
                     <button
+                      key={index}
                       className='capitalize'
                       name='sort'
                       value={sort}
@@ -260,7 +261,7 @@ const FiltersListingPage = ({
               name='typeDeBien'
               value={typeDeBien}
               onClick={openCloseCard}>
-              {typeDeBien.length > 0
+              {typeDeBien?.length > 0
                 ? typeDeBien.join(', ')
                 : 'Type(s) de bien'}
             </button>
@@ -283,7 +284,7 @@ const FiltersListingPage = ({
                         value={name}
                         label={label}
                         handleInputChange={handleInputChange}
-                        isChecked={typeDeBien.includes(name)}
+                        isChecked={typeDeBien?.includes(name)}
                       />
                     );
                   })}
@@ -431,12 +432,13 @@ const FiltersListingPage = ({
                   {nbRooms.map((nb) => {
                     return (
                       <button
+                        key={nb}
                         id='filter-input'
                         name='nbPieces'
                         value={nb}
                         onClick={(e) => handleInputChange(e)}
                         className={
-                          nbPieces.includes(nb)
+                          nbPieces?.includes(nb)
                             ? 'border px-3 py-1 rounded-lg bg-gray-600'
                             : 'border px-3 py-1 rounded-lg'
                         }>

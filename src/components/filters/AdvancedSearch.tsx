@@ -39,7 +39,7 @@ const AdvancedSearch = ({
                 value={nb}
                 onClick={handleInputChange}
                 className={
-                  nbChambres.includes(nb)
+                  nbChambres?.includes(nb)
                     ? 'border px-3 py-1 rounded-lg bg-gray-600'
                     : 'border px-3 py-1 rounded-lg'
                 }>
@@ -62,7 +62,7 @@ const AdvancedSearch = ({
                 value={nb}
                 onClick={handleInputChange}
                 className={
-                  nbSDB.includes(nb)
+                  nbSDB?.includes(nb)
                     ? 'border px-3 py-1 rounded-lg bg-gray-600'
                     : 'border px-3 py-1 rounded-lg'
                 }>
@@ -86,7 +86,7 @@ const AdvancedSearch = ({
                 value={name}
                 onClick={handleInputChange}
                 className={
-                  equipementsExt.includes(`${name}`)
+                  equipementsExt?.includes(`${name}`)
                     ? 'border p-2 rounded-lg text-sm bg-gray-600 capitalize'
                     : 'border p-2 text-sm rounded-lg capitalize'
                 }>
@@ -105,7 +105,7 @@ const AdvancedSearch = ({
                   value={name.replace(/\s/g, '').replace('é', 'e')}
                   onClick={handleInputChange}
                   className={
-                    equipementsInt.includes(
+                    equipementsInt?.includes(
                       `${equipement}`.replace(/\s/g, '').replace('é', 'e')
                     )
                       ? 'border p-2 rounded-lg text-sm bg-gray-600 capitalize'
@@ -157,7 +157,7 @@ const AdvancedSearch = ({
                   value={name}
                   label={label}
                   handleInputChange={handleInputChange}
-                  isChecked={exposition.includes(name)}
+                  isChecked={exposition?.includes(name)}
                 />
               );
             })}
@@ -178,7 +178,7 @@ const AdvancedSearch = ({
                 value={name}
                 label={label}
                 handleInputChange={handleInputChange}
-                isChecked={typeChauffage.includes(name)}
+                isChecked={typeChauffage?.includes(name)}
               />
             );
           })}

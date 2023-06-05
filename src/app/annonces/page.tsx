@@ -21,13 +21,13 @@ export type QueryParamsType = {
   maxSurfaceInt: string;
   minSurfaceExt: string;
   maxSurfaceExt: string;
-  nbPieces: string[];
-  nbChambres: string[];
+  nbPieces: string[] | string;
+  nbChambres: string[] | string;
   nbSDB: string;
-  typeChauffage: string[];
-  equipementsInt: string[];
-  equipementsExt: string[];
-  exposition: string[];
+  typeChauffage: string[] | string;
+  equipementsInt: string[] | string;
+  equipementsExt: string[] | string;
+  exposition: string[] | string;
   sort: string;
   limit: number;
   page: number;
@@ -87,6 +87,7 @@ const Listings = () => {
       },
       {} as QueryParamsType
     );
+    console.log('paramsObject', paramsObject);
   }
 
   const [valuesQueries, setValuesQueries] = useState(
@@ -128,6 +129,7 @@ const Listings = () => {
   };
 
   useEffect(() => {
+    console.log('valuesQueries', valuesQueries);
     let timeoutId: NodeJS.Timeout;
     const controller = new AbortController();
     const signal = controller.signal;
@@ -154,6 +156,10 @@ const Listings = () => {
     const regexMixCharNumb = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
     const regexOnlyChar = /[a-zA-Z]/;
     const regexOnlyNumber = /^\d+$/;
+    console.log('name', name);
+    console.log('value', value);
+    console.log('valuesQueries[name]', valuesQueries[name]);
+    console.log('valuesQueries', valuesQueries);
     if (
       (name === 'typeDeBien' && value !== '') ||
       (name == 'equipementsInt' && value !== '') ||
@@ -165,9 +171,20 @@ const Listings = () => {
       (name === 'typeChauffage' && value !== '')
     ) {
       const newValue = value.replace(/\s/g, '').replace('é', 'e');
-      let newArray: string[] =
-        valuesQueries[name] === '' ? [] : valuesQueries[name];
-      if (valuesQueries[name].includes(newValue)) {
+
+      let newArray: string[];
+      if (valuesQueries[name] === '') {
+        newArray = [];
+      } else if (
+        typeof valuesQueries[name] === 'string' &&
+        valuesQueries[name] !== ''
+      ) {
+        newArray.push(valuesQueries[name]);
+      } else {
+        newArray = valuesQueries[name];
+      }
+
+      if (valuesQueries[name]?.includes(newValue)) {
         newArray = newArray.filter((item) => item !== newValue);
       } else {
         if (valuesQueries[name]) {

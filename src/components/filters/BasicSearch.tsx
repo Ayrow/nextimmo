@@ -46,7 +46,7 @@ const BasicSearch = ({
                 value={name}
                 label={label}
                 handleInputChange={handleInputChange}
-                isChecked={typeDeBien.includes(name)}
+                isChecked={typeDeBien?.includes(name)}
               />
             );
           })}
@@ -86,12 +86,13 @@ const BasicSearch = ({
           {nbRooms.map((nb) => {
             return (
               <button
+                key={nb}
                 id='filter-input'
                 name='nbPieces'
                 value={nb}
                 onClick={(e) => handleInputChange(e)}
                 className={
-                  nbPieces.includes(nb)
+                  nbPieces?.includes(nb)
                     ? 'border px-3 py-1 rounded-lg bg-gray-600'
                     : 'border px-3 py-1 rounded-lg'
                 }>
