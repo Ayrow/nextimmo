@@ -6,7 +6,6 @@ import FilterText from './filters/FilterText';
 import { listTypeDeBien, queryParams } from '../../utils/listingDetails';
 import FilterCheckbox from './filters/FilterCheckbox';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 const BasicHomepageSearch: React.FC = () => {
   const [valuesQueries, setValuesQueries] = useState(queryParams);

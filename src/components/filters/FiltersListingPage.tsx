@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import FilterCard from './FilterCard';
 import FilterButton from './FilterButton';
 import FilterCheckbox from './FilterCheckbox';
@@ -8,6 +14,7 @@ import FilterText from './FilterText';
 import AdvancedSearch from './AdvancedSearch';
 import { listTypeDeBien, nbRooms } from '../../../utils/listingDetails';
 import BasicSearch from './BasicSearch';
+import { QueryParamsType } from '../../../types/listingTypes';
 
 const FiltersListingPage = ({
   valuesQueries,
@@ -15,6 +22,12 @@ const FiltersListingPage = ({
   sortOptions,
   isSortingDropdownOpen,
   setIsSortingDropdownOpen,
+}: {
+  valuesQueries: QueryParamsType;
+  handleInputChange: (MouseEvent) => void;
+  sortOptions: string[];
+  isSortingDropdownOpen: boolean;
+  setIsSortingDropdownOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const regexMixCharNumb = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
@@ -41,7 +54,11 @@ const FiltersListingPage = ({
     exposition,
   } = valuesQueries;
 
-  const initialCardsState = {
+  type CardsType = {
+    [key: string]: boolean;
+  };
+
+  const initialCardsState: CardsType = {
     transaction: false,
     typeDeBien: false,
     localisation: false,
@@ -83,7 +100,7 @@ const FiltersListingPage = ({
   }, []);
 
   const renderRoomNumberText = (
-    arrayNumberRoom: string[],
+    arrayNumberRoom: string[] | string,
     typeOfRoom: string
   ) => {
     if (arrayNumberRoom?.length > 0) {
@@ -95,14 +112,28 @@ const FiltersListingPage = ({
       ) {
         return `${arrayNumberRoom} ${typeOfRoom}s`;
       } else {
-        if (!arrayNumberRoom.includes('6')) {
+        if (
+          !arrayNumberRoom.includes('6') &&
+          typeof arrayNumberRoom !== 'string'
+        ) {
           return `${arrayNumberRoom.sort().join(', ')} ${typeOfRoom}s`;
-        } else if (arrayNumberRoom.includes('6')) {
+        } else if (
+          arrayNumberRoom.includes('6') &&
+          typeof arrayNumberRoom !== 'string'
+        ) {
           return `${arrayNumberRoom.sort().join(', ')} ${typeOfRoom}s et +`;
         }
       }
     } else {
       return 'Nombre de Pièces';
+    }
+  };
+
+  const checkArrayString = (prop: string | string[]) => {
+    if (typeof prop === 'string') {
+      return prop;
+    } else {
+      return prop.join(', ');
     }
   };
 
@@ -262,7 +293,7 @@ const FiltersListingPage = ({
               value={typeDeBien}
               onClick={openCloseCard}>
               {typeDeBien?.length > 0
-                ? typeDeBien.join(', ')
+                ? checkArrayString(typeDeBien)
                 : 'Type(s) de bien'}
             </button>
             {isCardOpen.typeDeBien && (

@@ -71,6 +71,7 @@ export async function GET(request: NextRequest) {
 
   const queryObject: QueryObjectType = {
     statut: statut,
+    typeDeBien: 'maison, appartement',
     transaction: transaction,
     draft: false,
   };
@@ -101,6 +102,11 @@ export async function GET(request: NextRequest) {
 
   if (typeDeBien) {
     checkArrayIncludeElement(typeDeBien, `typeDeBien`);
+  } else {
+    checkArrayIncludeElement(
+      'maison, appartement, terrain, immeuble, parking, garage, bureau',
+      `typeDeBien`
+    );
   }
 
   if (typeChauffage) {

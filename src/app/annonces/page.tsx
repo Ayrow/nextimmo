@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
 
 import FiltersListingPage from '../../components/filters/FiltersListingPage';
 import { IListing, QueryParamsType } from '../../../types/listingTypes';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { queryParams } from '../../../utils/listingDetails';
 
-const sortOptions = [
+const sortOptions: string[] = [
   'plus récente',
   'plus ancienne',
   'prix croissant',
@@ -18,7 +18,6 @@ const sortOptions = [
 
 const Listings = () => {
   const params = Object.fromEntries(useSearchParams());
-  // const { allListings, getAllListings } = useListingsContext();
   const [allListings, setAllListings] = useState<IListing[]>(null);
   let paramsObject: QueryParamsType = queryParams;
   if (params) {
@@ -38,7 +37,6 @@ const Listings = () => {
       },
       {} as QueryParamsType
     );
-    console.log('paramsObject', paramsObject);
   }
 
   const [valuesQueries, setValuesQueries] = useState(
@@ -80,7 +78,6 @@ const Listings = () => {
   };
 
   useEffect(() => {
-    console.log('valuesQueries', valuesQueries);
     let timeoutId: NodeJS.Timeout;
     const controller = new AbortController();
     const signal = controller.signal;
@@ -107,10 +104,7 @@ const Listings = () => {
     const regexMixCharNumb = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
     const regexOnlyChar = /[a-zA-Z]/;
     const regexOnlyNumber = /^\d+$/;
-    console.log('name', name);
-    console.log('value', value);
-    console.log('valuesQueries[name]', valuesQueries[name]);
-    console.log('valuesQueries', valuesQueries);
+
     if (
       (name === 'typeDeBien' && value !== '') ||
       (name == 'equipementsInt' && value !== '') ||
@@ -202,7 +196,6 @@ const Listings = () => {
           numOfPages={totalPages}
           page={valuesQueries.page}
           handleInputChange={handleInputChange}
-          // setCurrentPage={setCurrentPage}
         />
       )}
     </section>

@@ -54,7 +54,7 @@ export type QueryParamsType = {
   quartier: string;
   ville: string;
   codePostal: string;
-  typeDeBien: string[];
+  typeDeBien: string[] | string;
   minPrice: string;
   maxPrice: string;
   minSurfaceInt: string;
@@ -63,7 +63,7 @@ export type QueryParamsType = {
   maxSurfaceExt: string;
   nbPieces: string[] | string;
   nbChambres: string[] | string;
-  nbSDB: string;
+  nbSDB: string[] | string;
   typeChauffage: string[] | string;
   equipementsInt: string[] | string;
   equipementsExt: string[] | string;
