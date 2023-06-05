@@ -239,7 +239,7 @@ const queryParams: QueryParamsType = {
   equipementsExt: '',
   exposition: '',
   sort: 'plus récente',
-  limit: 2,
+  limit: 12,
   page: 1,
 };
 

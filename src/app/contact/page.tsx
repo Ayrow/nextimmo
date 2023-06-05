@@ -1,4 +1,26 @@
+'use client';
+
+import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+
 const Contact = () => {
+  const params = Object.fromEntries(useSearchParams());
+  const dataUser = {
+    email: '',
+    ref: params.ref,
+    sujet: '',
+    message: '',
+  };
+  const [contactData, setContactData] = useState(dataUser);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setContactData((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
   return (
     <section className=' bg-gray-900'>
       <div className='py-8 lg:py-16 px-4 mx-auto max-w-screen-md'>
@@ -10,6 +32,17 @@ const Contact = () => {
           souhaitez vendre votre maison? Dites nous tout.
         </p>
         <form action='#' className='space-y-8'>
+          <div>
+            <label className='block mb-2 text-sm font-medium text-gray-300'>
+              Référence annonce
+            </label>
+            <input
+              onChange={handleChange}
+              value={params.ref}
+              type='text'
+              className='shadow-sm border text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500 shadow-sm-light'
+            />
+          </div>
           <div>
             <label className='block mb-2 text-sm font-medium text-gray-300'>
               Votre email

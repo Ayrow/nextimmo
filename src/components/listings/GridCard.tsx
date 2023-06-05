@@ -96,9 +96,11 @@ const GridCard = ({ listing }: { listing: IListing }) => {
             className='border rounded-xl py-2 px-5 border-red-500 text-red-500 bg-gray-950'>
             Favoris
           </button>
-          <button type='button' className='border rounded-xl py-2 px-5'>
-            Message
-          </button>
+          <Link
+            href={{ pathname: '/contact', query: { ref: ref } }}
+            className='border rounded-xl py-2 px-5'>
+            <button onClick={(e) => e.stopPropagation()}>Message</button>
+          </Link>
         </div>
       </div>
     </div>
