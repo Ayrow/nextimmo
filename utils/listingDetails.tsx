@@ -226,6 +226,7 @@ const listTypeChauffage: ListingDetailsTypes[] = [
 ];
 
 const queryParams: QueryParamsType = {
+  refListing: '',
   transaction: 'vente',
   statut: 'disponible',
   quartier: '',

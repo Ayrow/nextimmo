@@ -5,6 +5,7 @@ import FilterText from './FilterText';
 
 const BasicSearch = ({
   handleInputChange,
+  refListing,
   transaction,
   typeDeBien,
   quartier,
@@ -14,7 +15,19 @@ const BasicSearch = ({
 }) => {
   return (
     <div className='flex flex-col gap-10'>
-      <div className=''>
+      <div className='w-1/2'>
+        <p className='font-bold mb-3'>Une référence d'annonce?</p>
+
+        <FilterText
+          name='refListing'
+          value={refListing}
+          handleInputChange={handleInputChange}
+          placeholder=''
+          symbol=''
+        />
+      </div>
+
+      <div>
         <p className='font-bold mb-3'>Vous souhaitez ?</p>
         <div className='flex gap-3'>
           <FilterButton

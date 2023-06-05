@@ -36,6 +36,7 @@ const FiltersListingPage = ({
 
   const {
     transaction,
+    refListing,
     quartier,
     ville,
     codePostal,
@@ -60,6 +61,7 @@ const FiltersListingPage = ({
   };
 
   const initialCardsState: CardsType = {
+    refListing: false,
     transaction: false,
     typeDeBien: false,
     localisation: false,
@@ -205,6 +207,7 @@ const FiltersListingPage = ({
             </div>
             <p className='mt-5 mb-7 text-xl'>Affinez votre recherche</p>
             <BasicSearch
+              refListing={refListing}
               handleInputChange={handleInputChange}
               transaction={transaction}
               typeDeBien={typeDeBien}
@@ -240,7 +243,37 @@ const FiltersListingPage = ({
 
       {/* Desktop*/}
       <div className='relative' ref={ref}>
-        <div className='hidden md:flex md:flex-wrap m-5 md:flex-auto border gap-5 rounded-xl p-5 shadow-xl shadow-black'>
+        <div className='hidden md:flex md:flex-wrap items-center m-5 md:flex-auto border gap-5 rounded-xl p-5 shadow-xl shadow-black'>
+          <div>
+            <button
+              className='px-3 py-1 border rounded-lg'
+              name='refListing'
+              value={refListing}
+              onClick={openCloseCard}>
+              {refListing ? refListing : 'Référence Annonce'}
+            </button>
+            {isCardOpen.refListing && (
+              <FilterCard
+                handleInputChange={handleInputChange}
+                name='refListing'
+                resetValue=''
+                closeAllCards={closeAllCards}>
+                <p className='text-center font-bold'>
+                  Vous avez une référence d'annonce ?
+                </p>
+                <div className='flex gap-3 m-3'>
+                  <FilterText
+                    name='refListing'
+                    value={refListing}
+                    handleInputChange={handleInputChange}
+                    placeholder=''
+                    symbol=''
+                  />
+                </div>
+              </FilterCard>
+            )}
+          </div>
+
           <div>
             <button
               className='px-3 py-1 border rounded-lg'

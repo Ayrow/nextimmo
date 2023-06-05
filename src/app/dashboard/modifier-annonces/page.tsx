@@ -124,6 +124,7 @@ const ManageListings = () => {
   return (
     <div className='p-10 bg-gray-900 w-full relative'>
       {state.showModal && <ConfirmDeletionModal deleteItem={deleteListing} />}
+      <h2 className='text-center text-xl font-bold'>Manage Listings</h2>
       <FiltersListingPage
         sortOptions={sortOptions}
         isSortingDropdownOpen={isSortingDropdownOpen}
@@ -131,7 +132,7 @@ const ManageListings = () => {
         valuesQueries={valuesQueries}
         handleInputChange={handleInputChange}
       />
-      <h2 className='text-center text-xl font-bold'>Manage Listings</h2>
+
       <div className='flex flex-col gap-5 mt-10'>
         {allListings &&
           allListings?.map((listing) => {

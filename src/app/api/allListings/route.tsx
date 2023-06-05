@@ -16,6 +16,7 @@ type NumberFilter =
 type PiecesFilter = number | { $and: [{ $gte: number }, { $lte: number }] };
 
 type QueryObjectType = {
+  ref?: RegexFilter;
   transaction: string;
   statut: string;
   lieu?: {
@@ -46,6 +47,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
 
   const statut = searchParams.get('statut');
+  const refListing = searchParams.get('refListing');
   const transaction = searchParams.get('transaction');
   const quartier = searchParams.get('quartier');
   const ville = searchParams.get('ville');
@@ -75,6 +77,10 @@ export async function GET(request: NextRequest) {
     transaction: transaction,
     draft: false,
   };
+
+  if (refListing) {
+    queryObject.ref = { $regex: refListing, $options: 'i' };
+  }
 
   if (quartier) {
     const regex = new RegExp(quartier, 'i');
