@@ -1,14 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import { IListingDocument } from '../../../types/listingTypes';
+import { IListing } from '../../../types/listingTypes';
 
 import { useListingsContext } from '../../context/listings/listingsContext';
 import Link from 'next/link';
 import { ModalTypes, useAppContext } from '../../context/app/appContext';
 import { useRouter } from 'next/navigation';
 
-const ListCard = ({ listing }: { listing: IListingDocument }) => {
+const ListCard = ({ listing }: { listing: IListing }) => {
   const {
     ref,
     transaction,

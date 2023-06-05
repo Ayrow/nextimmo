@@ -6,6 +6,13 @@ export type ListingDetailsTypes = {
   label: string;
 };
 
+const sortOptions: string[] = [
+  'plus récente',
+  'plus ancienne',
+  'prix croissant',
+  'prix décroissant',
+];
+
 const nbRooms = ['1', '2', '3', '4', '5', '6'];
 
 const listTypeDeBien: ListingDetailsTypes[] = [
@@ -251,4 +258,5 @@ export {
   listTypeDeBien,
   nbRooms,
   queryParams,
+  sortOptions,
 };
