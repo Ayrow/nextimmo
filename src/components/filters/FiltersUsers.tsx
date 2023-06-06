@@ -29,40 +29,15 @@ const FiltersUsers = ({
 
   const { username, email, role, sort } = valuesQueries;
 
-  type CardsType = {
-    [key: string]: boolean;
-  };
-
-  const initialCardsState: CardsType = {
-    refListing: false,
-    transaction: false,
-    typeDeBien: false,
-    localisation: false,
-    prix: false,
-    surfaceInt: false,
-    nbPieces: false,
-    rechercheAvancee: false,
-  };
-
   const [isMobileFilterOpen, setISMobileFilterOpen] = useState(false);
-  const [isCardOpen, setIsCardOpen] = useState(initialCardsState);
 
-  const openCloseCard = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    const { name } = e.target as EventTargetType;
-    const data = {
-      ...initialCardsState,
-      [name]: !isCardOpen[name],
-    };
-    setIsCardOpen(data);
+  const closeMobileFilter = () => {
+    setISMobileFilterOpen(false);
   };
 
-  const closeAllCards = () => {
-    setIsCardOpen(initialCardsState);
+  const closeSortingDropdown = () => {
+    setIsSortingDropdownOpen(false);
   };
-
-  useCloseOnOutsideClick(closeAllCards, ref);
 
   return (
     <div className='m-5'>
@@ -111,7 +86,7 @@ const FiltersUsers = ({
             <div>// Filters for mobile go here</div>
             <div className='mt-10'>
               <button
-                onClick={closeAllCards}
+                onClick={closeMobileFilter}
                 className='border-b border-b-transparent hover:border-b hover:border-white text-xl font-bold'>
                 - Valider -
               </button>

@@ -10,6 +10,7 @@ import {
   HandleInputChangeType,
 } from '../../../types/functionTypes';
 import PageBtnContainer from '../buttons/PageBtnContainer';
+import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
 
 const initialUserFilter = {
   username: '',
@@ -19,9 +20,9 @@ const initialUserFilter = {
   page: 1,
 };
 
-const sortOptions = ['A-Z', 'Z-A', 'plus récent', 'plus ancient'];
+const sortOptions = ['A-Z', 'Z-A', 'plus récent', 'plus ancien'];
 
-const Users = ({ userRole }: { userRole: string }) => {
+const Users = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { state, actions } = useAppContext();
   const [allUsers, setAllUsers] = useState<UserFromDB[]>(null);
@@ -30,6 +31,10 @@ const Users = ({ userRole }: { userRole: string }) => {
   const [isSortingDropdownOpen, setIsSortingDropdownOpen] = useState(false);
   const [totalPages, setTotalPages] = useState<number>(null);
   const [totalNumberUsers, setTotalNumberUsers] = useState<number>(null);
+
+  const closeSortingDropdown = () => {
+    setIsSortingDropdownOpen(false);
+  };
 
   const fetchAllUsers = async (signal: AbortSignal) => {
     const searchParams = new URLSearchParams();
@@ -77,9 +82,9 @@ const Users = ({ userRole }: { userRole: string }) => {
     if (name === 'resetAll') {
       setValuesQueries((prevValues) => ({
         ...prevValues,
-        sort: '',
         email: '',
         username: '',
+        role: '',
       }));
     } else {
       setValuesQueries((prevValues) => ({
@@ -128,6 +133,8 @@ const Users = ({ userRole }: { userRole: string }) => {
       // display error
     }
   };
+
+  useCloseOnOutsideClick(closeSortingDropdown, ref);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
