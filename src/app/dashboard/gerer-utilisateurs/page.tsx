@@ -166,8 +166,6 @@ const Utilisateurs = () => {
       <FiltersUsers
         valuesQueries={valuesQueries}
         handleFilterChange={handleFilterChange}
-        isSortingDropdownOpen={isSortingDropdownOpen}
-        setIsSortingDropdownOpen={setIsSortingDropdownOpen}
         sortOptions={sortOptions}
       />
       <div className='flex gap-10 items-center'>

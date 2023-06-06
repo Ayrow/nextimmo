@@ -8,7 +8,6 @@ import React, {
   useState,
 } from 'react';
 
-import { EventTargetType } from '../../../types/functionTypes';
 import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
 import FilterText from './FilterText';
 
@@ -16,30 +15,27 @@ const FiltersUsers = ({
   valuesQueries,
   handleFilterChange,
   sortOptions,
-  isSortingDropdownOpen,
-  setIsSortingDropdownOpen,
 }: {
   valuesQueries: any;
   handleFilterChange: (MouseEvent) => void;
   sortOptions: string[];
-  isSortingDropdownOpen: boolean;
-  setIsSortingDropdownOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const { username, email, role, sort } = valuesQueries;
 
   const [isMobileFilterOpen, setISMobileFilterOpen] = useState(false);
+  const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
 
   const closeMobileFilter = () => {
     setISMobileFilterOpen(false);
   };
 
-  const closeSortingDropdown = () => {
-    setIsSortingDropdownOpen(false);
+  const closeMobileDropdown = () => {
+    setIsMobileDropdownOpen(false);
   };
 
-  useCloseOnOutsideClick(closeSortingDropdown, ref);
+  useCloseOnOutsideClick(closeMobileDropdown, ref);
 
   return (
     <div className='m-5'>
@@ -51,13 +47,13 @@ const FiltersUsers = ({
             onClick={() => setISMobileFilterOpen(true)}>
             Filtrer
           </button>
-          <div className='relative'>
+          <div className='relative' ref={ref}>
             <button
               className='border capitalize rounded-xl px-2 py-1 w-40 flex gap-5 justify-around'
-              onClick={() => setIsSortingDropdownOpen(!isSortingDropdownOpen)}>
-              {sort} {isSortingDropdownOpen ? '⇑' : '⇓'}
+              onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}>
+              {sort} {isMobileDropdownOpen ? '⇑' : '⇓'}
             </button>
-            {isSortingDropdownOpen && (
+            {isMobileDropdownOpen && (
               <div className='absolute border rounded-md left-0 mt-2 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
                 {sortOptions.map((sort: string, index: number) => {
                   return (
@@ -99,7 +95,7 @@ const FiltersUsers = ({
       </div>
 
       {/* Desktop*/}
-      <div className='relative' ref={ref}>
+      <div className='relative'>
         <div className='hidden md:flex md:flex-wrap items-center m-5 md:flex-auto border gap-5 rounded-xl p-5 shadow-xl shadow-black'>
           <FilterText
             name='username'
