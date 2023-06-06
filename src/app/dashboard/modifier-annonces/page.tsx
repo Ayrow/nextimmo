@@ -132,7 +132,7 @@ const ManageListings = () => {
         valuesQueries={valuesQueries}
         handleInputChange={handleInputChange}
       />
-
+      
       <div className='flex flex-col gap-5 mt-10'>
         {allListings &&
           allListings?.map((listing) => {

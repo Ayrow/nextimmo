@@ -48,7 +48,7 @@ export interface IListing {
   draft: boolean;
 }
 
-export type QueryParamsType = {
+export type ListingQueryParamsType = {
   refListing: string;
   transaction: string;
   statut: string;

@@ -14,7 +14,7 @@ import FilterText from './FilterText';
 import AdvancedSearch from './AdvancedSearch';
 import { listTypeDeBien, nbRooms } from '../../../utils/listingDetails';
 import BasicSearch from './BasicSearch';
-import { QueryParamsType } from '../../../types/listingTypes';
+import { ListingQueryParamsType } from '../../../types/listingTypes';
 import { EventTargetType } from '../../../types/functionTypes';
 import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
 
@@ -25,7 +25,7 @@ const FiltersListingPage = ({
   isSortingDropdownOpen,
   setIsSortingDropdownOpen,
 }: {
-  valuesQueries: QueryParamsType;
+  valuesQueries: ListingQueryParamsType;
   handleInputChange: (MouseEvent) => void;
   sortOptions: string[];
   isSortingDropdownOpen: boolean;

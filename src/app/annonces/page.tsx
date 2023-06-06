@@ -7,19 +7,12 @@ import { useEffect, useRef, useState } from 'react';
 import FiltersListingPage from '../../components/filters/FiltersListingPage';
 import { IListing, QueryParamsType } from '../../../types/listingTypes';
 import { useSearchParams } from 'next/navigation';
-import { queryParams } from '../../../utils/listingDetails';
+import { queryParams, sortOptions } from '../../../utils/listingDetails';
 import {
   EventTargetType,
   HandleInputChangeType,
 } from '../../../types/functionTypes';
 import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
-
-const sortOptions: string[] = [
-  'plus récente',
-  'plus ancienne',
-  'prix croissant',
-  'prix décroissant',
-];
 
 const Listings = () => {
   const ref = useRef<HTMLDivElement>(null);

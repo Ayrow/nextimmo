@@ -4,11 +4,26 @@ import { useEffect, useState } from 'react';
 import { ModalTypes, useAppContext } from '../../context/app/appContext';
 import { UserFromDB } from '../../context/user/authContext';
 import ConfirmDeletionModal from '../modals/ConfirmDeletionModal';
+import FiltersUsers from '../filters/FiltersUsers';
+import {
+  EventTargetType,
+  HandleInputChangeType,
+} from '../../../types/functionTypes';
+
+const initialUserFilter = {
+  username: '',
+  email: '',
+  role: '',
+};
+
+const sortOptions = [''];
 
 const Users = ({ userRole }: { userRole: string }) => {
   const { state, actions } = useAppContext();
   const [allUsers, setAllUsers] = useState<UserFromDB[]>(null);
   const [userToEdit, setUserToEdit] = useState<UserFromDB>(null);
+  const [valuesQueries, setValuesQueries] = useState(initialUserFilter);
+  const [isSortingDropdownOpen, setIsSortingDropdownOpen] = useState(false);
 
   const fetchAllUsers = async (role: string, signal: AbortSignal) => {
     try {
@@ -26,11 +41,23 @@ const Users = ({ userRole }: { userRole: string }) => {
     }
   };
 
-  const handleChange = (
+  const handleUserChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setUserToEdit({ ...userToEdit, [name]: value });
+  };
+
+  const handleFilterChange: HandleInputChangeType = (e) => {
+    const { name, value } = e.target as EventTargetType;
+    if (name === 'resetAll') {
+      setValuesQueries(initialUserFilter);
+    } else {
+      setValuesQueries((prevValues) => ({
+        ...prevValues,
+        [name]: value,
+      }));
+    }
   };
 
   const editUser = (user: UserFromDB) => {
@@ -88,8 +115,14 @@ const Users = ({ userRole }: { userRole: string }) => {
   return (
     <div className='p-10 bg-gray-900 w-full relative'>
       {state.showModal && <ConfirmDeletionModal deleteItem={deleteUser} />}
-      // Filter and sort section here
       <h2 className='text-center text-xl font-bold'>Manage Users</h2>
+      <FiltersUsers
+        valuesQueries={valuesQueries}
+        handleFilterChange={handleFilterChange}
+        isSortingDropdownOpen={isSortingDropdownOpen}
+        setIsSortingDropdownOpen={setIsSortingDropdownOpen}
+        sortOptions={sortOptions}
+      />
       <div className='flex flex-col gap-5 mt-10'>
         {allUsers &&
           allUsers?.map((user) => {
@@ -105,9 +138,9 @@ const Users = ({ userRole }: { userRole: string }) => {
                       <input
                         type='text'
                         name='username'
-                        onChange={handleChange}
+                        onChange={handleUserChange}
                         value={userToEdit.username}
-                        className='text-black'
+                        className='text-black pl-2 rounded-lg'
                       />
                     </div>
                     <div className='flex gap-3'>
@@ -115,18 +148,18 @@ const Users = ({ userRole }: { userRole: string }) => {
                       <input
                         type='text'
                         name='email'
-                        onChange={handleChange}
+                        onChange={handleUserChange}
                         value={userToEdit.email}
-                        className='text-black'
+                        className='text-black pl-2 rounded-lg '
                       />
                     </div>
-                    <div className='flex gap-3 items-center text-black'>
+                    <div className='relative flex gap-2 text-gray-700'>
                       <label className='text-white'>Rôle</label>
                       <select
                         name='role'
-                        onChange={handleChange}
+                        onChange={handleUserChange}
                         value={userToEdit.role}
-                        className=''>
+                        className='border text-sm rounded-lg block w-full pr-10 p-2.5'>
                         <option value='user'>Utilisateur</option>
                         <option value='agent'>Agent</option>
                         <option value='admin'>Admin</option>
@@ -156,7 +189,10 @@ const Users = ({ userRole }: { userRole: string }) => {
                       email: <span className='font-bold'>{email}</span>
                     </p>
                     <p className=''>
-                      role: <span className='font-bold'>{role}</span>
+                      role:{' '}
+                      <span className='font-bold'>
+                        {role === 'user' ? 'Utilisateur' : `${role}`}
+                      </span>
                     </p>
                     <div className='flex flex-wrap gap-5'>
                       <button
