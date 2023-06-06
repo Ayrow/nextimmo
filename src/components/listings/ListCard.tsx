@@ -20,6 +20,7 @@ const ListCard = ({ listing }: { listing: IListing }) => {
     surfaceInt,
     statut,
     photos,
+    draft,
   } = listing;
 
   const { separateThousands } = useListingsContext();
@@ -33,8 +34,13 @@ const ListCard = ({ listing }: { listing: IListing }) => {
   };
 
   return (
-    <div className='relative w-full border rounded-2xl flex flex-col sm:flex-row flex-wrap items-center justify-between gap-5 p-5'>
-      <div className='flex flex-wrap flex-col gap-2'>
+    <div className='relative w-full border rounded-2xl flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 p-5'>
+      <div className='flex flex-wrap items-center flex-col gap-2'>
+        <p className='capitalize'>
+          <span className={draft ? 'text-orange-500' : 'text-green-500'}>
+            {draft ? 'Brouillon' : 'Publié'} - {transaction} - {statut}
+          </span>{' '}
+        </p>
         <p className='font-bold'>ref: {ref}</p>
 
         <Image
@@ -57,7 +63,11 @@ const ListCard = ({ listing }: { listing: IListing }) => {
       </div>
 
       <p className='text-red-500 font-bold'>
-        {prix && separateThousands(prix)} €
+        {transaction === 'vente'
+          ? prix && separateThousands(prix)
+          : location.loyerMensuel &&
+            separateThousands(location.loyerMensuel)}{' '}
+        €
       </p>
 
       <div className='flex flex-wrap gap-5'>
