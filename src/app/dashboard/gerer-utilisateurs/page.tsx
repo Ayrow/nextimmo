@@ -209,6 +209,7 @@ const Utilisateurs = () => {
         editUser={editUser}
         updateUser={updateUser}
       />
+
       {totalPages > 0 && (
         <PageBtnContainer
           numOfPages={totalPages}

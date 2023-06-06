@@ -1,3 +1,5 @@
+'use client';
+
 import { ModalTypes } from '../../context/app/appContext';
 import { UserFromDB } from '../../context/user/authContext';
 
@@ -15,15 +17,17 @@ const ManageUsers = ({
     <div className='flex flex-col gap-5 mt-10'>
       {allUsers &&
         allUsers?.map((user: UserFromDB) => {
-          const { email, username, role } = user;
+          const { email, username, role, _id } = user;
           return (
             <div
               key={user.email}
-              className='relative w-full border rounded-2xl flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 p-5'>
-              {isEditing && userToEdit ? (
+              className='relative w-full border rounded-2xl flex flex-col lg:grid lg:grid-cols-7 items-center gap-5 p-5'>
+              {isEditing && userToEdit._id === _id ? (
                 <>
-                  <div className='flex gap-3'>
-                    <label htmlFor=''>Utilisateur</label>
+                  <div className='flex flex-nowrap gap-3 col-span-2'>
+                    <label htmlFor='' className='lg:hidden'>
+                      Utilisateur
+                    </label>
                     <input
                       type='text'
                       name='username'
@@ -32,8 +36,10 @@ const ManageUsers = ({
                       className='text-black pl-2 rounded-lg'
                     />
                   </div>
-                  <div className='flex gap-3'>
-                    <label htmlFor=''>Email</label>
+                  <div className='flex gap-3 col-span-2'>
+                    <label htmlFor='' className='lg:hidden'>
+                      Email
+                    </label>
                     <input
                       type='text'
                       name='email'
@@ -42,8 +48,8 @@ const ManageUsers = ({
                       className='text-black pl-2 rounded-lg '
                     />
                   </div>
-                  <div className='relative flex gap-2 text-gray-700'>
-                    <label className='text-white'>Rôle</label>
+                  <div className='relative flex gap-2 text-gray-700 col-span-1'>
+                    <label className='text-white lg:hidden'>Rôle</label>
                     <select
                       name='role'
                       onChange={handleUserChange}
@@ -54,7 +60,7 @@ const ManageUsers = ({
                       <option value='admin'>Admin</option>
                     </select>
                   </div>
-                  <div className='flex flex-wrap gap-5'>
+                  <div className='flex flex-wrap gap-5 col-span-2'>
                     <button
                       type='button'
                       onClick={stopEditingItem}
@@ -71,19 +77,21 @@ const ManageUsers = ({
                 </>
               ) : (
                 <>
-                  <p className=''>
-                    Utilisateur: <span className='font-bold'>{username}</span>
+                  <p className=' col-span-2'>
+                    <span className='lg:hidden'> Utilisateur:</span>{' '}
+                    <span className='font-bold'>{username}</span>
                   </p>
-                  <p className=''>
-                    email: <span className='font-bold'>{email}</span>
+                  <p className='col-span-2'>
+                    <span className='lg:hidden'> Email:</span>{' '}
+                    <span className='font-bold'>{email}</span>
                   </p>
-                  <p className=''>
-                    role:{' '}
-                    <span className='font-bold'>
+                  <p className='col-span-1'>
+                    <span className='lg:hidden'> Rôle:</span>{' '}
+                    <span className='font-bold capitalize'>
                       {role === 'user' ? 'Utilisateur' : `${role}`}
                     </span>
                   </p>
-                  <div className='flex flex-wrap gap-5'>
+                  <div className='flex flex-wrap gap-5 col-span-2'>
                     <button
                       type='button'
                       onClick={() => editUser(user)}
