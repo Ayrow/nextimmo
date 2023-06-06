@@ -5,7 +5,7 @@ import PageBtnContainer from '../../components/buttons/PageBtnContainer';
 import { useEffect, useRef, useState } from 'react';
 
 import FiltersListingPage from '../../components/filters/FiltersListingPage';
-import { IListing, QueryParamsType } from '../../../types/listingTypes';
+import { IListing, ListingQueryParamsType } from '../../../types/listingTypes';
 import { useSearchParams } from 'next/navigation';
 import { queryParams, sortOptions } from '../../../utils/listingDetails';
 import {
@@ -18,7 +18,7 @@ const Listings = () => {
   const ref = useRef<HTMLDivElement>(null);
   const params = Object.fromEntries(useSearchParams());
   const [allListings, setAllListings] = useState<IListing[]>(null);
-  let paramsObject: QueryParamsType = queryParams;
+  let paramsObject: ListingQueryParamsType = queryParams;
   if (params) {
     const searchParams = useSearchParams();
     paramsObject = Array.from(searchParams.entries()).reduce(
@@ -34,7 +34,7 @@ const Listings = () => {
         }
         return obj;
       },
-      {} as QueryParamsType
+      {} as ListingQueryParamsType
     );
   }
 

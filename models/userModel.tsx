@@ -1,6 +1,6 @@
 import { Schema, model, models, Types, Document, Model } from 'mongoose';
 
-interface IUserDocument extends Document {
+export interface IUserDocument extends Document {
   username: string;
   email: string;
   firebaseUID: string;
