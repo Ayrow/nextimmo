@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useListingsContext } from '../../../context/listings/listingsContext';
 import ListCard from '../../../components/listings/ListCard';
 import { useAppContext } from '../../../context/app/appContext';
@@ -12,8 +12,11 @@ import {
   EventTargetType,
   HandleInputChangeType,
 } from '../../../../types/functionTypes';
+import PageBtnContainer from '../../../components/buttons/PageBtnContainer';
+import { useCloseOnOutsideClick } from '../../../hooks/useCloseOnOutsideClick';
 
 const ManageListings = () => {
+  const ref = useRef<HTMLDivElement>(null);
   const { deleteListing } = useListingsContext();
   const [allListings, setAllListings] = useState<IListing[]>(null);
   const [valuesQueries, setValuesQueries] = useState(queryParams);
@@ -99,6 +102,12 @@ const ManageListings = () => {
     }
   };
 
+  const closeDropdown = () => {
+    setIsSortingDropdownOpen(false);
+  };
+
+  useCloseOnOutsideClick(closeDropdown, ref);
+
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     const controller = new AbortController();
@@ -132,7 +141,35 @@ const ManageListings = () => {
         valuesQueries={valuesQueries}
         handleInputChange={handleInputChange}
       />
-      
+      <div className='flex gap-10 items-center'>
+        <p className='font-bold ml-10'>
+          {totalNumberListings}{' '}
+          {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvée'}
+        </p>
+        <div className='hidden relative md:grid' ref={ref}>
+          <button
+            className='border capitalize rounded-xl px-2 py-1 w-40 flex gap-5 justify-around'
+            onClick={() => setIsSortingDropdownOpen(!isSortingDropdownOpen)}>
+            {valuesQueries.sort} {isSortingDropdownOpen ? '⇑' : '⇓'}
+          </button>
+          {isSortingDropdownOpen && (
+            <div className='absolute border rounded-md left-0 mt-10 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
+              {sortOptions.map((sort, index) => {
+                return (
+                  <button
+                    key={index}
+                    className='capitalize'
+                    name='sort'
+                    value={sort}
+                    onClick={(e) => handleInputChange(e)}>
+                    {sort}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
       <div className='flex flex-col gap-5 mt-10'>
         {allListings &&
           allListings?.map((listing) => {
@@ -140,6 +177,13 @@ const ManageListings = () => {
             return <ListCard key={ref} listing={listing} />;
           })}
       </div>
+      {totalPages > 0 && (
+        <PageBtnContainer
+          numOfPages={totalPages}
+          page={valuesQueries.page}
+          handleInputChange={handleInputChange}
+        />
+      )}
     </div>
   );
 };
