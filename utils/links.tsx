@@ -57,24 +57,18 @@ const adminLinks: LinksTypes[] = [
   },
   {
     id: 3,
-    label: 'Utilisateurs',
-    path: 'dashboard/utilisateurs',
+    label: 'Gestion utilisateurs',
+    path: 'dashboard/gerer-utilisateurs',
     //  icon: <FaSuitcase />,
   },
   {
     id: 4,
-    label: 'Agents',
-    path: 'dashboard/agents',
-    // icon: <FaHeart />,
-  },
-  {
-    id: 5,
     label: 'Ajouter Annonce',
     path: 'dashboard/ajouter-annonce',
     //  icon: <FaSuitcase />,
   },
   {
-    id: 6,
+    id: 5,
     label: 'Modifier Annonces',
     path: 'dashboard/modifier-annonces',
     //  icon: <FaSuitcase />,
