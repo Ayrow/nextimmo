@@ -6,16 +6,16 @@ import AccountButton from '../buttons/AccountButton';
 const Navbar = () => {
   return (
     <nav className=' bg-gray-900 relative w-full z-20 top-0 left-0 border-b border-gray-600'>
-      <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
+      <div className='flex flex-wrap items-center justify-between mx-auto p-4'>
         <Link href='/' className='flex items-center'>
           <Image
             src='https://flowbite.com/docs/images/logo.svg'
-            className='h-8 mr-3'
+            className='h-7 w-7 md:h-10 md:w-10 mr-3'
             alt='Logo'
-            width='150'
-            height='150'
+            width={120}
+            height={120}
           />
-          <span className='self-center text-2xl font-semibold whitespace-nowrap text-white'>
+          <span className='self-center text-lg md:text-2xl font-semibold whitespace-nowrap text-white'>
             Nextimmo
           </span>
         </Link>

@@ -30,7 +30,7 @@ const AccountButton = () => {
     return (
       <Link
         href='/signin'
-        className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
+        className='text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center md:mr-0 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800'>
         Sign in
       </Link>
     );
@@ -40,8 +40,24 @@ const AccountButton = () => {
       <div className='relative'>
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
+          className='hidden sm:flex text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center md:mr-0 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800'>
           {currentUser?.role === 'user' ? 'Compte' : 'Tableau de bord'}
+        </button>
+        <button
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          className='flex sm:hidden text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-2 py-2 text-center md:mr-0 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800'>
+          <span className='sr-only'>Ouvrir menu</span>
+          <svg
+            className='w-5 h-5'
+            aria-hidden='true'
+            fill='currentColor'
+            viewBox='0 0 20 20'
+            xmlns='http://www.w3.org/2000/svg'>
+            <path
+              fillRule='evenodd'
+              d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z'
+              clipRule='evenodd'></path>
+          </svg>
         </button>
         {isDropdownOpen && (
           <DropdownMenu
