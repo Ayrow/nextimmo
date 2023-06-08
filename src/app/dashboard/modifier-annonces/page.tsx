@@ -158,7 +158,7 @@ const ManageListings = () => {
         />
         <div className='flex flex-wrap justify-center gap-5'>
           <DropdownButtons
-            displayName={valuesQueries.etat}
+            displayName={`etat: ${valuesQueries.etat}`}
             options={etatsAnnonceOptions}
             handleFilterChange={handleInputChange}
             name='etat'

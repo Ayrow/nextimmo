@@ -83,9 +83,9 @@ export async function GET(request: NextRequest) {
     queryObject.statut = statut;
   }
 
-  if (etat && etat !== 'toutes les annonces') {
+  if (etat && etat !== 'tous les états') {
     queryObject.etat = etat;
-  } else if (etat && etat === 'toutes les annonces') {
+  } else if (etat && etat === 'tous les états') {
     queryObject.etat = { $in: ['publiée', 'brouillon'] };
   }
 

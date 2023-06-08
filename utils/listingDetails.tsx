@@ -16,13 +16,13 @@ const sortOptions: string[] = [
 const statutOptions: string[] = [
   'bientôt',
   'disponible',
-  'offreEnCours',
+  'offre en Cours',
   'vendu',
   'loué',
 ];
 
 const etatsAnnonceOptions: string[] = [
-  'toutes les annonces',
+  'tous les états',
   'publiée',
   'brouillon',
 ];
