@@ -197,7 +197,7 @@ const FiltersListingPage = ({
           </div>
         </div>
         {isMobileFilterOpen && (
-          <div className='md:hidden absolute z-50 inset-0 p-10 w-full h-full bg-gray-900'>
+          <div className='md:hidden fixed overflow-scroll z-50 inset-0 p-10 w-full h-full bg-black'>
             <div className='flex justify-end'>
               <button
                 className='text-md gap-5 border rounded-xl p-2 hover:bg-gray-700'
@@ -238,11 +238,10 @@ const FiltersListingPage = ({
             </div>
           </div>
         )}
-        {/* Modal with filters */}
       </div>
 
       {/* Desktop*/}
-      <div className='relative' ref={ref}>
+      <div className='' ref={ref}>
         <div className='hidden md:flex md:flex-wrap items-center m-5 md:flex-auto border gap-5 rounded-xl p-5 shadow-xl shadow-black'>
           <div>
             <button

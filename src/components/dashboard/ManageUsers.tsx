@@ -21,7 +21,7 @@ const ManageUsers = ({
           return (
             <div
               key={user.email}
-              className='relative w-full border rounded-2xl flex flex-col lg:grid lg:grid-cols-7 items-center gap-5 p-5'>
+              className='w-full border rounded-2xl flex flex-col lg:grid lg:grid-cols-7 items-center gap-5 p-5'>
               {isEditing && userToEdit._id === _id ? (
                 <>
                   <div className='flex flex-nowrap gap-3 col-span-2'>
