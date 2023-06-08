@@ -1,4 +1,4 @@
-import { QueryParamsType } from '../types/listingTypes';
+import { ListingQueryParamsType } from '../types/listingTypes';
 
 export type ListingDetailsTypes = {
   id: number;
@@ -11,6 +11,14 @@ const sortOptions: string[] = [
   'plus ancienne',
   'prix croissant',
   'prix décroissant',
+];
+
+const statutOptions: string[] = [
+  'bientôt',
+  'disponible',
+  'offreEnCours',
+  'vendu',
+  'loué',
 ];
 
 const nbRooms = ['1', '2', '3', '4', '5', '6'];
@@ -225,10 +233,11 @@ const listTypeChauffage: ListingDetailsTypes[] = [
   },
 ];
 
-const queryParams: QueryParamsType = {
+const queryParams: ListingQueryParamsType = {
   refListing: '',
   transaction: 'vente',
   statut: 'disponible',
+  draft: false,
   quartier: '',
   ville: '',
   codePostal: '',
@@ -260,4 +269,5 @@ export {
   nbRooms,
   queryParams,
   sortOptions,
+  statutOptions,
 };

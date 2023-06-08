@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useRef,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import FilterCard from './FilterCard';
 import FilterButton from './FilterButton';
 import FilterCheckbox from './FilterCheckbox';
@@ -17,7 +11,7 @@ import BasicSearch from './BasicSearch';
 import { ListingQueryParamsType } from '../../../types/listingTypes';
 import { EventTargetType } from '../../../types/functionTypes';
 import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
-import SortButton from '../buttons/SortButton';
+import SortButton from '../buttons/DropdownButtons';
 
 const FiltersListingPage = ({
   valuesQueries,
@@ -164,20 +158,15 @@ const FiltersListingPage = ({
   };
 
   return (
-    <div className='m-5'>
+    <div className='my-5 sm:m-5'>
       {/* Mobile */}
       <div>
-        <div className='md:hidden flex justify-end gap-5'>
+        <div className='md:hidden flex justify-start'>
           <button
-            className='border px-2 rounded-lg'
+            className='border px-3 py-1 rounded-lg'
             onClick={() => setISMobileFilterOpen(true)}>
             Filtrer
           </button>
-          <SortButton
-            displayName={valuesQueries.sort}
-            sortOptions={sortOptions}
-            handleFilterChange={handleInputChange}
-          />
         </div>
         {isMobileFilterOpen && (
           <div className='md:hidden fixed overflow-scroll z-50 inset-0 p-10 w-full h-full bg-black'>

@@ -52,7 +52,7 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     },
     statut: {
       type: String,
-      enum: ['bientot', 'disponible', 'offreEnCours', 'vendu', 'loué'],
+      enum: ['bientôt', 'disponible', 'offreEnCours', 'vendu', 'loué'],
     },
     surfaceInt: {
       type: Number,

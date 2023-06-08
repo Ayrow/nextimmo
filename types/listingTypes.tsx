@@ -51,6 +51,7 @@ export interface IListing {
 export type ListingQueryParamsType = {
   refListing: string;
   transaction: string;
+  draft: boolean;
   statut: string;
   quartier: string;
   ville: string;

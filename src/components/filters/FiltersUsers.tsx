@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
-import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
 import FilterText from './FilterText';
-import SortButton from '../buttons/SortButton';
+import DropdownButtons from '../buttons/DropdownButtons';
 
 const FiltersUsers = ({
   valuesQueries,
@@ -15,38 +14,24 @@ const FiltersUsers = ({
   handleFilterChange: (MouseEvent) => void;
   sortOptions: string[];
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-
   const { username, email, role, sort } = valuesQueries;
 
   const [isMobileFilterOpen, setISMobileFilterOpen] = useState(false);
-  const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
 
   const closeMobileFilter = () => {
     setISMobileFilterOpen(false);
   };
 
-  const closeMobileDropdown = () => {
-    setIsMobileDropdownOpen(false);
-  };
-
-  useCloseOnOutsideClick(closeMobileDropdown, ref);
-
   return (
     <div className='m-5'>
       {/* Mobile */}
       <div>
-        <div className='md:hidden flex justify-end gap-5'>
+        <div className='md:hidden flex justify-start gap-5'>
           <button
-            className='border px-2 rounded-lg'
+            className='border px-3 py-1 rounded-lg'
             onClick={() => setISMobileFilterOpen(true)}>
             Filtrer
           </button>
-          <SortButton
-            displayName={sort}
-            sortOptions={sortOptions}
-            handleFilterChange={handleFilterChange}
-          />
         </div>
         {isMobileFilterOpen && (
           <div className='md:hidden fixed z-50 inset-0 p-10 w-full h-full bg-gray-900'>

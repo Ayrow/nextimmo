@@ -12,6 +12,7 @@ import {
   HandleInputChangeType,
 } from '../../../../types/functionTypes';
 import PageBtnContainer from '../../../components/buttons/PageBtnContainer';
+import DropdownButtons from '../../../components/buttons/DropdownButtons';
 
 const initialUserFilter = {
   username: '',
@@ -160,43 +161,27 @@ const Utilisateurs = () => {
   }, [valuesQueries]);
 
   return (
-    <div className='p-10 bg-gray-900 w-full relative'>
+    <div className='p-10 bg-gray-900 w-full'>
       {state.showModal && <ConfirmDeletionModal deleteItem={deleteUser} />}
       <h2 className='text-center text-xl font-bold'>Manage Users</h2>
-      <FiltersUsers
-        valuesQueries={valuesQueries}
-        handleFilterChange={handleFilterChange}
-        sortOptions={sortOptions}
-      />
-      <div className='flex gap-10 items-center'>
-        <p className='font-bold ml-10'>
-          {totalNumberUsers}{' '}
-          {totalNumberUsers > 1 ? 'utilisateurs trouvés' : 'utilisateur trouvé'}
-        </p>
-        <div className='hidden relative md:grid' ref={ref}>
-          <button
-            className='border capitalize rounded-xl px-2 py-1 w-40 flex gap-5 justify-around'
-            onClick={() => setIsSortingDropdownOpen(!isSortingDropdownOpen)}>
-            {valuesQueries.sort} {isSortingDropdownOpen ? '⇑' : '⇓'}
-          </button>
-          {isSortingDropdownOpen && (
-            <div className='absolute border rounded-md left-0 mt-10 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
-              {sortOptions.map((sort, index) => {
-                return (
-                  <button
-                    key={index}
-                    className='capitalize'
-                    name='sort'
-                    value={sort}
-                    onClick={handleFilterChange}>
-                    {sort}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
+      <div className='flex items-center md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
+        <FiltersUsers
+          valuesQueries={valuesQueries}
+          handleFilterChange={handleFilterChange}
+          sortOptions={sortOptions}
+        />
+        <DropdownButtons
+          displayName={`tri: ${valuesQueries.sort}`}
+          name='sort'
+          handleFilterChange={handleFilterChange}
+          options={sortOptions}
+        />
       </div>
+
+      <p className='font-bold text-center my-5'>
+        {totalNumberUsers}{' '}
+        {totalNumberUsers > 1 ? 'utilisateurs trouvés' : 'utilisateur trouvé'}
+      </p>
       <ManageUsers
         allUsers={allUsers}
         isEditing={state.isEditing}

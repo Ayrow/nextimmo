@@ -13,6 +13,7 @@ import {
   HandleInputChangeType,
 } from '../../../types/functionTypes';
 import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
+import DropdownButtons from '../../components/buttons/DropdownButtons';
 
 const Listings = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -152,42 +153,28 @@ const Listings = () => {
 
   return (
     <section className='bg-gray-900 py-5'>
-      <FiltersListingPage
-        sortOptions={sortOptions}
-        isSortingDropdownOpen={isSortingDropdownOpen}
-        setIsSortingDropdownOpen={setIsSortingDropdownOpen}
-        valuesQueries={valuesQueries}
-        handleInputChange={handleInputChange}
-      />
-      <div className='flex gap-10 items-center'>
-        <p className='font-bold ml-10'>
-          {totalNumberListings}{' '}
-          {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvée'}
-        </p>
-        <div className='hidden relative md:grid' ref={ref}>
-          <button
-            className='border capitalize rounded-xl px-2 py-1 w-40 flex gap-5 justify-around'
-            onClick={() => setIsSortingDropdownOpen(!isSortingDropdownOpen)}>
-            {valuesQueries.sort} {isSortingDropdownOpen ? '⇑' : '⇓'}
-          </button>
-          {isSortingDropdownOpen && (
-            <div className='absolute border rounded-md left-0 mt-10 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
-              {sortOptions.map((sort, index) => {
-                return (
-                  <button
-                    key={index}
-                    className='capitalize'
-                    name='sort'
-                    value={sort}
-                    onClick={(e) => handleInputChange(e)}>
-                    {sort}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+      <div className='flex items-center sm:flex-col gap-5 sm:gap-1 sm:items-center'></div>
+      <div className='flex items-center md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
+        <FiltersListingPage
+          sortOptions={sortOptions}
+          isSortingDropdownOpen={isSortingDropdownOpen}
+          setIsSortingDropdownOpen={setIsSortingDropdownOpen}
+          valuesQueries={valuesQueries}
+          handleInputChange={handleInputChange}
+        />
+        <div className='flex gap-5'>
+          <DropdownButtons
+            displayName={`tri: ${valuesQueries.sort}`}
+            options={sortOptions}
+            handleFilterChange={handleInputChange}
+            name='sort'
+          />
         </div>
       </div>
+      <p className='font-bold text-center my-5'>
+        {totalNumberListings}{' '}
+        {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvée'}
+      </p>
       <div
         className={'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 m-10 gap-5'}>
         {allListings?.map((listing) => {
