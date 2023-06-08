@@ -15,14 +15,14 @@ import {
 } from '../../../../utils/listingDetails';
 import { useListingsContext } from '../../../context/listings/listingsContext';
 import { useAppContext } from '../../../context/app/appContext';
-import SingleListing from '../../annonces/[slug]/[ref]/page';
+
 import BackButton from '../../../components/buttons/BackButton';
-import { useRouter } from 'next/navigation';
+
 import { HandleInputChangeType } from '../../../../types/functionTypes';
 
 const initialState: IListing = {
   ref: '',
-  typeDeBien: 'Sélectionnez le type de bien',
+  typeDeBien: 'maison',
   transaction: 'vente',
   location: {
     loyerMensuel: undefined,
@@ -35,10 +35,10 @@ const initialState: IListing = {
   },
   prix: undefined,
   dateConstruction: undefined,
-  nbPieces: 0,
-  nbChambres: 0,
-  nbSDB: 0,
-  nbEtages: 0,
+  nbPieces: undefined,
+  nbChambres: undefined,
+  nbSDB: undefined,
+  nbEtages: undefined,
   statut: 'disponible',
   surfaceInt: undefined,
   surfaceExt: undefined,
@@ -46,7 +46,7 @@ const initialState: IListing = {
     interieur: [],
     exterieur: [],
   },
-  typeChauffage: 'Sélectionnez le type de chauffage',
+  typeChauffage: '',
   exposition: '',
   description: '',
   consoEnergetique: undefined,
@@ -54,10 +54,10 @@ const initialState: IListing = {
   photos: [],
   honoraires: {
     aCharge: 'acheteur',
-    taux: 0,
-    fraisAgence: 0,
+    taux: undefined,
+    fraisAgence: undefined,
   },
-  draft: false,
+  etat: '',
 };
 
 const AddListing = () => {
@@ -100,11 +100,24 @@ const AddListing = () => {
           [honorairesField]: value,
         },
       };
-    } else if (name.startsWith('interieur' || 'exterieur')) {
-      let equipementsField = name.split('.')[1];
-      const newValue = value.replace(/\s/g, '').replace('é', 'e');
+    } else if (
+      (name.startsWith('interieur') && value !== '') ||
+      (name.startsWith('exterieur') && value !== '')
+    ) {
       const typeOfEquipement = name.split('.')[0];
-      let newArray = values.equipements[name];
+      const newValue = value.replace(/\s/g, '').replace('é', 'e');
+
+      let newArray: string[];
+      if (values.equipements[typeOfEquipement] === '') {
+        newArray = [];
+      } else if (
+        typeof values.equipements[typeOfEquipement] === 'string' &&
+        values.equipements[typeOfEquipement] !== ''
+      ) {
+        newArray.push(values.equipements[typeOfEquipement] as string);
+      } else {
+        newArray = values.equipements[typeOfEquipement] as string[];
+      }
 
       if (values.equipements[typeOfEquipement].includes(newValue)) {
         newArray = newArray.filter((item) => item !== newValue);
@@ -118,7 +131,7 @@ const AddListing = () => {
         ...data,
         equipements: {
           ...data.equipements,
-          [equipementsField]: newArray,
+          [typeOfEquipement]: newArray,
         },
       };
     } else {
@@ -144,7 +157,30 @@ const AddListing = () => {
           },
         });
         // Add Modal to confirm it has been added
-        // clearForm();
+        clearForm();
+      } catch (error) {
+        alert(error);
+        // Add Modal for error
+      }
+    } else {
+      //display error as agent/admin is not connected
+    }
+  };
+
+  const updateListing = async () => {
+    if (firebaseUser) {
+      const { email } = firebaseUser;
+      const { listingId } = singleListing._id;
+      try {
+        await fetch('/api/listing', {
+          method: 'PUT',
+          body: JSON.stringify({ values, email, listingId }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        // Add Modal to confirm it has been added
+        clearForm();
       } catch (error) {
         alert(error);
         // Add Modal for error
@@ -183,8 +219,19 @@ const AddListing = () => {
     };
   }, [singleListing]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const saveListingAsDraft = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setValues({ ...values, etat: 'brouillon' });
+    handleSubmit();
+  };
+
+  const pulishListing = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setValues({ ...values, etat: 'publiée' });
+    handleSubmit();
+  };
+
+  const handleSubmit = () => {
     const {
       transaction,
       ref,
@@ -195,7 +242,6 @@ const AddListing = () => {
       surfaceInt,
       location,
       nbChambres,
-      nbEtages,
       nbSDB,
     } = values;
 
@@ -204,18 +250,20 @@ const AddListing = () => {
         !ref ||
         !prix ||
         !typeDeBien ||
-        !lieu.quartier ||
         !lieu.ville ||
         !lieu.codePostal ||
         !nbPieces ||
         !surfaceInt ||
         !nbChambres ||
-        !nbEtages ||
         !nbSDB
       ) {
-        alert('missing fields vente');
+        alert('missing vente fields');
       } else {
-        addListing();
+        if (state.isEditing) {
+          updateListing();
+        } else {
+          addListing();
+        }
       }
     } else {
       if (
@@ -223,18 +271,20 @@ const AddListing = () => {
         !location.loyerMensuel ||
         !location.caution ||
         !typeDeBien ||
-        !lieu.quartier ||
         !lieu.ville ||
         !nbPieces ||
         !lieu.codePostal ||
         !surfaceInt ||
         !nbChambres ||
-        !nbEtages ||
         !nbSDB
       ) {
         alert('missing fields location');
       } else {
-        addListing();
+        if (state.isEditing) {
+          updateListing();
+        } else {
+          addListing();
+        }
       }
     }
   };
@@ -249,7 +299,7 @@ const AddListing = () => {
             : 'Créer une annonce'}
         </h2>
 
-        <form onSubmit={handleSubmit} className='mt-10'>
+        <form className='mt-10'>
           <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
             <div className='sm:col-span-2'>
               <BasicInputWithLabel
@@ -265,11 +315,12 @@ const AddListing = () => {
 
             <div className='sm:col-span-2'>
               <label className='block mb-2 text-sm font-medium text-white'>
-                Type de Bien
+                Type de Bien <span className='text-red-500'>*</span>
               </label>
               <select
                 onChange={handleChange}
                 name='typeDeBien'
+                required
                 value={values.typeDeBien}
                 className='border capitalize text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option disabled>Sélectionnez le type de bien</option>
@@ -319,7 +370,7 @@ const AddListing = () => {
                 <BasicInputWithLabel
                   label='Quartier'
                   placeholder=''
-                  isRequired={true}
+                  isRequired={false}
                   name='lieu.quartier'
                   type='text'
                   handleChange={handleChange}
@@ -483,13 +534,14 @@ const AddListing = () => {
 
           <SectionWithTitle title='Equipements Intérieurs'>
             {listEquipementsInterieur.map((equip) => {
-              const { id, name, label } = equip;
+              const { id, label, name } = equip;
               return (
                 <div key={id} className='flex'>
                   <input
                     type='checkbox'
                     onChange={handleChange}
                     name={`interieur.${name}`}
+                    value={name}
                     className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
                   />
                   <label className='ml-2 text-sm font-medium text-gray-300'>
@@ -518,12 +570,20 @@ const AddListing = () => {
               <select
                 onChange={handleChange}
                 name='typeChauffage'
-                value={values.typeChauffage}
+                value={
+                  values.typeChauffage
+                    ? values.typeChauffage
+                    : 'Sélectionnez le type de chauffage'
+                }
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
                 <option disabled>Sélectionnez le type de chauffage</option>
                 {listTypeChauffage.map((item) => {
-                  const { id, label } = item;
-                  return <option key={id}>{label}</option>;
+                  const { id, label, name } = item;
+                  return (
+                    <option key={id} value={name}>
+                      {label}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -538,6 +598,7 @@ const AddListing = () => {
                     type='checkbox'
                     onChange={handleChange}
                     name={`exterieur.${name}`}
+                    value={name}
                     className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
                   />
                   <label className='ml-2 text-sm font-medium text-gray-300'>
@@ -566,8 +627,13 @@ const AddListing = () => {
               <select
                 onChange={handleChange}
                 name='exposition'
-                value={values.exposition}
+                value={
+                  values.exposition
+                    ? values.exposition
+                    : "Sélectionnez l'exposition"
+                }
                 className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                <option disabled>Sélectionnez l'exposition</option>
                 {listExpositionsBien.map((exposition) => {
                   const { id, name, label } = exposition;
                   return (
@@ -667,11 +733,13 @@ const AddListing = () => {
           <div className='flex flex-wrap gap-5'>
             <button
               type='button'
+              onClick={saveListingAsDraft}
               className='inline-flex items-center px-5 py-2.5 mt-4 sm:mt-10 text-sm font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-gray-900 hover:bg-gray-800 border-sky-800 border-2'>
               Sauvegarder Brouillon
             </button>
             <button
-              type='submit'
+              type='button'
+              onClick={pulishListing}
               className='inline-flex items-center px-5 py-2.5 mt-4 sm:mt-10 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-900 hover:bg-blue-800 border-sky-800 border-2'>
               Publier le bien
             </button>

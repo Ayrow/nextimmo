@@ -47,7 +47,7 @@ const listTypeDeBien: ListingDetailsTypes[] = [
   },
   {
     id: 4,
-    name: 'Immeuble',
+    name: 'immeuble',
     label: 'Immeuble',
   },
   {

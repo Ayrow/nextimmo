@@ -22,7 +22,7 @@ const BasicInputWithLabel = ({
   return (
     <>
       <label className='block mb-2 text-sm font-medium text-white'>
-        {label}
+        {label} {isRequired && <span className='text-red-500'>*</span>}
       </label>
       <input
         type={type}

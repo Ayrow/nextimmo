@@ -7,6 +7,8 @@ export async function POST(request: NextRequest) {
   await connectDB();
   const { values, email } = await request.json();
 
+  console.log('values', values);
+
   if (!email) {
     throw new Error('You need an account to add listing');
   }
@@ -62,5 +64,28 @@ export async function DELETE(request: NextRequest) {
     });
   } else {
     throw new Error('No listing found');
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  await connectDB();
+  const { values, email, listingId } = await request.json();
+
+  if (!email) {
+    throw new Error('You need an account to add listing');
+  }
+
+  if (!values) {
+    throw new Error('Please fill in all the mandatory fields');
+  }
+
+  const user = await User.findOne({ email });
+
+  // values.updatedBy = user._id;
+
+  if (user.role === 'user') {
+    throw new Error('Only admin or agent can add listing');
+  } else {
+    await Listing.findOneAndUpdate({ _id: listingId }, values);
   }
 }

@@ -39,7 +39,6 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     typeDeBien: {
       type: String,
       enum: [
-        'Sélectionnez le type de bien',
         'maison',
         'appartement',
         'terrain',
@@ -84,11 +83,9 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     },
     typeChauffage: {
       type: String,
-      enum: ['gaz', 'fioul', 'electrique', 'solaire', 'bois', 'pac'],
     },
     exposition: {
       type: String,
-      enum: ['nord', 'sud', 'est', 'ouest', 'vueMer', 'procheMer'],
     },
     description: String,
     consoEnergetique: Number,
@@ -109,7 +106,6 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     },
     etat: {
       type: String,
-      enum: ['nord', 'sud', 'est', 'ouest', 'vueMer', 'procheMer'],
     },
     nbAjoutFavoris: {
       type: Number,
