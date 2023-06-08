@@ -21,6 +21,12 @@ const statutOptions: string[] = [
   'loué',
 ];
 
+const etatsAnnonceOptions: string[] = [
+  'toutes les annonces',
+  'publiée',
+  'brouillon',
+];
+
 const nbRooms = ['1', '2', '3', '4', '5', '6'];
 
 const listTypeDeBien: ListingDetailsTypes[] = [
@@ -237,7 +243,7 @@ const queryParams: ListingQueryParamsType = {
   refListing: '',
   transaction: 'vente',
   statut: 'disponible',
-  draft: false,
+  etat: 'publiée',
   quartier: '',
   ville: '',
   codePostal: '',
@@ -270,4 +276,5 @@ export {
   queryParams,
   sortOptions,
   statutOptions,
+  etatsAnnonceOptions,
 };

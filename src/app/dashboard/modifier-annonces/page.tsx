@@ -7,6 +7,7 @@ import { useAppContext } from '../../../context/app/appContext';
 import ConfirmDeletionModal from '../../../components/modals/ConfirmDeletionModal';
 import { IListing } from '../../../../types/listingTypes';
 import {
+  etatsAnnonceOptions,
   queryParams,
   sortOptions,
   statutOptions,
@@ -149,6 +150,12 @@ const ManageListings = () => {
           handleInputChange={handleInputChange}
         />
         <div className='flex flex-wrap justify-center gap-5'>
+          <DropdownButtons
+            displayName={valuesQueries.etat}
+            options={etatsAnnonceOptions}
+            handleFilterChange={handleInputChange}
+            name='etat'
+          />
           <DropdownButtons
             displayName={`statut: ${valuesQueries.statut}`}
             options={statutOptions}

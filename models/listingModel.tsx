@@ -107,9 +107,9 @@ const listingSchema: Schema<IListingDocument> = new Schema(
         'Un compte agent est nécessaire pour ajouter une annonce',
       ],
     },
-    draft: {
-      type: Boolean,
-      default: false,
+    etat: {
+      type: String,
+      enum: ['nord', 'sud', 'est', 'ouest', 'vueMer', 'procheMer'],
     },
     nbAjoutFavoris: {
       type: Number,

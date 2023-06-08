@@ -36,7 +36,7 @@ const agentLinks: LinksTypes[] = [
   },
   {
     id: 3,
-    label: 'Modifier Annonces',
+    label: 'Gestion Annonces',
     path: '/dashboard/modifier-annonces',
     //  icon: <FaSuitcase />,
   },
@@ -69,7 +69,7 @@ const adminLinks: LinksTypes[] = [
   },
   {
     id: 5,
-    label: 'Modifier Annonces',
+    label: 'Gestion annonces',
     path: 'dashboard/modifier-annonces',
     //  icon: <FaSuitcase />,
   },

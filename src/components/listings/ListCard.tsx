@@ -20,7 +20,7 @@ const ListCard = ({ listing }: { listing: IListing }) => {
     surfaceInt,
     statut,
     photos,
-    draft,
+    etat,
   } = listing;
 
   const { separateThousands } = useListingsContext();
@@ -37,8 +37,11 @@ const ListCard = ({ listing }: { listing: IListing }) => {
     <div className='relative w-full border rounded-2xl flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 p-5'>
       <div className='flex flex-wrap items-center flex-col gap-2'>
         <p className='capitalize'>
-          <span className={draft ? 'text-orange-500' : 'text-green-500'}>
-            {draft ? 'Brouillon' : 'Publié'} - {transaction} - {statut}
+          <span
+            className={
+              etat === 'brouillon' ? 'text-orange-500' : 'text-green-500'
+            }>
+            {etat} - {transaction} - {statut}
           </span>{' '}
         </p>
         <p className='font-bold'>ref: {ref}</p>

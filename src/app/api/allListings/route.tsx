@@ -37,7 +37,7 @@ type QueryObjectType = {
     extérieur?: string[];
   };
   exposition?: string[];
-  draft: boolean;
+  etat: string | { $in: string[] };
 };
 
 const regexContainsChar = /[a-zA-Z]/;
@@ -70,13 +70,20 @@ export async function GET(request: NextRequest) {
   const equipementsInt = searchParams.get('equipementsInt');
   const equipementsExt = searchParams.get('equipementsExt');
   const exposition = searchParams.get('exposition');
+  const etat = searchParams.get('etat');
 
   const queryObject: QueryObjectType = {
     statut: statut,
     typeDeBien: 'maison, appartement',
     transaction: transaction,
-    draft: false,
+    etat: 'publiée',
   };
+
+  if (etat && etat !== 'toutes les annonces') {
+    queryObject.etat = etat;
+  } else if (etat && etat === 'toutes les annonces') {
+    queryObject.etat = { $in: ['publiée', 'brouillon'] };
+  }
 
   if (refListing) {
     queryObject.ref = { $regex: refListing, $options: 'i' };

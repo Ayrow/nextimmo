@@ -45,13 +45,13 @@ export interface IListing {
   ges: number;
   honoraires: IHonoraires;
   photos: string[];
-  draft: boolean;
+  etat: string;
 }
 
 export type ListingQueryParamsType = {
   refListing: string;
   transaction: string;
-  draft: boolean;
+  etat: string;
   statut: string;
   quartier: string;
   ville: string;
