@@ -17,6 +17,7 @@ import BasicSearch from './BasicSearch';
 import { ListingQueryParamsType } from '../../../types/listingTypes';
 import { EventTargetType } from '../../../types/functionTypes';
 import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
+import SortButton from '../buttons/SortButton';
 
 const FiltersListingPage = ({
   valuesQueries,
@@ -172,29 +173,11 @@ const FiltersListingPage = ({
             onClick={() => setISMobileFilterOpen(true)}>
             Filtrer
           </button>
-          <div className='relative'>
-            <button
-              className='border capitalize rounded-xl px-2 py-1 w-40 flex gap-5 justify-around'
-              onClick={() => setIsSortingDropdownOpen(!isSortingDropdownOpen)}>
-              {valuesQueries.sort} {isSortingDropdownOpen ? '⇑' : '⇓'}
-            </button>
-            {isSortingDropdownOpen && (
-              <div className='absolute border rounded-md left-0 mt-2 z-50 bg-sky-950 flex flex-col items-start pl-2 gap-2 w-full'>
-                {sortOptions.map((sort: string, index: number) => {
-                  return (
-                    <button
-                      key={index}
-                      className='capitalize'
-                      name='sort'
-                      value={sort}
-                      onClick={handleInputChange}>
-                      {sort}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+          <SortButton
+            displayName={valuesQueries.sort}
+            sortOptions={sortOptions}
+            handleFilterChange={handleInputChange}
+          />
         </div>
         {isMobileFilterOpen && (
           <div className='md:hidden fixed overflow-scroll z-50 inset-0 p-10 w-full h-full bg-black'>

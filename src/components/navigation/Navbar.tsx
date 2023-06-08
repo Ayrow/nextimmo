@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import NavLink from './NavLink';
-import AccountButton from './AccountButton';
+import AccountButton from '../buttons/AccountButton';
 
 const Navbar = () => {
   return (

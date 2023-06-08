@@ -1,15 +1,10 @@
 'use client';
 
-import React, {
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useRef,
-  useState,
-} from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
 import FilterText from './FilterText';
+import SortButton from '../buttons/SortButton';
 
 const FiltersUsers = ({
   valuesQueries,
@@ -47,29 +42,11 @@ const FiltersUsers = ({
             onClick={() => setISMobileFilterOpen(true)}>
             Filtrer
           </button>
-          <div className='' ref={ref}>
-            <button
-              className='border capitalize rounded-xl px-2 py-1 w-40 flex gap-5 justify-around'
-              onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}>
-              {sort} {isMobileDropdownOpen ? '⇑' : '⇓'}
-            </button>
-            {isMobileDropdownOpen && (
-              <div className=''>
-                {sortOptions.map((sort: string, index: number) => {
-                  return (
-                    <button
-                      key={index}
-                      className='capitalize'
-                      name='sort'
-                      value={sort}
-                      onClick={handleFilterChange}>
-                      {sort}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+          <SortButton
+            displayName={sort}
+            sortOptions={sortOptions}
+            handleFilterChange={handleFilterChange}
+          />
         </div>
         {isMobileFilterOpen && (
           <div className='md:hidden fixed z-50 inset-0 p-10 w-full h-full bg-gray-900'>

@@ -3,7 +3,7 @@
 import { UserFromDB, useAuthContext } from '../../context/user/authContext';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import DropdownMenu from './DropdownMenu';
+import DropdownMenu from '../navigation/DropdownMenu';
 import { userLinks, agentLinks, adminLinks } from '../../../utils/links';
 
 const AccountButton = () => {

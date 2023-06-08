@@ -35,7 +35,7 @@ const DropdownMenu = ({
   return (
     <div
       ref={ref}
-      className='fixed inset-0 sm:inset-auto sm:absolute w-full sm:w-52 sm:right-0 sm:items-center bg-black rounded-xl mt-2'>
+      className='fixed inset-0 sm:inset-auto sm:absolute w-full sm:w-52 sm:right-0 sm:items-center bg-black sm:rounded-xl sm:mt-2'>
       <div className='sm:hidden flex justify-end pr-10 bg-transparent border border-transparent'>
         <button className='' onClick={() => setIsDropdownOpen(false)}>
           <svg
