@@ -213,8 +213,10 @@ const FiltersListingPage = ({
       </div>
 
       {/* Desktop*/}
-      <div className='' ref={ref}>
-        <div className='hidden md:flex md:flex-wrap items-center m-5 md:flex-auto border gap-5 rounded-xl p-5 shadow-xl shadow-black'>
+      <div
+        className='hidden md:flex md:flex-wrap border rounded-xl p-5 shadow-xl shadow-black'
+        ref={ref}>
+        <div className='flex flex-wrap gap-5 items-center m-5 md:flex-auto '>
           <div>
             <button
               className='px-3 py-1 border rounded-lg'
@@ -475,41 +477,41 @@ const FiltersListingPage = ({
               </FilterCard>
             )}
           </div>
+        </div>
 
-          <div>
-            <button
-              className='px-3 py-1 text-red-500'
-              name='rechercheAvancee'
-              value='rechercheAvancee'
-              onClick={openCloseCard}>
-              Recherche Avancée
-            </button>
-            {isCardOpen.rechercheAvancee && (
-              <div className='absolute w-1/2 right-0 border p-4 mt-4 mr-2 z-50 rounded-xl bg-sky-950'>
-                <p className='text-center font-bold'>Affiner votre recherche</p>
-                <AdvancedSearch
-                  nbRooms={nbRooms}
-                  equipementsInt={equipementsInt}
-                  equipementsExt={equipementsExt}
-                  handleInputChange={handleInputChange}
-                  nbChambres={nbChambres}
-                  closeAllCards={closeAllCards}
-                  minSurfaceExt={minSurfaceExt}
-                  maxSurfaceExt={maxSurfaceExt}
-                  exposition={exposition}
-                  nbSDB={nbSDB}
-                  typeChauffage={typeChauffage}
-                />
-                <div className='flex justify-end gap-10 mt-5'>
-                  <button
-                    onClick={closeAllCards}
-                    className='border-b border-b-transparent hover:border-b hover:border-white'>
-                    Valider
-                  </button>
-                </div>
+        <div className='flex justify-end w-full'>
+          <button
+            className='text-red-500 border-b border-b-transparent hover:border-b-red-500'
+            name='rechercheAvancee'
+            value='rechercheAvancee'
+            onClick={openCloseCard}>
+            Recherche Avancée
+          </button>
+          {isCardOpen.rechercheAvancee && (
+            <div className='absolute w-1/2 right-0 border p-4 mt-4 mr-2 z-50 rounded-xl bg-sky-950'>
+              <p className='text-center font-bold'>Affiner votre recherche</p>
+              <AdvancedSearch
+                nbRooms={nbRooms}
+                equipementsInt={equipementsInt}
+                equipementsExt={equipementsExt}
+                handleInputChange={handleInputChange}
+                nbChambres={nbChambres}
+                closeAllCards={closeAllCards}
+                minSurfaceExt={minSurfaceExt}
+                maxSurfaceExt={maxSurfaceExt}
+                exposition={exposition}
+                nbSDB={nbSDB}
+                typeChauffage={typeChauffage}
+              />
+              <div className='flex justify-end gap-10 mt-5'>
+                <button
+                  onClick={closeAllCards}
+                  className='border-b border-b-transparent hover:border-b hover:border-white'>
+                  Valider
+                </button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

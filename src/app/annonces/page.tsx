@@ -153,7 +153,6 @@ const Listings = () => {
 
   return (
     <section className='bg-gray-900 py-5'>
-      <div className='flex items-center sm:flex-col gap-5 sm:gap-1 sm:items-center'></div>
       <div className='flex items-center md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
         <FiltersListingPage
           sortOptions={sortOptions}
@@ -162,7 +161,7 @@ const Listings = () => {
           valuesQueries={valuesQueries}
           handleInputChange={handleInputChange}
         />
-        <div className='flex gap-5'>
+        <div className='flex flex-col gap-5 md:mt-5'>
           <DropdownButtons
             displayName={`tri: ${valuesQueries.sort}`}
             options={sortOptions}
@@ -171,7 +170,7 @@ const Listings = () => {
           />
         </div>
       </div>
-      <p className='font-bold text-center my-5'>
+      <p className='font-bold text-center md:mt-5'>
         {totalNumberListings}{' '}
         {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvée'}
       </p>

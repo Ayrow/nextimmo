@@ -140,7 +140,7 @@ const ManageListings = () => {
       {state.showModal && <ConfirmDeletionModal deleteItem={deleteListing} />}
       <h2 className='text-center text-xl font-bold'>Manage Listings</h2>
 
-      <div className='flex items-center md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
+      <div className='flex items-center flex-wrap md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
         <FiltersListingPage
           sortOptions={sortOptions}
           isSortingDropdownOpen={isSortingDropdownOpen}
@@ -148,7 +148,7 @@ const ManageListings = () => {
           valuesQueries={valuesQueries}
           handleInputChange={handleInputChange}
         />
-        <div className='flex gap-5'>
+        <div className='flex flex-wrap justify-center gap-5'>
           <DropdownButtons
             displayName={`statut: ${valuesQueries.statut}`}
             options={statutOptions}
