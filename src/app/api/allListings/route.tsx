@@ -18,7 +18,7 @@ type PiecesFilter = number | { $and: [{ $gte: number }, { $lte: number }] };
 type QueryObjectType = {
   ref?: RegexFilter;
   transaction: string;
-  statut: string;
+  statut: string | { $in: string[] };
   lieu?: {
     quartier?: any;
     ville?: any;
@@ -73,11 +73,15 @@ export async function GET(request: NextRequest) {
   const etat = searchParams.get('etat');
 
   const queryObject: QueryObjectType = {
-    statut: statut,
+    statut: { $in: ['disponible', 'bientôt'] },
     typeDeBien: 'maison, appartement',
     transaction: transaction,
     etat: 'publiée',
   };
+
+  if (statut) {
+    queryObject.statut = statut;
+  }
 
   if (etat && etat !== 'toutes les annonces') {
     queryObject.etat = etat;

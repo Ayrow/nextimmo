@@ -115,6 +115,13 @@ const ManageListings = () => {
   useCloseOnOutsideClick(closeDropdown, ref);
 
   useEffect(() => {
+    setValuesQueries((prevValues) => ({
+      ...prevValues,
+      etat: 'toutes les annonces',
+    }));
+  }, []);
+
+  useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     const controller = new AbortController();
     const signal = controller.signal;
