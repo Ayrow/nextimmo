@@ -58,7 +58,7 @@ const BasicHomepageSearch: React.FC = () => {
   };
 
   return (
-    <div className='m-5 p-5 border rounded-xl shadow-lg bg-sky-900 shadow-gray-900 flex flex-col items-center gap-5'>
+    <div className='border p-5 rounded-xl shadow-lg bg-sky-900 shadow-gray-900 flex flex-col items-center gap-5'>
       <div className='flex justify-center gap-3'>
         <FilterButton
           handleInputChange={handleInputChange}
@@ -75,7 +75,7 @@ const BasicHomepageSearch: React.FC = () => {
           classCheck={valuesQueries.transaction === 'location'}
         />
       </div>
-      <div className='flex gap-3'>
+      <div className='flex flex-col sm:flex-row gap-3'>
         <FilterText
           name='quartier'
           value={valuesQueries.quartier}
@@ -99,7 +99,7 @@ const BasicHomepageSearch: React.FC = () => {
         />
       </div>
 
-      <div className='flex gap-5 items-center'>
+      <div className='flex gap-3 flex-col sm:flex-row items-center'>
         <FilterText
           name='maxPrice'
           value={valuesQueries.maxPrice}
@@ -116,7 +116,7 @@ const BasicHomepageSearch: React.FC = () => {
         />
       </div>
 
-      <div className='flex gap-5'>
+      <div className='flex flex-wrap gap-5'>
         {listTypeDeBien.map((element) => {
           return (
             <FilterCheckbox

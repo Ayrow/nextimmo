@@ -12,9 +12,7 @@ const Home: React.FC = () => {
         </h2>
         <BasicHomepageSearch />
       </section>
-      <section>
-        
-      </section>
+      <section></section>
     </main>
   );
 };

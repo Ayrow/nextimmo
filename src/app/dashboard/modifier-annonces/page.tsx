@@ -131,7 +131,7 @@ const ManageListings = () => {
   }, [valuesQueries]);
 
   return (
-    <div className='p-10 bg-gray-900 w-full relative'>
+    <div className='p-10 bg-gray-900 w-full'>
       {state.showModal && <ConfirmDeletionModal deleteItem={deleteListing} />}
       <h2 className='text-center text-xl font-bold'>Manage Listings</h2>
       <FiltersListingPage
