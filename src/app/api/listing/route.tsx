@@ -70,8 +70,6 @@ export async function PATCH(request: NextRequest) {
   const listingId = searchParams.get('listingId');
   const { values, email, etat } = await request.json();
 
-  console.log('etat', etat);
-
   if (!email) {
     throw new Error('You need an account to add listing');
   }
@@ -87,7 +85,6 @@ export async function PATCH(request: NextRequest) {
     throw new Error('Only admin or agent can add listing');
   } else {
     const listing = await Listing.findByIdAndUpdate({ _id: listingId }, values);
-    console.log('listing', listing);
     return new NextResponse(JSON.stringify(listing), {
       headers: { 'Content-Type': 'application/json' },
     });

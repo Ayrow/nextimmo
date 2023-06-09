@@ -30,7 +30,7 @@ const ListCard = ({ listing }: { listing: IListing }) => {
 
   const editListing = () => {
     actions.editItem(ref);
-    router.push('/dashboard/ajouter-annonce?editing=true');
+    router.push(`/dashboard/ajouter-annonce?editing=${ref}`);
   };
 
   return (

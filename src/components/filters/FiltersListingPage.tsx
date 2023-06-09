@@ -11,14 +11,10 @@ import BasicSearch from './BasicSearch';
 import { ListingQueryParamsType } from '../../../types/listingTypes';
 import { EventTargetType } from '../../../types/functionTypes';
 import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
-import SortButton from '../buttons/DropdownButtons';
 
 const FiltersListingPage = ({
   valuesQueries,
   handleInputChange,
-  sortOptions,
-  isSortingDropdownOpen,
-  setIsSortingDropdownOpen,
 }: {
   valuesQueries: ListingQueryParamsType;
   handleInputChange: (MouseEvent) => void;
@@ -217,9 +213,11 @@ const FiltersListingPage = ({
         className='hidden md:flex md:flex-wrap border rounded-xl p-5 shadow-xl shadow-black'
         ref={ref}>
         <div className='flex flex-wrap gap-5 items-center m-5 md:flex-auto '>
-          <div>
+          <div className=''>
             <button
-              className='px-3 py-1 border rounded-lg'
+              className={`${
+                isCardOpen.refListing && 'bg-blue-700'
+              } px-3 py-1 border capitalize rounded-lg`}
               name='refListing'
               value={refListing}
               onClick={openCloseCard}>
@@ -247,9 +245,11 @@ const FiltersListingPage = ({
             )}
           </div>
 
-          <div>
+          <div className=''>
             <button
-              className='px-3 py-1 border rounded-lg'
+              className={`${
+                isCardOpen.transaction && 'bg-blue-700'
+              } px-3 py-1 border capitalize rounded-lg`}
               name='transaction'
               value={transaction}
               onClick={openCloseCard}>
@@ -284,7 +284,9 @@ const FiltersListingPage = ({
 
           <div>
             <button
-              className='px-3 py-1 border capitalize rounded-lg'
+              className={`${
+                isCardOpen.typeDeBien && 'bg-blue-700'
+              } px-3 py-1 border capitalize rounded-lg`}
               name='typeDeBien'
               value={typeDeBien}
               onClick={openCloseCard}>
@@ -322,7 +324,9 @@ const FiltersListingPage = ({
 
           <div>
             <button
-              className='px-3 py-1 border rounded-lg capitalize'
+              className={`${
+                isCardOpen.localisation && 'bg-blue-700'
+              } px-3 py-1 border capitalize rounded-lg`}
               name='localisation'
               onClick={openCloseCard}>
               {quartier || ville || codePostal
@@ -336,7 +340,7 @@ const FiltersListingPage = ({
                 resetValue=''
                 closeAllCards={closeAllCards}>
                 <p className='text-center font-bold'>À quel endroit ?</p>
-                <div className='relative flex gap-5 my-5'>
+                <div className='flex gap-5 my-5'>
                   <FilterText
                     name='quartier'
                     value={quartier}
@@ -365,7 +369,9 @@ const FiltersListingPage = ({
 
           <div>
             <button
-              className='px-3 py-1 border rounded-lg'
+              className={`${
+                isCardOpen.prix && 'bg-blue-700'
+              } px-3 py-1 border capitalize rounded-lg`}
               name='prix'
               value='prix'
               onClick={openCloseCard}>
@@ -400,7 +406,9 @@ const FiltersListingPage = ({
 
           <div>
             <button
-              className='px-3 py-1 border rounded-lg'
+              className={`${
+                isCardOpen.surfaceInt && 'bg-blue-700'
+              } px-3 py-1 border capitalize rounded-lg`}
               name='surfaceInt'
               value='surfaceInt'
               onClick={openCloseCard}>
@@ -443,7 +451,9 @@ const FiltersListingPage = ({
 
           <div>
             <button
-              className='px-3 py-1 border rounded-lg'
+              className={`${
+                isCardOpen.nbPieces && 'bg-blue-700'
+              } px-3 py-1 border capitalize rounded-lg`}
               name='nbPieces'
               onClick={openCloseCard}>
               {renderRoomNumberText(nbPieces, 'pièce')}

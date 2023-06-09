@@ -8,7 +8,7 @@ const FilterCard = ({
   closeAllCards,
 }) => {
   return (
-    <div className='absolute border p-4 mt-4 z-50 rounded-xl bg-sky-950'>
+    <div className='absolute border p-4 mt-4 mx-5 z-50 rounded-xl bg-sky-950'>
       {children}
       <div className='flex justify-between gap-10 mt-5'>
         <button

@@ -14,12 +14,13 @@ import {
   listTypeChauffage,
 } from '../../../../utils/listingDetails';
 import { useListingsContext } from '../../../context/listings/listingsContext';
-import { useAppContext } from '../../../context/app/appContext';
+import { ModalTypes, useAppContext } from '../../../context/app/appContext';
 
 import BackButton from '../../../components/buttons/BackButton';
 
 import { HandleInputChangeType } from '../../../../types/functionTypes';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import NotificationModal from '../../../components/modals/NotificationModal';
 
 const initialState: IListing = {
   ref: '',
@@ -149,10 +150,9 @@ const AddListing = () => {
 
   const addNewListing = async () => {
     if (firebaseUser) {
-      console.log('add listing');
       const { email } = firebaseUser;
       const { etat } = values;
-      console.log('etat', etat);
+
       try {
         await fetch('/api/listing', {
           method: 'POST',
@@ -161,8 +161,17 @@ const AddListing = () => {
             'Content-Type': 'application/json',
           },
         });
-        // Add Modal to confirm it has been added
-        clearForm();
+
+        actions.displayModal({
+          modalMsg:
+            etat === 'publiée'
+              ? `L'annonce ${values.ref} a été créée et est en ligne`
+              : `L'annonce ${values.ref} a été créée et est en brouillon`,
+          modalType: ModalTypes.Success,
+          modalTitle: 'Succès',
+          refItem: values.ref,
+        });
+        // clearForm();
       } catch (error) {
         alert(error);
         // Add Modal for error
@@ -171,6 +180,7 @@ const AddListing = () => {
       console.log('not an agent or admin');
       //display error as agent/admin is not connected
     }
+    console.log('values', values);
   };
 
   const updateListing = async () => {
@@ -186,8 +196,18 @@ const AddListing = () => {
             'Content-Type': 'application/json',
           },
         });
+
+        actions.displayModal({
+          modalMsg:
+            etat === 'publiée'
+              ? `L'annonce ${values.ref} est en ligne et mise à jour`
+              : `L'annonce ${values.ref} est en brouillon et mise à jour`,
+          modalType: ModalTypes.Success,
+          modalTitle: 'Succès',
+          refItem: values.ref,
+        });
+
         // Add Modal to confirm it has been added
-        //  clearForm();
       } catch (error) {
         alert(error);
         // Add Modal for error
@@ -199,11 +219,12 @@ const AddListing = () => {
   };
 
   useEffect(() => {
-    const isEditingparams = searchParams.get('editing');
-    if (state.isEditing && isEditingparams) {
+    const isEditingParams = searchParams.get('editing');
+
+    if (isEditingParams) {
       const controller = new AbortController();
       const signal = controller.signal;
-      getSingleListing(state.refItem, signal);
+      getSingleListing(isEditingParams, signal);
       if (singleListing) {
         const { __v, _id, createdBy, ...rest } = singleListing;
         setValues(rest);
@@ -306,6 +327,7 @@ const AddListing = () => {
     <section className='bg-gray-900'>
       <div className='py-8 px-4 mx-auto max-w-2xl lg:py-16'>
         <BackButton />
+        {state.showModal && <NotificationModal />}
         <h2 className='mb-4 text-xl text-center font-bold text-white'>
           {singleListing && state.isEditing
             ? `Modifier l'annonce: ${state.refItem}`
