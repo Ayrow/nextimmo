@@ -14,9 +14,12 @@ import {
 } from '../../../types/functionTypes';
 import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
 import DropdownButtons from '../../components/buttons/DropdownButtons';
+import { ModalCategories, useAppContext } from '../../context/app/appContext';
+import NotificationModal from '../../components/modals/NotificationModal';
 
 const Listings = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const { state, actions } = useAppContext();
   const params = Object.fromEntries(useSearchParams());
   const [allListings, setAllListings] = useState<IListing[]>(null);
   let paramsObject: ListingQueryParamsType = queryParams;
@@ -70,10 +73,20 @@ const Listings = () => {
         setTotalNumberListings(totalListingsFound);
         setTotalPages(numOfPages);
       } else {
-        //display alert error fetching listings
+        actions.displayModal({
+          modalTitle: 'Erreur',
+          modalCategory: ModalCategories.Error,
+          modalMsg:
+            'Erreur dans la récupération des annonces, veuillez réessayer ultérieurement.',
+        });
       }
     } catch (error) {
-      console.log('error', error);
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg:
+          'Erreur dans la récupération des annonces, veuillez réessayer ultérieurement.',
+      });
     }
   };
 
@@ -153,6 +166,10 @@ const Listings = () => {
 
   return (
     <section className='bg-gray-900 py-5'>
+      {state.modal.showModal &&
+        state.modal.modalCategory === ModalCategories.Error && (
+          <NotificationModal />
+        )}
       <div className='flex items-center md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
         <FiltersListingPage
           sortOptions={sortOptions}
