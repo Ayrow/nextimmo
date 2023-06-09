@@ -68,25 +68,31 @@ export async function PATCH(request: NextRequest) {
   await connectDB();
   const { searchParams } = new URL(request.url);
   const listingId = searchParams.get('listingId');
-  const { values, email, etat } = await request.json();
+  const { values, email } = await request.json();
 
   if (!email) {
-    throw new Error('You need an account to add listing');
+    throw new Error('Il faut un compte pour ajouter une annonce');
   }
 
   if (!values) {
-    throw new Error('Please fill in all the mandatory fields');
+    throw new Error('Des champs requis sont manquants');
   }
 
   const user = await User.findOne({ email });
   // values.updatedBy = user._id;
 
   if (user.role === 'user') {
-    throw new Error('Only admin or agent can add listing');
+    throw new Error('Seuls les agents ou admin peuvent ajouter une annonce');
   } else {
     const listing = await Listing.findByIdAndUpdate({ _id: listingId }, values);
-    return new NextResponse(JSON.stringify(listing), {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    if (listing) {
+      return new NextResponse(JSON.stringify(listing), {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } else {
+      throw new Error(
+        `Il y a eu une erreur lors de la mise ajour de l'annonce: ${values.ref}`
+      );
+    }
   }
 }

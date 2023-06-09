@@ -2,10 +2,11 @@ import { useAppContext } from '../../context/app/appContext';
 
 const NotificationModal = () => {
   const { state, actions } = useAppContext();
-  const { modalType, modalMsg, modalTitle } = state;
+  const { modalCategory, modalMsg, modalTitle } = state;
 
   const colorVariants = {
     success: 'text-green-500',
+    error: 'text-red-500',
     delete: 'text-red-500',
     edit: 'text-orange-500',
     notification: 'text-blue-500',
@@ -41,7 +42,7 @@ const NotificationModal = () => {
           <div className='w-12 h-12 rounded-full bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5'>
             <svg
               aria-hidden='true'
-              className='w-8 h-8 text-green-400'
+              className={`w-8 h-8 ${colorVariants[modalCategory]}`}
               fill='currentColor'
               viewBox='0 0 20 20'
               xmlns='http://www.w3.org/2000/svg'>

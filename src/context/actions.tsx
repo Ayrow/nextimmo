@@ -8,3 +8,6 @@ export const DISPLAY_MODAL = 'DISPLAY_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
 export const EDIT_ITEM = 'EDIT_ITEM';
 export const STOP_EDITING_ITEM = 'STOP_EDITING_ITEM';
+export const LOADING_BEGIN = 'LOADING_BEGIN';
+export const LOADING_SUCESS = 'LOADING_SUCESS';
+export const LOADING_ERROR = 'LOADING_ERROR';

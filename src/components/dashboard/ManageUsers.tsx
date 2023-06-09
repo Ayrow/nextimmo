@@ -1,6 +1,6 @@
 'use client';
 
-import { ModalTypes } from '../../context/app/appContext';
+import { ModalCategories } from '../../context/app/appContext';
 import { UserFromDB } from '../../context/user/authContext';
 
 const ManageUsers = ({
@@ -104,7 +104,7 @@ const ManageUsers = ({
                         displayModal({
                           modalMsg: `Êtes-vous sûr(e) de vouloir supprimer l'utilisateur`,
                           modalTitle: "Suppression d'utilisateur",
-                          modalType: ModalTypes.Delete,
+                          modalCategory: ModalCategories.Delete,
                           refItem: `${username}`,
                         })
                       }

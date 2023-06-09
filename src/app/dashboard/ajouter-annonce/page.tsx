@@ -14,7 +14,10 @@ import {
   listTypeChauffage,
 } from '../../../../utils/listingDetails';
 import { useListingsContext } from '../../../context/listings/listingsContext';
-import { ModalTypes, useAppContext } from '../../../context/app/appContext';
+import {
+  ModalCategories,
+  useAppContext,
+} from '../../../context/app/appContext';
 
 import BackButton from '../../../components/buttons/BackButton';
 
@@ -167,14 +170,18 @@ const AddListing = () => {
             etat === 'publiée'
               ? `L'annonce ${values.ref} a été créée et est en ligne`
               : `L'annonce ${values.ref} a été créée et est en brouillon`,
-          modalType: ModalTypes.Success,
+          modalCategory: ModalCategories.Success,
           modalTitle: 'Succès',
           refItem: values.ref,
         });
         // clearForm();
       } catch (error) {
-        alert(error);
-        // Add Modal for error
+        actions.displayModal({
+          modalMsg: 'Une erreur est survenue, veuillez réessayer',
+          modalCategory: ModalCategories.Error,
+          modalTitle: 'Erreur',
+          refItem: values.ref,
+        });
       }
     } else {
       console.log('not an agent or admin');
@@ -202,14 +209,19 @@ const AddListing = () => {
             etat === 'publiée'
               ? `L'annonce ${values.ref} est en ligne et mise à jour`
               : `L'annonce ${values.ref} est en brouillon et mise à jour`,
-          modalType: ModalTypes.Success,
+          modalCategory: ModalCategories.Success,
           modalTitle: 'Succès',
           refItem: values.ref,
         });
 
         // Add Modal to confirm it has been added
       } catch (error) {
-        alert(error);
+        actions.displayModal({
+          modalMsg: 'Une erreur est survenue, veuillez réessayer',
+          modalCategory: ModalCategories.Error,
+          modalTitle: 'Erreur',
+          refItem: values.ref,
+        });
         // Add Modal for error
       }
     } else {
@@ -233,8 +245,8 @@ const AddListing = () => {
         controller.abort();
       };
     } else {
-      actions.stopEditingItem();
       clearForm();
+      actions.stopEditingItem();
     }
     return () => {
       actions.stopEditingItem();
@@ -243,7 +255,7 @@ const AddListing = () => {
   }, [state.isEditing, state.refItem]);
 
   useEffect(() => {
-    if (singleListing) {
+    if (state.isEditing && singleListing) {
       setValues(singleListing);
     }
 
@@ -327,7 +339,7 @@ const AddListing = () => {
     <section className='bg-gray-900'>
       <div className='py-8 px-4 mx-auto max-w-2xl lg:py-16'>
         <BackButton />
-        {state.showModal && <NotificationModal />}
+        {state.modal.showModal && <NotificationModal />}
         <h2 className='mb-4 text-xl text-center font-bold text-white'>
           {singleListing && state.isEditing
             ? `Modifier l'annonce: ${state.refItem}`

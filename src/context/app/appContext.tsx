@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, useState } from 'react';
 import {
   CLEAR_ALERT,
   CLOSE_MODAL,
@@ -12,65 +12,89 @@ import {
 import appReducer from './appReducer';
 import { ObjectId } from 'mongoose';
 
-export enum ModalTypes {
+export enum ModalCategories {
   Notification = 'notification',
   Success = 'success',
+  Error = 'error',
   Edit = 'edit',
   Delete = 'delete',
   Alert = 'alert',
 }
 
-export enum ColorTypes {
+export enum AlertCategories {
   Success = 'success',
   Error = 'error',
   Warning = 'warning',
   Notification = 'notification',
 }
 
+type ModalType = {
+  showModal?: boolean;
+  modalMsg?: string;
+  modalTitle?: string;
+  modalCategory?: ModalCategories;
+  refItem?: string;
+};
+
+type AlertType = {
+  showAlert?: boolean;
+  alertText?: string;
+  alertTitle?: string;
+  alertCategory?: AlertCategories;
+};
+
 export type AppState = {
-  seenListings: string[];
-  isLoading: boolean;
+  seenListings: ObjectId[];
+  alert: AlertType;
+  modal: ModalType;
   isEditing: boolean;
-  showAlert: boolean;
-  alertText: string;
-  alertType: ColorTypes;
-  showModal: boolean;
-  modalMsg: string;
-  modalTitle: string;
   refItem: string;
-  modalType: ModalTypes;
 };
 
 const initialAppState: AppState = {
   seenListings: [],
-  isLoading: false,
+  alert: {
+    showAlert: false,
+    alertText: '',
+    alertTitle: '',
+    alertCategory: AlertCategories.Notification,
+  },
+  modal: {
+    showModal: false,
+    modalMsg: '',
+    modalTitle: '',
+    refItem: '',
+    modalCategory: ModalCategories.Delete,
+  },
   isEditing: false,
-  showAlert: false,
-  alertText: '',
-  alertType: ColorTypes.Notification,
-  showModal: false,
-  modalMsg: '',
-  modalTitle: '',
   refItem: '',
-  modalType: ModalTypes.Notification,
-};
-
-type ModalPropsType = {
-  modalMsg: string;
-  modalType: ModalTypes;
-  modalTitle: string;
-  refItem: string;
 };
 
 type AppActions = {
-  displayAlert: ({ type, msg }: { type: ColorTypes; msg: string }) => void;
+  displayAlert: ({
+    category,
+    msg,
+    title,
+  }: {
+    category: AlertCategories;
+    msg: string;
+    title: string;
+  }) => void;
+
   closeModal: () => void;
+
   displayModal: ({
     modalMsg,
-    modalType,
+    modalCategory,
     modalTitle,
     refItem,
-  }: ModalPropsType) => void;
+  }: {
+    modalMsg: string;
+    modalCategory: ModalCategories;
+    modalTitle: string;
+    refItem?: string;
+  }) => void;
+
   editItem: (refItem: ObjectId | string) => void;
   stopEditingItem: () => void;
 };
@@ -93,6 +117,16 @@ const AppContext = createContext<{
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialAppState);
+  const { seenListings, alert, modal, isEditing, refItem } = state;
+  const [userSeenListing, setUserSeenListing] = useState(state.seenListings);
+
+  const addListingToAlreadySeen = (ref: ObjectId) => {
+    const newArray = userSeenListing;
+    if (ref) {
+      newArray.push(ref);
+      setUserSeenListing(newArray);
+    }
+  };
 
   const clearAlert = () => {
     setTimeout(() => {
@@ -106,22 +140,28 @@ const AppProvider = ({ children }) => {
     }, 2000);
   };
 
-  const displayAlert = ({ type, msg }: { type: ColorTypes; msg: string }) => {
-    dispatch({ type: DISPLAY_ALERT, payload: { type, msg } });
+  const displayAlert = ({
+    category,
+    msg,
+  }: {
+    category: AlertCategories;
+    msg: string;
+  }) => {
+    dispatch({ type: DISPLAY_ALERT, payload: { category, msg } });
     clearAlert();
   };
 
   const displayModal = ({
     modalTitle,
     modalMsg,
-    modalType,
+    modalCategory,
     refItem,
-  }: ModalPropsType) => {
+  }: ModalType) => {
     dispatch({
       type: DISPLAY_MODAL,
-      payload: { modalTitle, modalMsg, modalType, refItem },
+      payload: { modalTitle, modalMsg, modalCategory, refItem },
     });
-    if (modalType !== (ModalTypes.Delete || ModalTypes.Edit)) {
+    if (modalCategory !== (ModalCategories.Delete || ModalCategories.Edit)) {
       clearModal();
     }
   };
@@ -141,7 +181,13 @@ const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
-        state,
+        state: {
+          seenListings,
+          alert,
+          modal,
+          isEditing,
+          refItem,
+        },
         actions: {
           displayAlert,
           closeModal,

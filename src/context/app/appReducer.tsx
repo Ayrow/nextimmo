@@ -7,7 +7,7 @@ import {
   STOP_EDITING_ITEM,
 } from '../actions';
 
-import { AppState } from './appContext';
+import { AppState, ModalCategories } from './appContext';
 
 type AppAction = {
   type: string;
@@ -19,31 +19,42 @@ const appReducer = (state: AppState, action: AppAction) => {
     case DISPLAY_ALERT:
       return {
         ...state,
-        showAlert: true,
-        alertType: action.payload.type,
-        alertText: action.payload.msg,
+        alert: {
+          showAlert: true,
+          alertCategory: action.payload.type,
+          alertText: action.payload.msg,
+        },
       };
     case CLEAR_ALERT:
       return {
         ...state,
-        showAlert: false,
+        alert: {
+          showAlert: false,
+          alertText: '',
+          alertTitle: '',
+        },
       };
     case DISPLAY_MODAL:
       return {
         ...state,
-        showModal: true,
-        modalTitle: action.payload.modalTitle,
-        modalMsg: action.payload.modalMsg,
-        modalType: action.payload.modalType,
-        refItem: action.payload.refItem,
+        modal: {
+          showModal: true,
+          modalTitle: action.payload.modalTitle,
+          modalMsg: action.payload.modalMsg,
+          modalCategory: action.payload.modalCategory,
+          refItem: action.payload.refItem,
+        },
       };
     case CLOSE_MODAL:
       return {
         ...state,
-        showModal: false,
-        modalMsg: '',
-        modalTitle: '',
-        refItem: '',
+        modal: {
+          showModal: false,
+          modalMsg: '',
+          modalTitle: '',
+          modalCategory: ModalCategories.Delete,
+          refItem: '',
+        },
       };
     case EDIT_ITEM:
       return {

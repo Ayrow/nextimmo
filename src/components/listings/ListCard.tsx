@@ -5,7 +5,7 @@ import { IListing } from '../../../types/listingTypes';
 
 import { useListingsContext } from '../../context/listings/listingsContext';
 import Link from 'next/link';
-import { ModalTypes, useAppContext } from '../../context/app/appContext';
+import { ModalCategories, useAppContext } from '../../context/app/appContext';
 import { useRouter } from 'next/navigation';
 
 const ListCard = ({ listing }: { listing: IListing }) => {
@@ -91,7 +91,7 @@ const ListCard = ({ listing }: { listing: IListing }) => {
             actions.displayModal({
               modalMsg: `Êtes-vous sûr(e) de vouloir supprimer l'annonce`,
               modalTitle: "Suppression d'annonce",
-              modalType: ModalTypes.Delete,
+              modalCategory: ModalCategories.Delete,
               refItem: `${ref}`,
             })
           }

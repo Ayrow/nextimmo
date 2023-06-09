@@ -12,7 +12,7 @@ import {
   signOut,
 } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { ColorTypes, useAppContext } from '../app/appContext';
+import { AlertCategories, useAppContext } from '../app/appContext';
 import { ObjectId } from 'mongoose';
 
 export type UserFromDB = {
@@ -21,6 +21,7 @@ export type UserFromDB = {
   email: string;
   saved: [ObjectId];
   role: string;
+  alreadySeen: [ObjectId];
 };
 
 type AuthContextType = {
@@ -98,14 +99,14 @@ const AuthProvider = ({ children }) => {
         setUser(data);
         addUserToSessionStorage(data);
         displayAlert({
-          type: ColorTypes.Success,
+          category: AlertCategories.Success,
           msg: 'Your account has been created: welcome!',
         });
         navigate('/');
       }
     } catch (error) {
       displayAlert({
-        type: ColorTypes.Error,
+        category: AlertCategories.Error,
         msg: 'Failed to register with email and password',
       });
     }
@@ -145,12 +146,12 @@ const AuthProvider = ({ children }) => {
         addUserToSessionStorage(data);
       }
       displayAlert({
-        type: ColorTypes.Success,
+        category: AlertCategories.Success,
         msg: 'You are signed in!',
       });
     } catch (error) {
       displayAlert({
-        type: ColorTypes.Error,
+        category: AlertCategories.Error,
         msg: 'Failed to connect with Google',
       });
     }
@@ -171,20 +172,20 @@ const AuthProvider = ({ children }) => {
           setUser(data);
           addUserToSessionStorage(data);
           displayAlert({
-            type: ColorTypes.Success,
+            category: AlertCategories.Success,
             msg: 'You are signed in!',
           });
           navigate('/');
         } else {
           displayAlert({
-            type: ColorTypes.Error,
+            category: AlertCategories.Error,
             msg: 'Failed to signin with email and password',
           });
         }
       }
     } catch (error) {
       displayAlert({
-        type: ColorTypes.Error,
+        category: AlertCategories.Error,
         msg: 'Failed to signin with email and password',
       });
     }
@@ -194,13 +195,13 @@ const AuthProvider = ({ children }) => {
     try {
       await sendPasswordResetEmail(auth, email);
       displayAlert({
-        type: ColorTypes.Success,
+        category: AlertCategories.Success,
         msg: 'Email to reset password successfully sent.',
       });
       navigate('/signin');
     } catch (err) {
       displayAlert({
-        type: ColorTypes.Error,
+        category: AlertCategories.Error,
         msg: 'Failed to to send reset password email',
       });
     }

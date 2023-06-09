@@ -10,17 +10,18 @@ const AccountButton = () => {
   const { user, signOutUser } = useAuthContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   let navigationLinks = [];
+
+  const [currentUser, setCurrentUser] = useState<UserFromDB>();
+
   const checkRole = () => {
-    if (user.role === 'user') {
+    if (currentUser.role === 'user') {
       navigationLinks = userLinks;
-    } else if (user.role === 'agent') {
+    } else if (currentUser.role === 'agent') {
       navigationLinks = agentLinks;
-    } else if (user.role === 'admin') {
+    } else if (currentUser.role === 'admin') {
       navigationLinks = adminLinks;
     }
   };
-
-  const [currentUser, setCurrentUser] = useState<UserFromDB>();
 
   useEffect(() => {
     setCurrentUser(user);

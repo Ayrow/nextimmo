@@ -2,7 +2,7 @@ import { useAppContext } from '../../context/app/appContext';
 
 const ConfirmDeletionModal = ({ deleteItem }) => {
   const { state, actions } = useAppContext();
-  const { modalType, modalMsg, modalTitle, refItem } = state;
+  const { modalCategory, modalMsg, modalTitle, refItem } = state;
 
   const colorVariants = {
     success: 'bg-green-500 hover:bg-green-600 focus:ring-green-900',
@@ -51,7 +51,7 @@ const ConfirmDeletionModal = ({ deleteItem }) => {
             <button
               type='button'
               onClick={() => deleteItem(refItem)}
-              className={`${colorVariants[modalType]} py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none`}>
+              className={`${colorVariants[modalCategory]} py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none`}>
               Oui, j'en suis sûr(e)
             </button>
           </div>
