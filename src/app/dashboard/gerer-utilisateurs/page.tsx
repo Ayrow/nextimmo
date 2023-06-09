@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import ManageUsers from '../../../components/dashboard/ManageUsers';
 import ConfirmDeletionModal from '../../../components/modals/ConfirmDeletionModal';
-import { useAppContext } from '../../../context/app/appContext';
+import {
+  ModalCategories,
+  useAppContext,
+} from '../../../context/app/appContext';
 import { UserFromDB } from '../../../context/user/authContext';
 import FiltersUsers from '../../../components/filters/FiltersUsers';
 import { useCloseOnOutsideClick } from '../../../hooks/useCloseOnOutsideClick';
@@ -13,6 +16,7 @@ import {
 } from '../../../../types/functionTypes';
 import PageBtnContainer from '../../../components/buttons/PageBtnContainer';
 import DropdownButtons from '../../../components/buttons/DropdownButtons';
+import NotificationModal from '../../../components/modals/NotificationModal';
 
 const initialUserFilter = {
   username: '',
@@ -43,8 +47,18 @@ const Utilisateurs = () => {
         },
       });
       allUsers.filter((singleUser) => singleUser._id !== user._id);
+      actions.displayModal({
+        modalTitle: 'Succès',
+        modalCategory: ModalCategories.Success,
+        modalMsg: `L'utilisateur ${user.username} a été supprimé avec succès`,
+      });
     } catch (error) {
-      // display error
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg:
+          "Erreur pour la suppression de l'utilisateur, veuillez réessayer ultérieurement.",
+      });
     }
   };
 
@@ -82,7 +96,12 @@ const Utilisateurs = () => {
       setTotalNumberUsers(totalUsersFound);
       setTotalPages(numOfPages);
     } catch (error) {
-      // display error
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg:
+          'Erreur dans la récupération des utilisateurs, veuillez réessayer ultérieurement.',
+      });
     }
   };
 
@@ -129,9 +148,19 @@ const Utilisateurs = () => {
         let userIndex = allUsers.findIndex((user) => user._id === data._id);
         allUsers[userIndex] = data;
         setAllUsers(allUsers);
+        actions.displayModal({
+          modalTitle: 'Succès',
+          modalCategory: ModalCategories.Success,
+          modalMsg: `L'utilisateur ${data.username} a été mis à jour.`,
+        });
       }
     } catch (error) {
-      //display error
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg:
+          "Erreur pour modifier l'utilisateur, veuillez réessayer ultérieurement.",
+      });
     }
     actions.stopEditingItem();
   };
@@ -162,9 +191,14 @@ const Utilisateurs = () => {
 
   return (
     <div className='p-10 bg-gray-900 w-full'>
-      {state.modal.showModal && (
-        <ConfirmDeletionModal deleteItem={deleteUser} />
-      )}
+      {state.modal.showModal &&
+        state.modal.modalCategory === ModalCategories.Delete && (
+          <ConfirmDeletionModal deleteItem={deleteUser} />
+        )}
+      {state.modal.showModal &&
+        state.modal.modalCategory !== ModalCategories.Error && (
+          <NotificationModal />
+        )}
       <h2 className='text-center text-xl font-bold'>Manage Users</h2>
       <div className='flex items-center md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
         <FiltersUsers
