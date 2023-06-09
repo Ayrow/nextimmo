@@ -48,7 +48,6 @@ const AddPhotosForm: React.FC<PropsType> = ({ values, setValues, photos }) => {
 
   useEffect(() => {
     setPhotosArray(photos);
-    console.log('photos', photos);
   }, [photos]);
 
   return (

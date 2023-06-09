@@ -4,7 +4,7 @@ import { IListing } from '../../../../types/listingTypes';
 import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
 import AddPhotosForm from '../../../components/listingsForm/AddPhotosForm';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../../context/user/authContext';
 import {
   listEquipementsExterieur,
@@ -19,6 +19,7 @@ import { useAppContext } from '../../../context/app/appContext';
 import BackButton from '../../../components/buttons/BackButton';
 
 import { HandleInputChangeType } from '../../../../types/functionTypes';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const initialState: IListing = {
   ref: '',
@@ -61,6 +62,7 @@ const initialState: IListing = {
 };
 
 const AddListing = () => {
+  const searchParams = useSearchParams();
   const { firebaseUser } = useAuthContext();
   const { state, actions } = useAppContext();
   const { getSingleListing, singleListing } = useListingsContext();
@@ -197,7 +199,8 @@ const AddListing = () => {
   };
 
   useEffect(() => {
-    if (state.isEditing) {
+    const isEditingparams = searchParams.get('editing');
+    if (state.isEditing && isEditingparams) {
       const controller = new AbortController();
       const signal = controller.signal;
       getSingleListing(state.refItem, signal);
@@ -208,6 +211,9 @@ const AddListing = () => {
       return () => {
         controller.abort();
       };
+    } else {
+      actions.stopEditingItem();
+      clearForm();
     }
     return () => {
       actions.stopEditingItem();
