@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useListingsContext } from '../../../context/listings/listingsContext';
 import ListCard from '../../../components/listings/ListCard';
-import { useAppContext } from '../../../context/app/appContext';
+import {
+  ModalCategories,
+  useAppContext,
+} from '../../../context/app/appContext';
 import ConfirmDeletionModal from '../../../components/modals/ConfirmDeletionModal';
 import { IListing } from '../../../../types/listingTypes';
 import {
@@ -20,13 +23,14 @@ import {
 import PageBtnContainer from '../../../components/buttons/PageBtnContainer';
 import { useCloseOnOutsideClick } from '../../../hooks/useCloseOnOutsideClick';
 import DropdownButtons from '../../../components/buttons/DropdownButtons';
+import NotificationModal from '../../../components/modals/NotificationModal';
 
 const ManageListings = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { deleteListing } = useListingsContext();
   const [allListings, setAllListings] = useState<IListing[]>(null);
   const [valuesQueries, setValuesQueries] = useState(queryParams);
-  const { state } = useAppContext();
+  const { state, actions } = useAppContext();
   const [totalNumberListings, setTotalNumberListings] = useState<number>(null);
   const [totalPages, setTotalPages] = useState<number>(null);
 
@@ -55,10 +59,21 @@ const ManageListings = () => {
         setTotalNumberListings(totalListingsFound);
         setTotalPages(numOfPages);
       } else {
+        actions.displayModal({
+          modalTitle: 'Erreur',
+          modalCategory: ModalCategories.Error,
+          modalMsg:
+            'Erreur dans la récupération des annonces, veuillez réessayer.',
+        });
         //display alert error fetching listings
       }
     } catch (error) {
-      console.log('error', error);
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg:
+          'Erreur dans la récupération des annonces, veuillez réessayer.',
+      });
     }
   };
 
@@ -145,9 +160,16 @@ const ManageListings = () => {
 
   return (
     <div className='p-10 bg-gray-900 w-full'>
-      {state.modal.showModal && (
-        <ConfirmDeletionModal deleteItem={deleteListing} />
-      )}
+      {state.modal.showModal &&
+        state.modal.modalCategory === ModalCategories.Delete && (
+          <ConfirmDeletionModal deleteItem={deleteListing} />
+        )}
+
+      {state.modal.showModal &&
+        state.modal.modalCategory === ModalCategories.Error && (
+          <NotificationModal />
+        )}
+
       <h2 className='text-center text-xl font-bold'>Manage Listings</h2>
 
       <div className='flex items-center flex-wrap md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
