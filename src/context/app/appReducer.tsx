@@ -21,7 +21,7 @@ const appReducer = (state: AppState, action: AppAction) => {
         ...state,
         alert: {
           showAlert: true,
-          alertCategory: action.payload.type,
+          alertCategory: action.payload.category,
           alertText: action.payload.msg,
         },
       };

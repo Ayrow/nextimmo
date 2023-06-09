@@ -56,7 +56,6 @@ const initialAppState: AppState = {
   alert: {
     showAlert: false,
     alertText: '',
-    alertTitle: '',
     alertCategory: AlertCategories.Notification,
   },
   modal: {
@@ -74,11 +73,9 @@ type AppActions = {
   displayAlert: ({
     category,
     msg,
-    title,
   }: {
     category: AlertCategories;
     msg: string;
-    title: string;
   }) => void;
 
   closeModal: () => void;

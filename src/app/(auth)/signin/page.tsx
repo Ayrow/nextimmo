@@ -24,7 +24,7 @@ const Signin = () => {
 
   const { state, actions } = useAppContext();
   const { displayAlert } = actions;
-  const { showAlert } = state;
+  const { alert } = state;
   const { signInWithEmail, connectWithGoogle } = useAuthContext();
   const [values, setValues] = useState<Data>(initialCredentials);
 
@@ -38,8 +38,8 @@ const Signin = () => {
     const { email, password } = values;
     if (!email || !password) {
       displayAlert({
-        type: AlertCategories.Error,
-        msg: 'Email or password is missing',
+        category: AlertCategories.Error,
+        msg: "L'email ou le mot de passe est manquant",
       });
     } else {
       signInWithEmail(email, password);
@@ -62,7 +62,7 @@ const Signin = () => {
           Sign in to your account
         </h2>
         <div className='w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700'>
-          {showAlert && <Alert />}
+          {alert.showAlert && <Alert />}
           <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
             <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
               <div>

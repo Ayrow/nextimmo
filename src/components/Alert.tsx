@@ -2,7 +2,7 @@ import { useAppContext } from '../context/app/appContext';
 
 const Alert = () => {
   const { state } = useAppContext();
-  const { alertText, alertCategory } = state;
+  const { alert } = state;
 
   const colorVariants = {
     success: 'bg-green-500',
@@ -13,8 +13,10 @@ const Alert = () => {
 
   return (
     <div
-      className={` rounded ${colorVariants[alertCategory]} text-white text-center p-2 m-4`}>
-      {alertText}
+      className={` rounded ${
+        colorVariants[alert.alertCategory]
+      } text-white text-center p-2 m-4`}>
+      {alert.alertText}
     </div>
   );
 };
