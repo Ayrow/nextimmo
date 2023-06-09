@@ -118,7 +118,7 @@ const Utilisateurs = () => {
   const updateUser = async () => {
     try {
       const res = await fetch('/api/user', {
-        method: 'PUT',
+        method: 'PATCH',
         body: JSON.stringify({ userToEdit }),
         headers: {
           'Content-Type': 'application/json',

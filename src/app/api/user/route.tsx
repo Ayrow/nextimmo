@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function PUT(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   await connectDB();
   const { userToEdit } = await request.json();
   const { email, username, role, _id } = userToEdit;

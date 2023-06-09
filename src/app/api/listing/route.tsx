@@ -6,9 +6,6 @@ import User from '../../../../models/userModel';
 export async function POST(request: NextRequest) {
   await connectDB();
   const { values, email } = await request.json();
-
-  console.log('values', values);
-
   if (!email) {
     throw new Error('You need an account to add listing');
   }
@@ -67,9 +64,13 @@ export async function DELETE(request: NextRequest) {
   }
 }
 
-export async function PUT(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   await connectDB();
-  const { values, email, listingId } = await request.json();
+  const { searchParams } = new URL(request.url);
+  const listingId = searchParams.get('listingId');
+  const { values, email, etat } = await request.json();
+
+  console.log('etat', etat);
 
   if (!email) {
     throw new Error('You need an account to add listing');
@@ -80,12 +81,15 @@ export async function PUT(request: NextRequest) {
   }
 
   const user = await User.findOne({ email });
-
   // values.updatedBy = user._id;
 
   if (user.role === 'user') {
     throw new Error('Only admin or agent can add listing');
   } else {
-    await Listing.findOneAndUpdate({ _id: listingId }, values);
+    const listing = await Listing.findByIdAndUpdate({ _id: listingId }, values);
+    console.log('listing', listing);
+    return new NextResponse(JSON.stringify(listing), {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }

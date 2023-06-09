@@ -4,7 +4,7 @@ import { IListing } from '../../../../types/listingTypes';
 import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
 import AddPhotosForm from '../../../components/listingsForm/AddPhotosForm';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useAuthContext } from '../../../context/user/authContext';
 import {
   listEquipementsExterieur,
@@ -22,26 +22,27 @@ import { HandleInputChangeType } from '../../../../types/functionTypes';
 
 const initialState: IListing = {
   ref: '',
+  etat: '',
   typeDeBien: 'maison',
   transaction: 'vente',
   location: {
-    loyerMensuel: undefined,
-    caution: undefined,
+    loyerMensuel: 0,
+    caution: 0,
   },
   lieu: {
     quartier: '',
     ville: '',
-    codePostal: undefined,
+    codePostal: 0,
   },
-  prix: undefined,
-  dateConstruction: undefined,
-  nbPieces: undefined,
-  nbChambres: undefined,
-  nbSDB: undefined,
-  nbEtages: undefined,
+  prix: 0,
+  dateConstruction: 0,
+  nbPieces: 0,
+  nbChambres: 0,
+  nbSDB: 0,
+  nbEtages: 0,
   statut: 'disponible',
-  surfaceInt: undefined,
-  surfaceExt: undefined,
+  surfaceInt: 0,
+  surfaceExt: 0,
   equipements: {
     interieur: [],
     exterieur: [],
@@ -49,15 +50,14 @@ const initialState: IListing = {
   typeChauffage: '',
   exposition: '',
   description: '',
-  consoEnergetique: undefined,
-  ges: undefined,
+  consoEnergetique: 0,
+  ges: 0,
   photos: [],
   honoraires: {
     aCharge: 'acheteur',
-    taux: undefined,
-    fraisAgence: undefined,
+    taux: 0,
+    fraisAgence: 0,
   },
-  etat: '',
 };
 
 const AddListing = () => {
@@ -145,13 +145,16 @@ const AddListing = () => {
     actions.stopEditingItem();
   };
 
-  const addListing = async () => {
+  const addNewListing = async () => {
     if (firebaseUser) {
+      console.log('add listing');
       const { email } = firebaseUser;
+      const { etat } = values;
+      console.log('etat', etat);
       try {
         await fetch('/api/listing', {
           method: 'POST',
-          body: JSON.stringify({ values, email }),
+          body: JSON.stringify({ values, email, etat }),
           headers: {
             'Content-Type': 'application/json',
           },
@@ -163,6 +166,7 @@ const AddListing = () => {
         // Add Modal for error
       }
     } else {
+      console.log('not an agent or admin');
       //display error as agent/admin is not connected
     }
   };
@@ -170,22 +174,24 @@ const AddListing = () => {
   const updateListing = async () => {
     if (firebaseUser) {
       const { email } = firebaseUser;
-      const { listingId } = singleListing._id;
+      const listingId = singleListing._id;
+      const { etat } = values;
       try {
-        await fetch('/api/listing', {
-          method: 'PUT',
-          body: JSON.stringify({ values, email, listingId }),
+        await fetch(`/api/listing?listingId=${listingId}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ values, email, etat }),
           headers: {
             'Content-Type': 'application/json',
           },
         });
         // Add Modal to confirm it has been added
-        clearForm();
+        //  clearForm();
       } catch (error) {
         alert(error);
         // Add Modal for error
       }
     } else {
+      console.log('not an agent or admin');
       //display error as agent/admin is not connected
     }
   };
@@ -221,13 +227,13 @@ const AddListing = () => {
 
   const saveListingAsDraft = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setValues({ ...values, etat: 'brouillon' });
+    values.etat = 'brouillon';
     handleSubmit();
   };
 
   const pulishListing = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setValues({ ...values, etat: 'publiée' });
+    values.etat = 'publiée';
     handleSubmit();
   };
 
@@ -243,9 +249,10 @@ const AddListing = () => {
       location,
       nbChambres,
       nbSDB,
+      etat,
     } = values;
-
     if (transaction === 'vente') {
+      console.log('etat', etat);
       if (
         !ref ||
         !prix ||
@@ -262,7 +269,7 @@ const AddListing = () => {
         if (state.isEditing) {
           updateListing();
         } else {
-          addListing();
+          addNewListing();
         }
       }
     } else {
@@ -283,7 +290,7 @@ const AddListing = () => {
         if (state.isEditing) {
           updateListing();
         } else {
-          addListing();
+          addNewListing();
         }
       }
     }

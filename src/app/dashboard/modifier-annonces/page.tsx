@@ -117,7 +117,7 @@ const ManageListings = () => {
   useEffect(() => {
     setValuesQueries((prevValues) => ({
       ...prevValues,
-      etat: 'toutes les annonces',
+      etat: 'tous les états',
     }));
   }, []);
 
