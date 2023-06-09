@@ -31,7 +31,7 @@ const DropdownButtons = ({
               <button
                 key={index}
                 className={
-                  name === option
+                  displayName.split(': ')[1] === option
                     ? `capitalize bg-gray-950 w-full rounded-md`
                     : `capitalize w-full`
                 }
