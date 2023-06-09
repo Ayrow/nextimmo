@@ -97,7 +97,13 @@ const AppProvider = ({ children }) => {
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
-    }, 2500);
+    }, 2000);
+  };
+
+  const clearModal = () => {
+    setTimeout(() => {
+      dispatch({ type: CLOSE_MODAL });
+    }, 2000);
   };
 
   const displayAlert = ({ type, msg }: { type: ColorTypes; msg: string }) => {
@@ -115,6 +121,9 @@ const AppProvider = ({ children }) => {
       type: DISPLAY_MODAL,
       payload: { modalTitle, modalMsg, modalType, refItem },
     });
+    if (modalType !== (ModalTypes.Delete || ModalTypes.Edit)) {
+      clearModal();
+    }
   };
 
   const closeModal = () => {
