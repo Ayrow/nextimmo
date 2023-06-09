@@ -162,7 +162,9 @@ const Utilisateurs = () => {
 
   return (
     <div className='p-10 bg-gray-900 w-full'>
-      {state.showModal && <ConfirmDeletionModal deleteItem={deleteUser} />}
+      {state.modal.showModal && (
+        <ConfirmDeletionModal deleteItem={deleteUser} />
+      )}
       <h2 className='text-center text-xl font-bold'>Manage Users</h2>
       <div className='flex items-center md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
         <FiltersUsers

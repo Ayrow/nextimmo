@@ -3,14 +3,17 @@
 import Link from 'next/link';
 import Alert from '../../../components/Alert';
 import { useAuthContext } from '../../../context/user/authContext';
-import { useAppContext } from '../../../context/app/appContext';
+import {
+  AlertCategories,
+  useAppContext,
+} from '../../../context/app/appContext';
 import { useState } from 'react';
 
 const Signin = () => {
   const { sendPasswordReset } = useAuthContext();
   const { state, actions } = useAppContext();
   const { displayAlert } = actions;
-  const { showAlert } = state;
+  const { showAlert } = state.alert;
   const [email, setEmail] = useState('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,11 +21,14 @@ const Signin = () => {
     if (email) {
       sendPasswordReset(email);
       displayAlert({
-        type: 'success',
+        category: AlertCategories.Success,
         msg: 'Reset password email has been sent',
       });
     } else {
-      displayAlert({ type: 'error', msg: 'Email is missing' });
+      displayAlert({
+        category: AlertCategories.Error,
+        msg: 'Email is missing',
+      });
     }
   };
 

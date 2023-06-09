@@ -2,7 +2,7 @@ import { useAppContext } from '../../context/app/appContext';
 
 const ConfirmDeletionModal = ({ deleteItem }) => {
   const { state, actions } = useAppContext();
-  const { modalCategory, modalMsg, modalTitle, refItem } = state;
+  const { modalCategory, modalMsg, modalTitle, refItem } = state.modal;
 
   const colorVariants = {
     success: 'bg-green-500 hover:bg-green-600 focus:ring-green-900',

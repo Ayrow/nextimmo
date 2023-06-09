@@ -134,7 +134,7 @@ const AppProvider = ({ children }) => {
   const clearModal = () => {
     setTimeout(() => {
       dispatch({ type: CLOSE_MODAL });
-    }, 2000);
+    }, 3000);
   };
 
   const displayAlert = ({

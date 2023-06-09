@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import { useAuthContext } from '../../../context/user/authContext';
-import { useAppContext } from '../../../context/app/appContext';
+import {
+  AlertCategories,
+  useAppContext,
+} from '../../../context/app/appContext';
 import Alert from '../../../components/Alert';
 import { useState } from 'react';
 
@@ -22,7 +25,7 @@ const Signin = () => {
   const { registerUserWithEmail, connectWithGoogle } = useAuthContext();
   const { state, actions } = useAppContext();
   const { displayAlert } = actions;
-  const { showAlert } = state;
+  const { showAlert } = state.alert;
   const [values, setValues] = useState<Data>(initialCredentials);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,17 +41,26 @@ const Signin = () => {
     const { email, password, confirmPassword } = values;
     e.preventDefault();
     if (!email && !password && !confirmPassword) {
-      displayAlert({ type: 'error', msg: 'Please complete all fields' });
+      displayAlert({
+        category: AlertCategories.Error,
+        msg: 'Please complete all fields',
+      });
     } else if (password !== confirmPassword) {
-      displayAlert({ type: 'error', msg: 'Passwords do not match' });
+      displayAlert({
+        category: AlertCategories.Error,
+        msg: 'Passwords do not match',
+      });
     } else if (password.length < 6) {
       displayAlert({
-        type: 'error',
+        category: AlertCategories.Error,
         msg: 'Password must be at least 6 characters.',
       });
     } else {
       registerUserWithEmail(email, password);
-      displayAlert({ type: 'success', msg: 'Successfully registered' });
+      displayAlert({
+        category: AlertCategories.Success,
+        msg: 'Successfully registered',
+      });
       clearForm();
     }
   };

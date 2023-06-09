@@ -2,7 +2,7 @@ import { useAppContext } from '../../context/app/appContext';
 
 const NotificationModal = () => {
   const { state, actions } = useAppContext();
-  const { modalCategory, modalMsg, modalTitle } = state;
+  const { modalCategory, modalMsg, modalTitle } = state.modal;
 
   const colorVariants = {
     success: 'text-green-500',
