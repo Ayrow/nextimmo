@@ -111,6 +111,14 @@ const listingSchema: Schema<IListingDocument> = new Schema(
       type: Number,
       default: 0,
     },
+    nbVues: {
+      type: Number,
+      default: 0,
+    },
+    nbContact: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

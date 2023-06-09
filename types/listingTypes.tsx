@@ -78,4 +78,6 @@ export type ListingQueryParamsType = {
 export interface IListingDocument extends Document, IListing {
   createdBy: ObjectId;
   nbAjoutFavoris: number;
+  nbVues: number;
+  nbContact: number;
 }

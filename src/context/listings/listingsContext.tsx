@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from 'react';
 import { IListingDocument } from '../../../types/listingTypes';
-import { useAppContext } from '../app/appContext';
+import { ModalCategories, useAppContext } from '../app/appContext';
 
 type ListingContextType = {
   allListings: [IListingDocument];
@@ -58,11 +58,18 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
       if (data) {
         setSingleListing(data);
       } else {
-        alert('error');
-        // display error
+        actions.displayModal({
+          modalTitle: 'Erreur',
+          modalCategory: ModalCategories.Error,
+          modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
+        });
       }
     } catch (error) {
-      alert(error);
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
+      });
     }
   };
 
