@@ -10,6 +10,17 @@ import {
   listEquipementsInterieur,
   listTypeChauffage,
 } from '../../../../../utils/listingDetails';
+import Link from 'next/link';
+import { FaEnvelope, FaHeart } from 'react-icons/fa';
+import {
+  ModalCategories,
+  useAppContext,
+} from '../../../../context/app/appContext';
+import NotificationModal from '../../../../components/modals/NotificationModal';
+import {
+  UserFromDB,
+  useAuthContext,
+} from '../../../../context/user/authContext';
 
 export async function generateStaticParams() {
   const listings = await fetch('/api/allListings').then((res) => res.json());
@@ -27,6 +38,8 @@ const SingleListing = ({
   const { ref } = params;
   const { getSingleListing, singleListing, separateThousands } =
     useListingsContext();
+  const { state, actions } = useAppContext();
+  const { user, updateCurrentUser } = useAuthContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
 
   let displayNoteDPE = '';
@@ -91,6 +104,43 @@ const SingleListing = ({
     G: 'bg-[#231a2f]',
   };
 
+  const addToFavorite = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    if (user) {
+      updateUserFavorites();
+    } else {
+      actions.displayModal({
+        modalTitle: 'Compte nécessaire',
+        modalCategory: ModalCategories.Notification,
+        modalMsg: 'Il vous faut un compte pour ajouter en favoris',
+      });
+    }
+  };
+
+  const updateUserFavorites = async () => {
+    const listingId = singleListing._id;
+    try {
+      const res = await fetch(
+        `/api/user?userId=${user._id}&update=nbAjoutFavoris`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({ listingId }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const data: UserFromDB = await res.json();
+      if (data) {
+        updateCurrentUser(data);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -107,7 +157,29 @@ const SingleListing = ({
   } else {
     return (
       <div className='bg-gray-900 px-2 lg:px-10 py-5 w-full'>
-        <BackButton />
+        {state.modal.showModal && <NotificationModal />}
+        <div className='flex justify-between mb-3'>
+          <BackButton />
+          <div className='flex gap-2'>
+            <button
+              type='button'
+              onClick={addToFavorite}
+              className='border flex items-center gap-2 rounded-xl py-3 px-3 border-red-500'>
+              <FaHeart
+                className={`${
+                  user?.saved?.includes(singleListing._id)
+                    ? 'text-red-500'
+                    : 'text-white'
+                }`}
+              />
+            </button>
+            <Link
+              href={{ pathname: '/contact', query: { ref: ref } }}
+              className='border flex items-center rounded-xl py-3 px-3'>
+              <FaEnvelope />
+            </Link>
+          </div>
+        </div>
 
         <div className='flex flex-col-reverse lg:flex-row gap-5 w-full'>
           <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-5 px-2'>
