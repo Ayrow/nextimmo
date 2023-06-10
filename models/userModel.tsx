@@ -1,11 +1,19 @@
-import { Schema, model, models, Types, Document, Model } from 'mongoose';
+import {
+  Schema,
+  model,
+  models,
+  Types,
+  Document,
+  Model,
+  ObjectId,
+} from 'mongoose';
 
 export interface IUserDocument extends Document {
   username: string;
   email: string;
   firebaseUID: string;
-  saved: [string];
-  alreadySeen: [string];
+  saved: Types.Array<ObjectId>;
+  alreadySeen: Types.Array<ObjectId>;
   role: string;
 }
 
@@ -19,7 +27,6 @@ const userSchema: Schema<IUserDocument> = new Schema(
     },
     firebaseUID: {
       type: String,
-      required: true,
       unique: true,
     },
     saved: [

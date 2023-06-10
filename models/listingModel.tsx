@@ -110,14 +110,17 @@ const listingSchema: Schema<IListingDocument> = new Schema(
     nbAjoutFavoris: {
       type: Number,
       default: 0,
+      min: 0,
     },
     nbVues: {
       type: Number,
       default: 0,
+      min: 0,
     },
     nbContact: {
       type: Number,
       default: 0,
+      min: 0,
     },
   },
   { timestamps: true }

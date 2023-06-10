@@ -18,6 +18,7 @@ import { ObjectId } from 'mongoose';
 export type UserFromDB = {
   _id: ObjectId;
   username: string;
+  firebaseUID: string;
   email: string;
   saved: [ObjectId];
   role: string;

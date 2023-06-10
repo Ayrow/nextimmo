@@ -1,6 +1,7 @@
 import connectDB from '../../../../utils/connectDB';
 import User from '../../../../models/userModel';
 import { NextRequest, NextResponse } from 'next/server';
+import Listing from '../../../../models/listingModel';
 
 export async function POST(request: NextRequest) {
   await connectDB();
@@ -54,21 +55,47 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   await connectDB();
-  const { userToEdit } = await request.json();
-  const { email, username, role, _id } = userToEdit;
+  const { searchParams } = new URL(request.url);
+  const userId = searchParams.get('userId');
 
-  const user = await User.findOne({ _id });
+  const { userToEdit, listingId } = await request.json();
 
-  if (user) {
+  const user = await User.findOne({ _id: userId });
+
+  if (!user) {
+    throw new Error('No user found');
+  }
+
+  if (userToEdit) {
+    const { email, username, role } = userToEdit;
     user.email = email;
     user.username = username;
     user.role = role;
+
     user.save();
     return new NextResponse(JSON.stringify(user), {
       headers: { 'Content-Type': 'application/json' },
     });
-  } else {
-    throw new Error('No user found');
+  }
+
+  if (listingId) {
+    const listing = await Listing.findOne({ _id: listingId });
+
+    if (user.saved.includes(listing._id)) {
+      user.saved.pull(listing._id);
+      await user.save();
+      listing.nbAjoutFavoris -= 1;
+      await listing.save();
+    } else {
+      user.saved.addToSet(listing._id);
+      await user.save();
+      listing.nbAjoutFavoris += 1;
+      await listing.save();
+    }
+
+    return new NextResponse(JSON.stringify(user), {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
 

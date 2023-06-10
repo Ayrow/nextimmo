@@ -1,13 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { IListing } from '../../../types/listingTypes';
+import { useEffect, useState } from 'react';
+import { IListing, IListingDocument } from '../../../types/listingTypes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useListingsContext } from '../../context/listings/listingsContext';
 import { useRouter } from 'next/navigation';
+import { UserFromDB, useAuthContext } from '../../context/user/authContext';
+import { ModalCategories, useAppContext } from '../../context/app/appContext';
+import NotificationModal from '../modals/NotificationModal';
 
-const GridCard = ({ listing }: { listing: IListing }) => {
+const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const {
     ref,
     nbPieces,
@@ -22,7 +25,10 @@ const GridCard = ({ listing }: { listing: IListing }) => {
 
   const router = useRouter();
   const { separateThousands } = useListingsContext();
+  const { state, actions } = useAppContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
+  const { user } = useAuthContext();
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
@@ -43,10 +49,60 @@ const GridCard = ({ listing }: { listing: IListing }) => {
     }
   };
 
+  const addToFavorite = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    // if user not connected show modal
+    if (user) {
+      updateUserFavorites();
+    } else {
+      actions.displayModal({
+        modalTitle: 'Compte nécessaire',
+        modalCategory: ModalCategories.Notification,
+        modalMsg: 'Il vous faut un compte pour ajouter en favoris',
+      });
+    }
+  };
+
+  const updateUserFavorites = async () => {
+    const listingId = listing._id;
+    try {
+      const res = await fetch(`/api/user?userId=${user._id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ listingId }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data: UserFromDB = await res.json();
+      console.log('data.saved', data.saved);
+      if (data && data.saved.includes(listing._id)) {
+        setIsFavorite(true);
+      } else if (data && !data.saved.includes(listing._id)) {
+        setIsFavorite(false);
+      } else {
+        console.log('error');
+        // display error
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  useEffect(() => {
+    if (user.saved.includes(listing._id)) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [isFavorite]);
+
   return (
     <div
       className='relative border rounded-2xl cursor-pointer'
       onClick={() => router.push(`/annonces/${slug}/${ref}`)}>
+      {state.modal.showModal && <NotificationModal />}
       <div className='relative'>
         <div className='absolute top-2 left-2 bg-blue-500 border border-sky-900 px-2 rounded-xl'>
           {statut}
@@ -93,8 +149,9 @@ const GridCard = ({ listing }: { listing: IListing }) => {
         <div className='flex flex-wrap justify-around gap-2 mt-5'>
           <button
             type='button'
+            onClick={addToFavorite}
             className='border rounded-xl py-2 px-5 border-red-500 text-red-500 bg-gray-950'>
-            Favoris
+            {isFavorite ? 'Déjà Favoris' : 'Ajouter Favoris'}
           </button>
           <Link
             href={{ pathname: '/contact', query: { ref: ref } }}

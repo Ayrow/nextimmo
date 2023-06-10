@@ -136,13 +136,14 @@ const Utilisateurs = () => {
 
   const updateUser = async () => {
     try {
-      const res = await fetch('/api/user', {
+      const res = await fetch(`/api/user?userId=${userToEdit._id}`, {
         method: 'PATCH',
         body: JSON.stringify({ userToEdit }),
         headers: {
           'Content-Type': 'application/json',
         },
       });
+
       const data: UserFromDB = await res.json();
       if (data) {
         let userIndex = allUsers.findIndex((user) => user._id === data._id);
