@@ -55,10 +55,12 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   await connectDB();
+
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get('userId');
+  const update = searchParams.get('update');
 
-  const { userToEdit, listingId } = await request.json();
+  const { newUserData, listingId } = await request.json();
 
   const user = await User.findOne({ _id: userId });
 
@@ -66,8 +68,8 @@ export async function PATCH(request: NextRequest) {
     throw new Error('No user found');
   }
 
-  if (userToEdit) {
-    const { email, username, role } = userToEdit;
+  if (newUserData) {
+    const { email, username, role } = newUserData;
     user.email = email;
     user.username = username;
     user.role = role;
@@ -78,21 +80,23 @@ export async function PATCH(request: NextRequest) {
     });
   }
 
-  if (listingId) {
+  const updateListingsArray = async ({ type }) => {
     const listing = await Listing.findOne({ _id: listingId });
-
-    if (user.saved.includes(listing._id)) {
-      user.saved.pull(listing._id);
+    if (user[type].includes(listing._id)) {
+      user[type].pull(listing._id);
       await user.save();
-      listing.nbAjoutFavoris -= 1;
+      listing[update] -= 1;
       await listing.save();
     } else {
-      user.saved.addToSet(listing._id);
+      user[type].addToSet(listing._id);
       await user.save();
-      listing.nbAjoutFavoris += 1;
+      listing[update] += 1;
       await listing.save();
     }
+  };
 
+  if (listingId && update) {
+    updateListingsArray({ type: 'saved' });
     return new NextResponse(JSON.stringify(user), {
       headers: { 'Content-Type': 'application/json' },
     });

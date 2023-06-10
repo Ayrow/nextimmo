@@ -71,7 +71,7 @@ export async function PATCH(request: NextRequest) {
   const { values, email } = await request.json();
 
   if (!email) {
-    throw new Error('Il faut un compte pour ajouter une annonce');
+    throw new Error('Il faut un compte pour modifier une annonce');
   }
 
   if (!values) {
@@ -82,7 +82,7 @@ export async function PATCH(request: NextRequest) {
   // values.updatedBy = user._id;
 
   if (user.role === 'user') {
-    throw new Error('Seuls les agents ou admin peuvent ajouter une annonce');
+    throw new Error('Seuls les agents ou admin peuvent modifier une annonce');
   } else {
     const listing = await Listing.findByIdAndUpdate({ _id: listingId }, values);
     if (listing) {

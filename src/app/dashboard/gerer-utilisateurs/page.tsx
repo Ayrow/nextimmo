@@ -32,7 +32,7 @@ const Utilisateurs = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { state, actions } = useAppContext();
   const [allUsers, setAllUsers] = useState<UserFromDB[]>(null);
-  const [userToEdit, setUserToEdit] = useState<UserFromDB>(null);
+  const [newUserData, setNewUserData] = useState<UserFromDB>(null);
   const [valuesQueries, setValuesQueries] = useState(initialUserFilter);
   const [isSortingDropdownOpen, setIsSortingDropdownOpen] = useState(false);
   const [totalPages, setTotalPages] = useState<number>(null);
@@ -74,7 +74,6 @@ const Utilisateurs = () => {
       }
     });
     const queryParams = searchParams.toString();
-
     try {
       const res = await fetch(`/api/allUsers?${queryParams}`, {
         method: 'GET',
@@ -109,7 +108,7 @@ const Utilisateurs = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setUserToEdit({ ...userToEdit, [name]: value });
+    setNewUserData({ ...newUserData, [name]: value });
   };
 
   const handleFilterChange: HandleInputChangeType = (e) => {
@@ -131,14 +130,14 @@ const Utilisateurs = () => {
 
   const editUser = (user: UserFromDB) => {
     actions.editItem(user._id);
-    setUserToEdit(user);
+    setNewUserData(user);
   };
 
   const updateUser = async () => {
     try {
-      const res = await fetch(`/api/user?userId=${userToEdit._id}`, {
+      const res = await fetch(`/api/user?userId=${newUserData._id}`, {
         method: 'PATCH',
-        body: JSON.stringify({ userToEdit }),
+        body: JSON.stringify({ newUserData }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -222,7 +221,7 @@ const Utilisateurs = () => {
       <ManageUsers
         allUsers={allUsers}
         isEditing={state.isEditing}
-        userToEdit={userToEdit}
+        newUserData={newUserData}
         handleUserChange={handleUserChange}
         stopEditingItem={actions.stopEditingItem}
         displayModal={actions.displayModal}

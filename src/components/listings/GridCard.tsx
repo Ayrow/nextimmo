@@ -68,13 +68,16 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const updateUserFavorites = async () => {
     const listingId = listing._id;
     try {
-      const res = await fetch(`/api/user?userId=${user._id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ listingId }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const res = await fetch(
+        `/api/user?userId=${user._id}&update=nbAjoutFavoris`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({ listingId }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       const data: UserFromDB = await res.json();
       if (data) {
         updateCurrentUser(data);

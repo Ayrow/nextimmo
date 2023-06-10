@@ -6,7 +6,7 @@ import { UserFromDB } from '../../context/user/authContext';
 const ManageUsers = ({
   allUsers,
   isEditing,
-  userToEdit,
+  newUserData,
   handleUserChange,
   stopEditingItem,
   displayModal,
@@ -22,7 +22,7 @@ const ManageUsers = ({
             <div
               key={user.email}
               className='w-full border rounded-2xl flex flex-col lg:grid lg:grid-cols-7 items-center gap-5 p-5'>
-              {isEditing && userToEdit?._id === _id ? (
+              {isEditing && newUserData?._id === _id ? (
                 <>
                   <div className='flex flex-nowrap gap-3 col-span-2'>
                     <label htmlFor='' className='lg:hidden'>
@@ -32,7 +32,7 @@ const ManageUsers = ({
                       type='text'
                       name='username'
                       onChange={handleUserChange}
-                      value={userToEdit.username}
+                      value={newUserData.username}
                       className='text-black pl-2 rounded-lg'
                     />
                   </div>
@@ -44,7 +44,7 @@ const ManageUsers = ({
                       type='text'
                       name='email'
                       onChange={handleUserChange}
-                      value={userToEdit.email}
+                      value={newUserData.email}
                       className='text-black pl-2 rounded-lg '
                     />
                   </div>
@@ -53,7 +53,7 @@ const ManageUsers = ({
                     <select
                       name='role'
                       onChange={handleUserChange}
-                      value={userToEdit.role}
+                      value={newUserData.role}
                       className='border text-sm rounded-lg block w-full pr-10 p-2.5'>
                       <option value='user'>Utilisateur</option>
                       <option value='agent'>Agent</option>
