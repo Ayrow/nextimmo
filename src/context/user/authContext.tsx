@@ -32,6 +32,7 @@ type AuthContextType = {
   registerUserWithEmail: (email: string, password: string) => void;
   connectWithGoogle: () => void;
   sendPasswordReset: (email: string) => void;
+  updateCurrentUser: (newUserData: UserFromDB) => void;
   signOutUser: () => void;
 };
 
@@ -208,6 +209,10 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateCurrentUser = (newUserData: UserFromDB) => {
+    setUser(newUserData);
+  };
+
   const signOutUser = () => {
     router.push('/');
     signOut(auth);
@@ -225,6 +230,7 @@ const AuthProvider = ({ children }) => {
         signOutUser,
         signInWithEmail,
         connectWithGoogle,
+        updateCurrentUser,
       }}>
       {children}
     </AuthContext.Provider>

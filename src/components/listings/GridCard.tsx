@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { IListing, IListingDocument } from '../../../types/listingTypes';
+import { useState } from 'react';
+import { IListingDocument } from '../../../types/listingTypes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useListingsContext } from '../../context/listings/listingsContext';
@@ -27,8 +27,8 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const { separateThousands } = useListingsContext();
   const { state, actions } = useAppContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
-  const { user } = useAuthContext();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { user, updateCurrentUser } = useAuthContext();
+  const [currentUser, setCurrentUser] = useState(user);
 
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
@@ -76,27 +76,13 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
         },
       });
       const data: UserFromDB = await res.json();
-      console.log('data.saved', data.saved);
-      if (data && data.saved.includes(listing._id)) {
-        setIsFavorite(true);
-      } else if (data && !data.saved.includes(listing._id)) {
-        setIsFavorite(false);
-      } else {
-        console.log('error');
-        // display error
+      if (data) {
+        updateCurrentUser(data);
       }
     } catch (error) {
       console.log('error', error);
     }
   };
-
-  useEffect(() => {
-    if (user.saved.includes(listing._id)) {
-      setIsFavorite(true);
-    } else {
-      setIsFavorite(false);
-    }
-  }, [isFavorite]);
 
   return (
     <div
@@ -151,7 +137,9 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
             type='button'
             onClick={addToFavorite}
             className='border rounded-xl py-2 px-5 border-red-500 text-red-500 bg-gray-950'>
-            {isFavorite ? 'Déjà Favoris' : 'Ajouter Favoris'}
+            {user?.saved?.includes(listing._id)
+              ? 'Déjà Favoris'
+              : 'Ajouter Favoris'}
           </button>
           <Link
             href={{ pathname: '/contact', query: { ref: ref } }}
