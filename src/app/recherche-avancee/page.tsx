@@ -11,6 +11,7 @@ const RechercheAvancee = () => {
   const [valuesQueries, setValuesQueries] = useState(queryParams);
 
   const {
+    refListing,
     transaction,
     quartier,
     ville,
@@ -72,11 +73,12 @@ const RechercheAvancee = () => {
     }
   };
   return (
-    <div className='m-10'>
+    <div className='bg-gray-900 p-10'>
       <h2 className='text-center text-xl font-bold my-10'>
         Recherche avancée pour votre futur bien
       </h2>
       <BasicSearch
+        refListing={refListing}
         handleInputChange={handleInputChange}
         transaction={transaction}
         typeDeBien={typeDeBien}
