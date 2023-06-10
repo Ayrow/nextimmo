@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { UserFromDB, useAuthContext } from '../../context/user/authContext';
 import { ModalCategories, useAppContext } from '../../context/app/appContext';
 import NotificationModal from '../modals/NotificationModal';
+import { FaHeart } from 'react-icons/fa';
 
 const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const {
@@ -142,10 +143,15 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
           <button
             type='button'
             onClick={addToFavorite}
-            className='border rounded-xl py-2 px-5 border-red-500 text-red-500 bg-gray-950'>
-            {user?.saved?.includes(listing._id)
-              ? 'Déjà Favoris'
-              : 'Ajouter Favoris'}
+            className='border flex items-center gap-2 rounded-xl py-2 px-5 border-red-500'>
+            <FaHeart
+              className={`${
+                user?.saved?.includes(listing._id)
+                  ? 'text-red-500'
+                  : 'text-gray-800'
+              }`}
+            />
+            <span className='text-red-500'>Favoris</span>
           </button>
           <Link
             href={{ pathname: '/contact', query: { ref: ref } }}
