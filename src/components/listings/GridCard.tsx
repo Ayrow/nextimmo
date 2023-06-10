@@ -54,7 +54,6 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    // if user not connected show modal
     if (user) {
       updateUserFavorites();
     } else {
@@ -148,7 +147,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
               className={`${
                 user?.saved?.includes(listing._id)
                   ? 'text-red-500'
-                  : 'text-gray-800'
+                  : 'text-white'
               }`}
             />
             <span className='text-red-500'>Favoris</span>

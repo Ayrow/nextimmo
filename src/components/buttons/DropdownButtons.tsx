@@ -1,6 +1,7 @@
 'use client';
 import { useRef, useState } from 'react';
 import { useCloseOnOutsideClick } from '../../hooks/useCloseOnOutsideClick';
+import { FaChevronCircleDown, FaChevronCircleUp } from 'react-icons/fa';
 
 const DropdownButtons = ({
   displayName,
@@ -20,9 +21,10 @@ const DropdownButtons = ({
   return (
     <div className='relative w-52' ref={ref}>
       <button
-        className='border capitalize rounded-xl px-2 py-1 flex justify-around w-full'
+        className='border capitalize rounded-xl px-2 py-1 flex items-center justify-around w-full'
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-        {displayName} {isDropdownOpen ? '⇑' : '⇓'}
+        {displayName}{' '}
+        {isDropdownOpen ? <FaChevronCircleUp /> : <FaChevronCircleDown />}
       </button>
       {isDropdownOpen && (
         <div className='absolute border rounded-md left-0 mt-2 z-50 bg-sky-950 flex flex-col items-start w-full'>
