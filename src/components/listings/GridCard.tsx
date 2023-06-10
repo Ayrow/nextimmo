@@ -13,6 +13,7 @@ import NotificationModal from '../modals/NotificationModal';
 const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const {
     ref,
+    transaction,
     nbPieces,
     prix,
     location,
@@ -28,7 +29,6 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const { state, actions } = useAppContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
   const { user, updateCurrentUser } = useAuthContext();
-  const [currentUser, setCurrentUser] = useState(user);
 
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
@@ -122,7 +122,10 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
             {typeDeBien} - {nbPieces} pièces - {surfaceInt}m2
           </p>
           <p className='text-red-500 font-bold'>
-            {prix && separateThousands(prix)} €
+            {transaction === 'vente' && prix && `${separateThousands(prix)} €`}
+            {transaction === 'location' &&
+              location.loyerMensuel &&
+              `${location.loyerMensuel} € / mois`}
           </p>
         </div>
 
