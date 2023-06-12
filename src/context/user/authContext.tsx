@@ -39,7 +39,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>(null);
 
 const AuthProvider = ({ children }) => {
-  const { actions } = useAppContext();
+  const { actions, state } = useAppContext();
   const { displayAlert } = actions;
   const userSession =
     typeof window != 'undefined'
@@ -78,6 +78,13 @@ const AuthProvider = ({ children }) => {
     setTimeout(() => {
       router.push(path);
     }, 1500);
+  };
+
+  const combineSeenListings = (userListings) => {
+    if (state.seenListings) {
+      const combinedSet = new Set([...state.seenListings, ...userListings]);
+      actions.addSeenListingsToSessionStorage(combinedSet);
+    }
   };
 
   const registerUserWithEmail = async (email: string, password: string) => {
