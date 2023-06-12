@@ -119,11 +119,12 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
           height='500'
           className='rounded-t-2xl h-72'
         />
-        {listOfAlreadySeenListings.includes(listing._id) && (
-          <div className='absolute bg-gray-500 bg-opacity-40 z-30 inset-0 flex items-center justify-center text-9xl'>
-            <FaEye />
-          </div>
-        )}
+        {listOfAlreadySeenListings.includes(listing._id) &&
+          user?.role !== ('admin' || 'agent') && (
+            <div className='absolute bg-gray-500 bg-opacity-40 z-30 inset-0 flex items-center justify-center text-9xl'>
+              <FaEye />
+            </div>
+          )}
         {photos.length > currentPhoto && (
           <button
             className='absolute px-1 top-1/2 right-2 font-bold shadow-2xl bg-gray-900 bg-opacity-50 rounded-full text-3xl'
