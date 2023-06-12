@@ -1,6 +1,6 @@
 'use client';
 
-import { IListing } from '../../../../types/listingTypes';
+import { IListing, IListingDocument } from '../../../../types/listingTypes';
 import BasicInputWithLabel from '../../../components/listingsForm/BasicInputWithLabel';
 import SectionWithTitle from '../../../components/listingsForm/SectionWithTitle';
 import AddPhotosForm from '../../../components/listingsForm/AddPhotosForm';
@@ -69,7 +69,9 @@ const AddListing = () => {
   const searchParams = useSearchParams();
   const { firebaseUser } = useAuthContext();
   const { state, actions } = useAppContext();
-  const { getSingleListing, singleListing } = useListingsContext();
+  const [singleListing, setSingleListing] =
+    useState<IListingDocument>(undefined);
+
   const [values, setValues] = useState(initialState);
 
   const handleChange: HandleInputChangeType = (e) => {
@@ -151,6 +153,35 @@ const AddListing = () => {
     actions.stopEditingItem();
   };
 
+  const getSingleListing = async (ref: string, signal: AbortSignal) => {
+    setSingleListing(null);
+    try {
+      const res = await fetch(`/api/listing?ref=${ref}`, {
+        method: 'GET',
+        signal: signal,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      if (data) {
+        setSingleListing(data);
+      } else {
+        actions.displayModal({
+          modalTitle: 'Erreur',
+          modalCategory: ModalCategories.Error,
+          modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
+        });
+      }
+    } catch (error) {
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
+      });
+    }
+  };
+
   const addNewListing = async () => {
     if (firebaseUser) {
       const { email } = firebaseUser;
@@ -193,7 +224,7 @@ const AddListing = () => {
   const updateListing = async () => {
     if (firebaseUser) {
       const { email } = firebaseUser;
-      const listingId = singleListing._id;
+      const listingId = singleListing?._id;
       const { etat } = values;
       try {
         await fetch(`/api/listing?listingId=${listingId}`, {
