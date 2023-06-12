@@ -150,17 +150,17 @@ const Footer: React.FC = () => {
         <ul className='flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white'>
           <li>
             <Link href='#' className='mr-4 hover:underline md:mr-6 '>
-              About
+              A Propos
+            </Link>
+          </li>
+          <li>
+            <Link href='/annonces' className='mr-4 hover:underline md:mr-6'>
+              Annonces
             </Link>
           </li>
           <li>
             <Link href='#' className='mr-4 hover:underline md:mr-6'>
-              Listings
-            </Link>
-          </li>
-          <li>
-            <Link href='#' className='mr-4 hover:underline md:mr-6'>
-              FAQs
+              FAQ
             </Link>
           </li>
           <li>

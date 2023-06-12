@@ -21,6 +21,18 @@ const Contact = () => {
     }));
   };
 
+  const updateNbContactListing = () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+
+  const handleSubmitEmail = () => {
+
+  }
+
   return (
     <section className=' bg-gray-900'>
       <div className='py-8 lg:py-16 px-4 mx-auto max-w-screen-md'>
