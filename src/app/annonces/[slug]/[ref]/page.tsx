@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useListingsContext } from '../../../../context/listings/listingsContext';
-import { IListing } from '../../../../../types/listingTypes';
+import { IListing, IListingDocument } from '../../../../../types/listingTypes';
 import BackButton from '../../../../components/buttons/BackButton';
 import {
   listEquipementsExterieur,
@@ -36,8 +36,9 @@ const SingleListing = ({
   params: { slug: string; ref: string };
 }) => {
   const { ref } = params;
-  const { getSingleListing, singleListing, separateThousands } =
-    useListingsContext();
+  const { separateThousands } = useListingsContext();
+  const [singleListing, setSingleListing] =
+    useState<IListingDocument>(undefined);
   const { state, actions } = useAppContext();
   const { user, updateCurrentUser } = useAuthContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
@@ -104,6 +105,36 @@ const SingleListing = ({
     G: 'bg-[#231a2f]',
   };
 
+  const getSingleListing = async (ref: string, signal: AbortSignal) => {
+    setSingleListing(null);
+    try {
+      const res = await fetch(`/api/listing?ref=${ref}`, {
+        method: 'GET',
+        signal: signal,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      if (data) {
+        setSingleListing(data);
+        addToAlreadySeen(data._id);
+      } else {
+        actions.displayModal({
+          modalTitle: 'Erreur',
+          modalCategory: ModalCategories.Error,
+          modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
+        });
+      }
+    } catch (error) {
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
+      });
+    }
+  };
+
   const addToFavorite = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -141,12 +172,33 @@ const SingleListing = ({
     }
   };
 
+  const addToAlreadySeen = async (listingId) => {
+    if (user && !user.alreadySeen.includes(listingId)) {
+      try {
+        const res = await fetch(`/api/user?userId=${user._id}&update=nbVues`, {
+          method: 'PATCH',
+          body: JSON.stringify({ listingId }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data: UserFromDB = await res.json();
+        if (data) {
+          updateCurrentUser(data);
+        }
+      } catch (error) {
+        console.log('error', error);
+      }
+    } else if (!state.seenListings.includes(listingId)) {
+      actions.addListingToAlreadySeen(listingId);
+    }
+  };
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
 
     getSingleListing(ref, signal);
-
     return () => {
       controller.abort();
     };

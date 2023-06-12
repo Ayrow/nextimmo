@@ -6,9 +6,7 @@ import { ModalCategories, useAppContext } from '../app/appContext';
 
 type ListingContextType = {
   allListings: [IListingDocument];
-  singleListing: IListingDocument;
   getAllListings: (signal: AbortSignal) => void;
-  getSingleListing: (ref: string, signal: AbortSignal) => void;
   deleteListing: (ref: string) => void;
   editListing: (ref: string) => void;
   updateListing: (ref: string) => void;
@@ -20,8 +18,6 @@ const ListingsContext = createContext<ListingContextType>(null);
 const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
   const { actions } = useAppContext();
   const [allListings, setAllListings] = useState<[IListingDocument]>(undefined);
-  const [singleListing, setSingleListing] =
-    useState<IListingDocument>(undefined);
 
   const getAllListings = async (signal: AbortSignal) => {
     try {
@@ -41,35 +37,6 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       alert(error);
       // add Modal or alert for error
-    }
-  };
-
-  const getSingleListing = async (ref: string, signal: AbortSignal) => {
-    setSingleListing(null);
-    try {
-      const res = await fetch(`/api/listing?ref=${ref}`, {
-        method: 'GET',
-        signal: signal,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await res.json();
-      if (data) {
-        setSingleListing(data);
-      } else {
-        actions.displayModal({
-          modalTitle: 'Erreur',
-          modalCategory: ModalCategories.Error,
-          modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
-        });
-      }
-    } catch (error) {
-      actions.displayModal({
-        modalTitle: 'Erreur',
-        modalCategory: ModalCategories.Error,
-        modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
-      });
     }
   };
 
@@ -119,8 +86,6 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         getAllListings,
         allListings,
-        singleListing,
-        getSingleListing,
         deleteListing,
         editListing,
         updateListing,

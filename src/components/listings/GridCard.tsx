@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { UserFromDB, useAuthContext } from '../../context/user/authContext';
 import { ModalCategories, useAppContext } from '../../context/app/appContext';
 import NotificationModal from '../modals/NotificationModal';
-import { FaHeart } from 'react-icons/fa';
+import { FaEye, FaHeart } from 'react-icons/fa';
 
 const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const {
@@ -30,6 +30,9 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const { state, actions } = useAppContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
   const { user, updateCurrentUser } = useAuthContext();
+  const [listOfAlreadySeenListings, setListOfAlreadySeenListings] = useState(
+    []
+  );
 
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
@@ -87,32 +90,11 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
     }
   };
 
-  const addToAlreadySeen = async () => {
-    const listingId = listing._id;
-    try {
-      const res = await fetch(`/api/user?userId=${user._id}&update=nbVues`, {
-        method: 'PATCH',
-        body: JSON.stringify({ listingId }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data: UserFromDB = await res.json();
-      if (data) {
-        updateCurrentUser(data);
-      }
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
   useEffect(() => {
-    if (user && !user.alreadySeen.includes(listing._id)) {
-      addToAlreadySeen();
+    if (user) {
+      setListOfAlreadySeenListings(user.alreadySeen);
     } else {
-      if (!user && !state.seenListings.includes(listing._id)) {
-        actions.addListingToAlreadySeen(listing._id);
-      }
+      setListOfAlreadySeenListings(state.seenListings);
     }
   }, []);
 
@@ -139,6 +121,11 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
           height='500'
           className='rounded-t-2xl h-72'
         />
+        {listOfAlreadySeenListings.includes(listing._id) && (
+          <div className='absolute bg-gray-500 bg-opacity-40 z-50 inset-0 flex items-center justify-center text-9xl'>
+            <FaEye />
+          </div>
+        )}
         {photos.length > currentPhoto && (
           <button
             className='absolute px-1 top-1/2 right-2 font-bold shadow-2xl bg-gray-900 bg-opacity-50 rounded-full text-3xl'
