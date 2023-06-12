@@ -173,6 +173,8 @@ const SingleListing = ({
   };
 
   const addToAlreadySeen = async (listingId) => {
+    console.log('listingId', listingId);
+    console.log('state.seenListings', state.seenListings);
     if (user && !user.alreadySeen.includes(listingId)) {
       try {
         const res = await fetch(`/api/user?userId=${user._id}&update=nbVues`, {
@@ -185,6 +187,7 @@ const SingleListing = ({
         const data: UserFromDB = await res.json();
         if (data) {
           updateCurrentUser(data);
+          actions.addSeenListingsToSessionStorage(data.alreadySeen);
         }
       } catch (error) {
         console.log('error', error);

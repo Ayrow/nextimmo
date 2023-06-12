@@ -91,9 +91,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
   };
 
   useEffect(() => {
-    if (user) {
-      setListOfAlreadySeenListings(user.alreadySeen);
-    } else {
+    if (state.seenListings) {
       setListOfAlreadySeenListings(state.seenListings);
     }
   }, []);

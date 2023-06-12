@@ -51,8 +51,14 @@ export type AppState = {
   refItem: string;
 };
 
+const listingSession =
+  typeof window != 'undefined'
+    ? window.sessionStorage.getItem('storedSeenListings')
+    : null;
+const storedSeenListings = listingSession ? JSON.parse(listingSession) : null;
+
 const initialAppState: AppState = {
-  seenListings: [],
+  seenListings: storedSeenListings,
   alert: {
     showAlert: false,
     alertText: '',
@@ -95,6 +101,8 @@ type AppActions = {
   editItem: (refItem: ObjectId | string) => void;
   stopEditingItem: () => void;
   addListingToAlreadySeen: (refItem: ObjectId | string) => void;
+  addSeenListingsToSessionStorage: (listings: any) => void;
+  removeSeenListingsFromSessionStorage: () => void;
 };
 
 const initialAppActions: AppActions = {
@@ -104,6 +112,8 @@ const initialAppActions: AppActions = {
   editItem: () => null,
   stopEditingItem: () => null,
   addListingToAlreadySeen: () => null,
+  addSeenListingsToSessionStorage: () => null,
+  removeSeenListingsFromSessionStorage: () => null,
 };
 
 const AppContext = createContext<{
@@ -119,11 +129,20 @@ const AppProvider = ({ children }) => {
   const { seenListings, alert, modal, isEditing, refItem } = state;
   const [userSeenListing, setUserSeenListing] = useState(state.seenListings);
 
+  const addSeenListingsToSessionStorage = (listings) => {
+    sessionStorage.setItem('storedSeenListings', JSON.stringify(listings));
+  };
+
+  const removeSeenListingsFromSessionStorage = () => {
+    sessionStorage.removeItem('storedSeenListings');
+  };
+
   const addListingToAlreadySeen = (ref: string) => {
     const newArray = userSeenListing;
     if (ref) {
       newArray.push(ref);
       setUserSeenListing(newArray);
+      addSeenListingsToSessionStorage(newArray);
     }
   };
 
@@ -194,6 +213,8 @@ const AppProvider = ({ children }) => {
           editItem,
           stopEditingItem,
           addListingToAlreadySeen,
+          addSeenListingsToSessionStorage,
+          removeSeenListingsFromSessionStorage,
         },
       }}>
       {children}
