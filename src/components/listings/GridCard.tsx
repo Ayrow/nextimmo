@@ -87,9 +87,34 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
     }
   };
 
-  const addToAlreadySeen = () => {};
+  const addToAlreadySeen = async () => {
+    const listingId = listing._id;
+    try {
+      const res = await fetch(`/api/user?userId=${user._id}&update=nbVues`, {
+        method: 'PATCH',
+        body: JSON.stringify({ listingId }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data: UserFromDB = await res.json();
+      if (data) {
+        updateCurrentUser(data);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (user && !user.alreadySeen.includes(listing._id)) {
+      addToAlreadySeen();
+    } else {
+      if (!user && !state.seenListings.includes(listing._id)) {
+        actions.addListingToAlreadySeen(listing._id);
+      }
+    }
+  }, []);
 
   return (
     <div

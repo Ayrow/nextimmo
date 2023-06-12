@@ -96,7 +96,18 @@ export async function PATCH(request: NextRequest) {
   };
 
   if (listingId && update) {
-    updateListingsArray({ type: 'saved' });
+    if (update === 'nbAjoutFavoris') {
+      updateListingsArray({ type: 'saved' });
+    } else if (update === 'nbVues') {
+      const listing = await Listing.findOne({ _id: listingId });
+      if (!user.alreadySeen.includes(listing._id)) {
+        user.alreadySeen.addToSet(listing._id);
+        await user.save();
+        listing[update] += 1;
+        await listing.save();
+      }
+    }
+
     return new NextResponse(JSON.stringify(user), {
       headers: { 'Content-Type': 'application/json' },
     });

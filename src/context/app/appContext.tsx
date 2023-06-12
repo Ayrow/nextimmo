@@ -94,6 +94,7 @@ type AppActions = {
 
   editItem: (refItem: ObjectId | string) => void;
   stopEditingItem: () => void;
+  addListingToAlreadySeen: (refItem: ObjectId) => void;
 };
 
 const initialAppActions: AppActions = {
@@ -102,6 +103,7 @@ const initialAppActions: AppActions = {
   displayModal: () => null,
   editItem: () => null,
   stopEditingItem: () => null,
+  addListingToAlreadySeen: () => null,
 };
 
 const AppContext = createContext<{
@@ -191,6 +193,7 @@ const AppProvider = ({ children }) => {
           displayModal,
           editItem,
           stopEditingItem,
+          addListingToAlreadySeen,
         },
       }}>
       {children}
