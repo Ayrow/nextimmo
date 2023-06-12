@@ -81,8 +81,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const combineSeenListings = async (user: UserFromDB) => {
-    console.log('user', user);
-    console.log('state.seenListings', state.seenListings);
     if (state.seenListings && user) {
       const combinedSet = new Set([...state.seenListings, ...user.alreadySeen]);
       const combinedSeenListingsArray = Array.from(combinedSet);
