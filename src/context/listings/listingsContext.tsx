@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from 'react';
 import { IListingDocument } from '../../../types/listingTypes';
-import { ModalCategories, useAppContext } from '../app/appContext';
+import { useAppContext } from '../app/appContext';
 
 type ListingContextType = {
   allListings: [IListingDocument];

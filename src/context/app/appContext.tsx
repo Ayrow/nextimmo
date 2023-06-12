@@ -44,7 +44,7 @@ type AlertType = {
 };
 
 export type AppState = {
-  seenListings: ObjectId[];
+  seenListings: string[];
   alert: AlertType;
   modal: ModalType;
   isEditing: boolean;
@@ -94,7 +94,7 @@ type AppActions = {
 
   editItem: (refItem: ObjectId | string) => void;
   stopEditingItem: () => void;
-  addListingToAlreadySeen: (refItem: ObjectId) => void;
+  addListingToAlreadySeen: (refItem: ObjectId | string) => void;
 };
 
 const initialAppActions: AppActions = {
@@ -119,7 +119,7 @@ const AppProvider = ({ children }) => {
   const { seenListings, alert, modal, isEditing, refItem } = state;
   const [userSeenListing, setUserSeenListing] = useState(state.seenListings);
 
-  const addListingToAlreadySeen = (ref: ObjectId) => {
+  const addListingToAlreadySeen = (ref: string) => {
     const newArray = userSeenListing;
     if (ref) {
       newArray.push(ref);

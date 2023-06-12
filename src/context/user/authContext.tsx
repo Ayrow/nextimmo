@@ -20,9 +20,9 @@ export type UserFromDB = {
   username: string;
   firebaseUID: string;
   email: string;
-  saved: [ObjectId];
+  saved: string[];
   role: string;
-  alreadySeen: [ObjectId];
+  alreadySeen: string[];
 };
 
 type AuthContextType = {
