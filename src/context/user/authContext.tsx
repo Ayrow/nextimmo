@@ -80,10 +80,32 @@ const AuthProvider = ({ children }) => {
     }, 1500);
   };
 
-  const combineSeenListings = (userListings) => {
-    if (state.seenListings) {
-      const combinedSet = new Set([...state.seenListings, ...userListings]);
-      actions.addSeenListingsToSessionStorage(combinedSet);
+  const combineSeenListings = async (user: UserFromDB) => {
+    console.log('user', user);
+    console.log('state.seenListings', state.seenListings);
+    if (state.seenListings && user) {
+      const combinedSet = new Set([...state.seenListings, ...user.alreadySeen]);
+      const combinedSeenListingsArray = Array.from(combinedSet);
+      actions.addSeenListingsToSessionStorage(combinedSeenListingsArray);
+      state.seenListings = combinedSeenListingsArray;
+
+      try {
+        const res = await fetch(`/api/user?userId=${user._id}&update=nbVues`, {
+          method: 'PATCH',
+          body: JSON.stringify({ combinedSeenListingsArray }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data: UserFromDB = await res.json();
+        if (data) {
+          updateCurrentUser(data);
+          addUserToSessionStorage(data);
+          actions.addSeenListingsToSessionStorage(data.alreadySeen);
+        }
+      } catch (error) {
+        console.log('error', error);
+      }
     }
   };
 
@@ -107,6 +129,8 @@ const AuthProvider = ({ children }) => {
         const data = await res.json();
         setUser(data);
         addUserToSessionStorage(data);
+        combineSeenListings(data);
+
         displayAlert({
           category: AlertCategories.Success,
           msg: 'Your account has been created: welcome!',
@@ -130,7 +154,6 @@ const AuthProvider = ({ children }) => {
       const email = user.email;
 
       const metadata = auth.currentUser.metadata;
-      console.log('metadata', metadata);
       if (metadata?.creationTime == metadata.lastSignInTime) {
         const res = await fetch('/api/user', {
           method: 'POST',
@@ -141,6 +164,8 @@ const AuthProvider = ({ children }) => {
         });
         const data = await res.json();
         setUser(data);
+        addUserToSessionStorage(data);
+        combineSeenListings(data);
         navigate('/');
       } else {
         const res = await fetch('/api/user', {
@@ -153,6 +178,7 @@ const AuthProvider = ({ children }) => {
         const data = await res.json();
         setUser(data);
         addUserToSessionStorage(data);
+        combineSeenListings(data);
       }
       displayAlert({
         category: AlertCategories.Success,
@@ -180,6 +206,7 @@ const AuthProvider = ({ children }) => {
         if (data) {
           setUser(data);
           addUserToSessionStorage(data);
+          combineSeenListings(data);
           displayAlert({
             category: AlertCategories.Success,
             msg: 'You are signed in!',
@@ -218,6 +245,7 @@ const AuthProvider = ({ children }) => {
 
   const updateCurrentUser = (newUserData: UserFromDB) => {
     setUser(newUserData);
+    addUserToSessionStorage(newUserData);
   };
 
   const signOutUser = () => {

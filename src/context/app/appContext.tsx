@@ -58,7 +58,7 @@ const listingSession =
 const storedSeenListings = listingSession ? JSON.parse(listingSession) : null;
 
 const initialAppState: AppState = {
-  seenListings: storedSeenListings,
+  seenListings: storedSeenListings || [],
   alert: {
     showAlert: false,
     alertText: '',
@@ -127,7 +127,7 @@ const AppContext = createContext<{
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialAppState);
   const { seenListings, alert, modal, isEditing, refItem } = state;
-  const [userSeenListing, setUserSeenListing] = useState(state.seenListings);
+  const [userSeenListing, setUserSeenListing] = useState(storedSeenListings);
 
   const addSeenListingsToSessionStorage = (listings) => {
     sessionStorage.setItem('storedSeenListings', JSON.stringify(listings));
@@ -137,10 +137,11 @@ const AppProvider = ({ children }) => {
     sessionStorage.removeItem('storedSeenListings');
   };
 
-  const addListingToAlreadySeen = (ref: string) => {
-    const newArray = userSeenListing;
+  const addListingToAlreadySeen = (ref: any) => {
+    const newArray = userSeenListing || [];
     if (ref) {
       newArray.push(ref);
+      state.seenListings = newArray;
       setUserSeenListing(newArray);
       addSeenListingsToSessionStorage(newArray);
     }

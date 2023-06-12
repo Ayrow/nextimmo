@@ -26,7 +26,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
   } = listing;
 
   const router = useRouter();
-  const { separateThousands } = useListingsContext();
+  const { separateThousands, updateListingsNumbers } = useListingsContext();
   const { state, actions } = useAppContext();
   const [currentPhoto, setIsCurrentPhoto] = useState(1);
   const { user, updateCurrentUser } = useAuthContext();
@@ -120,7 +120,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
           className='rounded-t-2xl h-72'
         />
         {listOfAlreadySeenListings.includes(listing._id) && (
-          <div className='absolute bg-gray-500 bg-opacity-40 z-50 inset-0 flex items-center justify-center text-9xl'>
+          <div className='absolute bg-gray-500 bg-opacity-40 z-30 inset-0 flex items-center justify-center text-9xl'>
             <FaEye />
           </div>
         )}

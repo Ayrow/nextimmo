@@ -60,7 +60,8 @@ export async function PATCH(request: NextRequest) {
   const userId = searchParams.get('userId');
   const update = searchParams.get('update');
 
-  const { newUserData, listingId } = await request.json();
+  const { newUserData, listingId, combinedSeenListingsArray } =
+    await request.json();
 
   const user = await User.findOne({ _id: userId });
 
@@ -85,33 +86,36 @@ export async function PATCH(request: NextRequest) {
     if (user[type].includes(listing._id)) {
       user[type].pull(listing._id);
       await user.save();
-      listing[update] -= 1;
-      await listing.save();
+      //  listing[update] -= 1;
+      //  await listing.save();
     } else {
       user[type].addToSet(listing._id);
       await user.save();
-      listing[update] += 1;
-      await listing.save();
+      //listing[update] += 1;
+      // await listing.save();
     }
   };
 
-  if (listingId && update) {
-    if (update === 'nbAjoutFavoris') {
-      updateListingsArray({ type: 'saved' });
-    } else if (update === 'nbVues') {
+  if (listingId && update === 'nbAjoutFavoris') {
+    updateListingsArray({ type: 'saved' });
+  } else if (update === 'nbVues') {
+    if (listingId) {
       const listing = await Listing.findOne({ _id: listingId });
       if (!user.alreadySeen.includes(listing._id)) {
         user.alreadySeen.addToSet(listing._id);
         await user.save();
-        listing[update] += 1;
-        await listing.save();
+        //   listing[update] += 1;
+        //   await listing.save();
       }
+    } else if (combinedSeenListingsArray) {
+      user.alreadySeen = combinedSeenListingsArray;
+      await user.save();
     }
-
-    return new NextResponse(JSON.stringify(user), {
-      headers: { 'Content-Type': 'application/json' },
-    });
   }
+
+  return new NextResponse(JSON.stringify(user), {
+    headers: { 'Content-Type': 'application/json' },
+  });
 }
 
 export async function DELETE(request: NextRequest) {

@@ -11,6 +11,15 @@ type ListingContextType = {
   editListing: (ref: string) => void;
   updateListing: (ref: string) => void;
   separateThousands: (number: number) => string;
+  updateListingsNumbers: ({
+    listingId,
+    toUpdate,
+    valueChange,
+  }: {
+    listingId: string;
+    toUpdate: 'contact' | 'favorites' | 'views';
+    valueChange: 'increment' | 'decrement' | 'reset';
+  }) => void;
 };
 
 const ListingsContext = createContext<ListingContextType>(null);
@@ -77,6 +86,30 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
     return separatedString;
   };
 
+  const updateListingsNumbers = async ({
+    listingId,
+    toUpdate,
+    valueChange,
+  }: {
+    listingId: string;
+    toUpdate: 'contact' | 'favorites' | 'views';
+    valueChange: 'increment' | 'decrement' | 'reset';
+  }) => {
+    try {
+      await fetch(
+        `/api/listing/${toUpdate}?listingId=${listingId}&valueChange=${valueChange}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   const editListing = () => {};
 
   const updateListing = () => {};
@@ -90,6 +123,7 @@ const ListingsProvider = ({ children }: { children: React.ReactNode }) => {
         editListing,
         updateListing,
         separateThousands,
+        updateListingsNumbers,
       }}>
       {children}
     </ListingsContext.Provider>

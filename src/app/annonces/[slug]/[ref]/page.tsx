@@ -36,7 +36,7 @@ const SingleListing = ({
   params: { slug: string; ref: string };
 }) => {
   const { ref } = params;
-  const { separateThousands } = useListingsContext();
+  const { separateThousands, updateListingsNumbers } = useListingsContext();
   const [singleListing, setSingleListing] =
     useState<IListingDocument>(undefined);
   const { state, actions } = useAppContext();
@@ -166,6 +166,17 @@ const SingleListing = ({
       const data: UserFromDB = await res.json();
       if (data) {
         updateCurrentUser(data);
+        data.alreadySeen.includes(listingId)
+          ? updateListingsNumbers({
+              listingId: listingId,
+              toUpdate: 'favorites',
+              valueChange: 'increment',
+            })
+          : updateListingsNumbers({
+              listingId: listingId,
+              toUpdate: 'favorites',
+              valueChange: 'decrement',
+            });
       }
     } catch (error) {
       console.log('error', error);
@@ -173,8 +184,6 @@ const SingleListing = ({
   };
 
   const addToAlreadySeen = async (listingId) => {
-    console.log('listingId', listingId);
-    console.log('state.seenListings', state.seenListings);
     if (user && !user.alreadySeen.includes(listingId)) {
       try {
         const res = await fetch(`/api/user?userId=${user._id}&update=nbVues`, {
@@ -188,12 +197,22 @@ const SingleListing = ({
         if (data) {
           updateCurrentUser(data);
           actions.addSeenListingsToSessionStorage(data.alreadySeen);
+          updateListingsNumbers({
+            listingId: listingId,
+            toUpdate: 'views',
+            valueChange: 'increment',
+          });
         }
       } catch (error) {
         console.log('error', error);
       }
-    } else if (!state.seenListings.includes(listingId)) {
+    } else if (!state.seenListings?.includes(listingId)) {
       actions.addListingToAlreadySeen(listingId);
+      updateListingsNumbers({
+        listingId: listingId,
+        toUpdate: 'views',
+        valueChange: 'increment',
+      });
     }
   };
 
