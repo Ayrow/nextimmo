@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
   const queryObject: QueryObjectType = {
     statut: { $in: ['disponible', 'bientôt'] },
     typeDeBien: 'maison, appartement',
-    transaction: transaction,
+    transaction: 'vente',
     etat: 'publiée',
   };
 

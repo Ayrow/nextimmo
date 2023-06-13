@@ -145,7 +145,7 @@ const ManageListings = () => {
 
     const debounceFetchListings = (): void => {
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(fetchListings, 200); // Adjust the delay as needed
+      timeoutId = setTimeout(fetchListings, 200);
     };
 
     debounceFetchListings();

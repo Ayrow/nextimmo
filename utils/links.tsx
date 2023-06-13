@@ -21,33 +21,6 @@ const userLinks: LinksTypes[] = [
   },
 ];
 
-const clientLinks: LinksTypes[] = [
-  {
-    id: 1,
-    label: 'Tableau de bord',
-    path: '/dashboard',
-    //  icon: <FaChalkboard />,
-  },
-  {
-    id: 2,
-    label: 'Favoris',
-    path: '/favoris',
-    //  icon: <FaUserEdit />,
-  },
-  {
-    id: 3,
-    label: 'Mes Annonces',
-    path: '/dashboard/mes-annonces',
-    //  icon: <FaUserEdit />,
-  },
-  {
-    id: 4,
-    label: 'Favoris',
-    path: '/favoris',
-    //  icon: <FaUserEdit />,
-  },
-];
-
 const agentLinks: LinksTypes[] = [
   {
     id: 1,
@@ -65,12 +38,6 @@ const agentLinks: LinksTypes[] = [
     id: 3,
     label: 'Gestion Annonces',
     path: '/dashboard/modifier-annonces',
-    //  icon: <FaSuitcase />,
-  },
-  {
-    id: 4,
-    label: 'Gestion clients',
-    path: 'dashboard/gestion-clients',
     //  icon: <FaSuitcase />,
   },
 ];
@@ -96,18 +63,12 @@ const adminLinks: LinksTypes[] = [
   },
   {
     id: 4,
-    label: 'Gestion clients',
-    path: 'dashboard/gestion-clients',
-    //  icon: <FaSuitcase />,
-  },
-  {
-    id: 5,
     label: 'Ajouter Annonce',
     path: 'dashboard/ajouter-annonce',
     //  icon: <FaSuitcase />,
   },
   {
-    id: 6,
+    id: 5,
     label: 'Gestion annonces',
     path: 'dashboard/modifier-annonces',
     //  icon: <FaSuitcase />,
