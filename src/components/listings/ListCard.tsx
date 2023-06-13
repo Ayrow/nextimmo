@@ -11,6 +11,7 @@ import { FaEnvelope, FaEye, FaHeart } from 'react-icons/fa';
 
 const ListCard = ({ listing }: { listing: IListingDocument }) => {
   const {
+    _id,
     ref,
     transaction,
     nbPieces,
@@ -27,7 +28,7 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
     nbContact,
   } = listing;
 
-  const { separateThousands } = useListingsContext();
+  const { separateThousands, updateListingsNumbers } = useListingsContext();
   const router = useRouter();
   const { actions } = useAppContext();
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}/${ref}`;
@@ -39,16 +40,16 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
 
   return (
     <div className='relative w-full border rounded-2xl p-5'>
-      <div className='flex justify-end gap-5'>
-        <p className='flex items-center gap-2'>
+      <div className='flex justify-end gap-5 my-2'>
+        <button className='flex items-center gap-2'>
           <FaEye /> {nbVues}
-        </p>
-        <p className='flex items-center gap-2'>
+        </button>
+        <button className='flex items-center gap-2'>
           <FaHeart /> {nbAjoutFavoris}
-        </p>
-        <p className='flex items-center gap-2'>
+        </button>
+        <button className='flex items-center gap-2'>
           <FaEnvelope /> {nbContact}
-        </p>
+        </button>
       </div>
       <div className=' flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 '>
         <div className='flex flex-wrap items-center flex-col gap-2'>
