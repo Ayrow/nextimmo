@@ -47,23 +47,19 @@ const ActionModal = () => {
             {modalMsg} <span className=' font-bold italic'>{refItem}</span> ?
           </p>
           <div className='flex justify-center items-center space-x-4'>
-            {modalCategory === ModalCategories.Delete && (
-              <>
-                <button
-                  data-modal-toggle='deleteModal'
-                  type='button'
-                  onClick={actions.closeModal}
-                  className='py-2 px-3 text-sm font-medium rounded-lg border focus:ring-4 focus:outline-none focus:ring-primary-300 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600'>
-                  {cancelText}
-                </button>
-                <button
-                  type='button'
-                  onClick={() => modalFunction(refItem)}
-                  className={`${colorVariants[modalCategory]} py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none`}>
-                  {confirmationText}
-                </button>
-              </>
-            )}
+            <button
+              data-modal-toggle='deleteModal'
+              type='button'
+              onClick={actions.closeModal}
+              className='py-2 px-3 text-sm font-medium rounded-lg border focus:ring-4 focus:outline-none focus:ring-primary-300 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600'>
+              {cancelText}
+            </button>
+            <button
+              type='button'
+              onClick={() => modalFunction(refItem)}
+              className={`${colorVariants[modalCategory]} py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none`}>
+              {confirmationText}
+            </button>
           </div>
         </div>
       </div>

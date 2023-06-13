@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useListingsContext } from '../../../context/listings/listingsContext';
 import ListCard from '../../../components/listings/ListCard';
 import {
   ModalCategories,
@@ -27,7 +26,6 @@ import { IListingDocument } from '../../../../types/listingTypes';
 
 const ManageListings = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const { deleteListing } = useListingsContext();
   const [allListings, setAllListings] = useState<IListingDocument[]>(null);
   const [valuesQueries, setValuesQueries] = useState(queryParams);
   const { state, actions } = useAppContext();
@@ -64,7 +62,6 @@ const ManageListings = () => {
           modalCategory: ModalCategories.Error,
           modalMsg:
             'Erreur dans la récupération des annonces, veuillez réessayer.',
-          modalConfirmText: 'Continuer',
         });
         //display alert error fetching listings
       }
@@ -74,7 +71,6 @@ const ManageListings = () => {
         modalCategory: ModalCategories.Error,
         modalMsg:
           'Erreur dans la récupération des annonces, veuillez réessayer.',
-        modalConfirmText: 'Continuer',
       });
     }
   };
@@ -163,9 +159,7 @@ const ManageListings = () => {
   return (
     <div className='p-10 bg-gray-900 w-full'>
       {state.modal.showModal &&
-        state.modal.modalCategory === ModalCategories.Delete && (
-          <ActionModal deleteItem={deleteListing} />
-        )}
+        state.modal.modalCategory !== ModalCategories.Error && <ActionModal />}
 
       {state.modal.showModal &&
         state.modal.modalCategory === ModalCategories.Error && (

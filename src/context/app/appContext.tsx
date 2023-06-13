@@ -36,7 +36,7 @@ type ModalType = {
   refItem?: string;
   modalCancelText?: string;
   modalConfirmText?: string;
-  modalFunction?: (ref: string) => void;
+  modalFunction?: ((ref: string) => void) | (() => void);
 };
 
 type AlertType = {
@@ -181,8 +181,6 @@ const AppProvider = ({ children }) => {
     modalMsg,
     modalCategory,
     refItem,
-    modalCancelText,
-    modalConfirmText,
     modalFunction,
   }: ModalType) => {
     dispatch({
@@ -192,8 +190,6 @@ const AppProvider = ({ children }) => {
         modalMsg,
         modalCategory,
         refItem,
-        modalCancelText,
-        modalConfirmText,
         modalFunction,
       },
     });
@@ -217,34 +213,38 @@ const AppProvider = ({ children }) => {
     dispatch({ type: STOP_EDITING_ITEM });
   };
 
-  return (
-    <AppContext.Provider
-      value={{
-        state: {
-          seenListings,
-          alert,
-          modal,
-          isEditing,
-          refItem,
-        },
-        actions: {
-          displayAlert,
-          closeModal,
-          displayModal,
-          editItem,
-          stopEditingItem,
-          addListingToAlreadySeen,
-          addSeenListingsToSessionStorage,
-          removeSeenListingsFromSessionStorage,
-        },
-      }}>
-      {children}
-    </AppContext.Provider>
-  );
+  if (AppContext) {
+    return (
+      <AppContext.Provider
+        value={{
+          state: {
+            seenListings,
+            alert,
+            modal,
+            isEditing,
+            refItem,
+          },
+          actions: {
+            displayAlert,
+            closeModal,
+            displayModal,
+            editItem,
+            stopEditingItem,
+            addListingToAlreadySeen,
+            addSeenListingsToSessionStorage,
+            removeSeenListingsFromSessionStorage,
+          },
+        }}>
+        {children}
+      </AppContext.Provider>
+    );
+  }
 };
 
 const useAppContext = () => {
-  return useContext(AppContext);
+  if (AppContext) {
+    return useContext(AppContext);
+  }
 };
 
 export { AppProvider, useAppContext };

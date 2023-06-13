@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { ModalCategories, useAppContext } from '../../context/app/appContext';
 import { useRouter } from 'next/navigation';
 import { FaEnvelope, FaEye, FaHeart } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 
 const ListCard = ({ listing }: { listing: IListingDocument }) => {
   const {
@@ -32,6 +33,11 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
     useListingsContext();
   const router = useRouter();
   const { actions } = useAppContext();
+  const [numberStats, setNumberStats] = useState({
+    nbVues: nbVues,
+    nbContact: nbContact,
+    nbAjoutFavoris: nbAjoutFavoris,
+  });
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}/${ref}`;
 
   const editListing = () => {
@@ -39,17 +45,63 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
     router.push(`/dashboard/ajouter-annonce?editing=${ref}`);
   };
 
+  const resetValues = { nbVues: 0, nbContact: 0, nbAjoutFavoris: 0 };
+
+  const resetStatsNumbers = () => {
+    updateListingsNumbers({
+      listingId: _id,
+      toUpdate: 'views',
+      valueChange: 'reset',
+    });
+    updateListingsNumbers({
+      listingId: _id,
+      toUpdate: 'contact',
+      valueChange: 'reset',
+    });
+    updateListingsNumbers({
+      listingId: _id,
+      toUpdate: 'favorites',
+      valueChange: 'reset',
+    });
+    setNumberStats(resetValues);
+    actions.closeModal();
+  };
+
+  const checkIfValueReset = () => {
+    if (
+      numberStats.nbVues === 0 &&
+      numberStats.nbContact === 0 &&
+      nbAjoutFavoris === 0
+    ) {
+      return true;
+    }
+  };
+
   return (
     <div className='relative w-full border rounded-2xl p-5'>
       <div className='flex justify-end gap-5 my-2'>
-        <button className='flex items-center gap-2'>
-          <FaEye /> {nbVues}
-        </button>
-        <button className='flex items-center gap-2'>
-          <FaHeart /> {nbAjoutFavoris}
-        </button>
-        <button className='flex items-center gap-2'>
-          <FaEnvelope /> {nbContact}
+        <p className='flex items-center gap-2'>
+          <FaEye /> {numberStats.nbVues}
+        </p>
+        <p className='flex items-center gap-2'>
+          <FaHeart /> {numberStats.nbAjoutFavoris}
+        </p>
+        <p className='flex items-center gap-2'>
+          <FaEnvelope /> {numberStats.nbContact}
+        </p>
+        <button
+          className='border px-2 rounded-md'
+          disabled={checkIfValueReset()}
+          onClick={() =>
+            actions.displayModal({
+              modalMsg:
+                'Êtes-vous sûr(e) de vouloir réinitialiser le nombre de vues, contacts et favoris pour cette annonce',
+              modalTitle: 'Réinitialiser les statistiques',
+              modalCategory: ModalCategories.Edit,
+              modalFunction: resetStatsNumbers,
+            })
+          }>
+          Réinitialiser
         </button>
       </div>
       <div className=' flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 '>

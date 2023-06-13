@@ -195,7 +195,8 @@ const Utilisateurs = () => {
         state.modal.modalCategory === ModalCategories.Delete && <ActionModal />}
 
       {state.modal.showModal &&
-        state.modal.modalCategory !== ModalCategories.Error && (
+        state.modal.modalCategory !== ModalCategories.Error &&
+        state.modal.modalCategory !== ModalCategories.Delete && (
           <NotificationModal />
         )}
       <h2 className='text-center text-xl font-bold'>Manage Users</h2>
