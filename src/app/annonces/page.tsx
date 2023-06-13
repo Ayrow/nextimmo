@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import FiltersListingPage from '../../components/filters/FiltersListingPage';
 import {
-  IListing,
   IListingDocument,
   ListingQueryParamsType,
 } from '../../../types/listingTypes';

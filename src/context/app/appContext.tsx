@@ -30,10 +30,13 @@ export enum AlertCategories {
 
 type ModalType = {
   showModal?: boolean;
-  modalMsg?: string;
-  modalTitle?: string;
-  modalCategory?: ModalCategories;
+  modalMsg: string;
+  modalTitle: string;
+  modalCategory: ModalCategories;
   refItem?: string;
+  modalCancelText?: string;
+  modalConfirmText?: string;
+  modalFunction?: (ref: string) => void;
 };
 
 type AlertType = {
@@ -70,6 +73,7 @@ const initialAppState: AppState = {
     modalTitle: '',
     refItem: '',
     modalCategory: ModalCategories.Delete,
+    modalFunction: () => null,
   },
   isEditing: false,
   refItem: '',
@@ -91,11 +95,13 @@ type AppActions = {
     modalCategory,
     modalTitle,
     refItem,
+    modalFunction,
   }: {
     modalMsg: string;
     modalCategory: ModalCategories;
     modalTitle: string;
     refItem?: string;
+    modalFunction?: (ref: string) => void;
   }) => void;
 
   editItem: (refItem: ObjectId | string) => void;
@@ -175,12 +181,26 @@ const AppProvider = ({ children }) => {
     modalMsg,
     modalCategory,
     refItem,
+    modalCancelText,
+    modalConfirmText,
+    modalFunction,
   }: ModalType) => {
     dispatch({
       type: DISPLAY_MODAL,
-      payload: { modalTitle, modalMsg, modalCategory, refItem },
+      payload: {
+        modalTitle,
+        modalMsg,
+        modalCategory,
+        refItem,
+        modalCancelText,
+        modalConfirmText,
+        modalFunction,
+      },
     });
-    if (modalCategory !== (ModalCategories.Delete || ModalCategories.Edit)) {
+    if (
+      modalCategory !== ModalCategories.Delete &&
+      modalCategory !== ModalCategories.Edit
+    ) {
       clearModal();
     }
   };

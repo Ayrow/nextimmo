@@ -12,6 +12,7 @@ const ManageUsers = ({
   displayModal,
   editUser,
   updateUser,
+  deleteUser,
 }) => {
   return (
     <div className='flex flex-col gap-5 mt-10'>
@@ -106,6 +107,7 @@ const ManageUsers = ({
                           modalTitle: "Suppression d'utilisateur",
                           modalCategory: ModalCategories.Delete,
                           refItem: `${username}`,
+                          modalFunction: deleteUser,
                         })
                       }
                       className='border rounded-xl py-2 px-5 border-red-500 shadow-red-500 shadow-md'>

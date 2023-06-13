@@ -43,6 +43,7 @@ const appReducer = (state: AppState, action: AppAction) => {
           modalMsg: action.payload.modalMsg,
           modalCategory: action.payload.modalCategory,
           refItem: action.payload.refItem,
+          modalFunction: action.payload.modalFunction,
         },
       };
     case CLOSE_MODAL:
@@ -54,6 +55,7 @@ const appReducer = (state: AppState, action: AppAction) => {
           modalTitle: '',
           modalCategory: ModalCategories.Delete,
           refItem: '',
+          modalFunction: () => null,
         },
       };
     case EDIT_ITEM:

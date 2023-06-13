@@ -64,6 +64,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
         modalTitle: 'Compte nécessaire',
         modalCategory: ModalCategories.Notification,
         modalMsg: 'Il vous faut un compte pour ajouter en favoris',
+        modalConfirmText: 'Continuer',
       });
     }
   };

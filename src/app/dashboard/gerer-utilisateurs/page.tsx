@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import ManageUsers from '../../../components/dashboard/ManageUsers';
-import ConfirmDeletionModal from '../../../components/modals/ConfirmDeletionModal';
+import ActionModal from '../../../components/modals/ActionModal';
 import {
   ModalCategories,
   useAppContext,
@@ -192,9 +192,8 @@ const Utilisateurs = () => {
   return (
     <div className='p-10 bg-gray-900 w-full'>
       {state.modal.showModal &&
-        state.modal.modalCategory === ModalCategories.Delete && (
-          <ConfirmDeletionModal deleteItem={deleteUser} />
-        )}
+        state.modal.modalCategory === ModalCategories.Delete && <ActionModal />}
+
       {state.modal.showModal &&
         state.modal.modalCategory !== ModalCategories.Error && (
           <NotificationModal />
@@ -227,6 +226,7 @@ const Utilisateurs = () => {
         displayModal={actions.displayModal}
         editUser={editUser}
         updateUser={updateUser}
+        deleteUser={deleteUser}
       />
 
       {totalPages > 0 && (

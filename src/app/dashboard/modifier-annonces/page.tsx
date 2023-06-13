@@ -7,8 +7,7 @@ import {
   ModalCategories,
   useAppContext,
 } from '../../../context/app/appContext';
-import ConfirmDeletionModal from '../../../components/modals/ConfirmDeletionModal';
-import { IListing } from '../../../../types/listingTypes';
+import ActionModal from '../../../components/modals/ActionModal';
 import {
   etatsAnnonceOptions,
   queryParams,
@@ -24,11 +23,12 @@ import PageBtnContainer from '../../../components/buttons/PageBtnContainer';
 import { useCloseOnOutsideClick } from '../../../hooks/useCloseOnOutsideClick';
 import DropdownButtons from '../../../components/buttons/DropdownButtons';
 import NotificationModal from '../../../components/modals/NotificationModal';
+import { IListingDocument } from '../../../../types/listingTypes';
 
 const ManageListings = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { deleteListing } = useListingsContext();
-  const [allListings, setAllListings] = useState<IListing[]>(null);
+  const [allListings, setAllListings] = useState<IListingDocument[]>(null);
   const [valuesQueries, setValuesQueries] = useState(queryParams);
   const { state, actions } = useAppContext();
   const [totalNumberListings, setTotalNumberListings] = useState<number>(null);
@@ -64,6 +64,7 @@ const ManageListings = () => {
           modalCategory: ModalCategories.Error,
           modalMsg:
             'Erreur dans la récupération des annonces, veuillez réessayer.',
+          modalConfirmText: 'Continuer',
         });
         //display alert error fetching listings
       }
@@ -73,6 +74,7 @@ const ManageListings = () => {
         modalCategory: ModalCategories.Error,
         modalMsg:
           'Erreur dans la récupération des annonces, veuillez réessayer.',
+        modalConfirmText: 'Continuer',
       });
     }
   };
@@ -162,7 +164,7 @@ const ManageListings = () => {
     <div className='p-10 bg-gray-900 w-full'>
       {state.modal.showModal &&
         state.modal.modalCategory === ModalCategories.Delete && (
-          <ConfirmDeletionModal deleteItem={deleteListing} />
+          <ActionModal deleteItem={deleteListing} />
         )}
 
       {state.modal.showModal &&

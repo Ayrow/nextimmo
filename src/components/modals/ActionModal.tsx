@@ -1,9 +1,10 @@
 import { FaTrash } from 'react-icons/fa';
-import { useAppContext } from '../../context/app/appContext';
+import { ModalCategories, useAppContext } from '../../context/app/appContext';
 
-const ConfirmDeletionModal = ({ deleteItem }) => {
+const ActionModal = () => {
   const { state, actions } = useAppContext();
-  const { modalCategory, modalMsg, modalTitle, refItem } = state.modal;
+  const { modalCategory, modalMsg, modalTitle, refItem, modalFunction } =
+    state.modal;
 
   const colorVariants = {
     success: 'bg-green-500 hover:bg-green-600 focus:ring-green-900',
@@ -11,6 +12,9 @@ const ConfirmDeletionModal = ({ deleteItem }) => {
     edit: 'bg-orange-500 hover:bg-orange-600 focus:ring-orange-900',
     notification: 'bg-blue-500 hover:bg-blue-600 focus:ring-blue-900',
   };
+
+  let cancelText = 'Annuler';
+  let confirmationText = 'Confirmer';
 
   return (
     <div
@@ -43,19 +47,23 @@ const ConfirmDeletionModal = ({ deleteItem }) => {
             {modalMsg} <span className=' font-bold italic'>{refItem}</span> ?
           </p>
           <div className='flex justify-center items-center space-x-4'>
-            <button
-              data-modal-toggle='deleteModal'
-              type='button'
-              onClick={actions.closeModal}
-              className='py-2 px-3 text-sm font-medium rounded-lg border focus:ring-4 focus:outline-none focus:ring-primary-300 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600'>
-              Non, annuler
-            </button>
-            <button
-              type='button'
-              onClick={() => deleteItem(refItem)}
-              className={`${colorVariants[modalCategory]} py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none`}>
-              Oui, j'en suis sûr(e)
-            </button>
+            {modalCategory === ModalCategories.Delete && (
+              <>
+                <button
+                  data-modal-toggle='deleteModal'
+                  type='button'
+                  onClick={actions.closeModal}
+                  className='py-2 px-3 text-sm font-medium rounded-lg border focus:ring-4 focus:outline-none focus:ring-primary-300 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600'>
+                  {cancelText}
+                </button>
+                <button
+                  type='button'
+                  onClick={() => modalFunction(refItem)}
+                  className={`${colorVariants[modalCategory]} py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none`}>
+                  {confirmationText}
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -63,4 +71,4 @@ const ConfirmDeletionModal = ({ deleteItem }) => {
   );
 };
 
-export default ConfirmDeletionModal;
+export default ActionModal;

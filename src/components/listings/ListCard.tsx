@@ -28,7 +28,8 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
     nbContact,
   } = listing;
 
-  const { separateThousands, updateListingsNumbers } = useListingsContext();
+  const { separateThousands, updateListingsNumbers, deleteListing } =
+    useListingsContext();
   const router = useRouter();
   const { actions } = useAppContext();
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}/${ref}`;
@@ -110,6 +111,7 @@ const ListCard = ({ listing }: { listing: IListingDocument }) => {
                 modalTitle: "Suppression d'annonce",
                 modalCategory: ModalCategories.Delete,
                 refItem: `${ref}`,
+                modalFunction: deleteListing,
               })
             }
             className='border rounded-xl py-2 px-5 border-red-500 shadow-red-500 shadow-md'>

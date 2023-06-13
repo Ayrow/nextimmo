@@ -124,6 +124,7 @@ const SingleListing = ({
           modalTitle: 'Erreur',
           modalCategory: ModalCategories.Error,
           modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
+          modalConfirmText: 'Continuer',
         });
       }
     } catch (error) {
@@ -131,6 +132,7 @@ const SingleListing = ({
         modalTitle: 'Erreur',
         modalCategory: ModalCategories.Error,
         modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
+        modalConfirmText: 'Continuer',
       });
     }
   };
@@ -146,6 +148,7 @@ const SingleListing = ({
         modalTitle: 'Compte nécessaire',
         modalCategory: ModalCategories.Notification,
         modalMsg: 'Il vous faut un compte pour ajouter en favoris',
+        modalConfirmText: 'Continuer',
       });
     }
   };
