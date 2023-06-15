@@ -124,7 +124,6 @@ const SingleListing = ({
           modalTitle: 'Erreur',
           modalCategory: ModalCategories.Error,
           modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
-          modalConfirmText: 'Continuer',
         });
       }
     } catch (error) {
@@ -132,7 +131,6 @@ const SingleListing = ({
         modalTitle: 'Erreur',
         modalCategory: ModalCategories.Error,
         modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement.`,
-        modalConfirmText: 'Continuer',
       });
     }
   };
@@ -148,7 +146,6 @@ const SingleListing = ({
         modalTitle: 'Compte nécessaire',
         modalCategory: ModalCategories.Notification,
         modalMsg: 'Il vous faut un compte pour ajouter en favoris',
-        modalConfirmText: 'Continuer',
       });
     }
   };
@@ -219,6 +216,11 @@ const SingleListing = ({
     }
   };
 
+  const coutTauxHonoraires =
+    singleListing?.prix * (singleListing?.honoraires?.taux / 100);
+
+  const prixSansHonoraires = singleListing?.prix - coutTauxHonoraires;
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -264,14 +266,16 @@ const SingleListing = ({
               <h2 className='text-2xl capitalize'>
                 {singleListing?.typeDeBien} à{' '}
                 {singleListing?.transaction == 'vente' ? 'vendre' : 'louer'}{' '}
-                {singleListing?.nbPieces}{' '}
-                {singleListing?.nbPieces > 1 ? 'pièces' : 'pièce'} •{' '}
-                {singleListing?.surfaceInt} m2
+                {singleListing?.nbPieces > 0 && singleListing?.nbPieces}{' '}
+                {singleListing?.nbPieces > 0 &&
+                  (singleListing?.nbPieces > 1 ? 'pièces' : 'pièce')}{' '}
+                {singleListing?.surfaceInt > 0 &&
+                  ` • ${singleListing?.surfaceInt} m2`}
               </h2>
               <div className='flex flex-col gap-2'>
                 <p>
-                  {singleListing?.lieu?.quartier}
-                  {', '}
+                  {singleListing?.lieu?.quartier &&
+                    `${singleListing?.lieu?.quartier}, `}
                   {singleListing?.lieu?.ville} (
                   {singleListing?.lieu?.codePostal})
                 </p>
@@ -297,8 +301,11 @@ const SingleListing = ({
 
               {singleListing?.transaction === 'vente' ? (
                 <p className='text-xs text-gray-200 italic'>
-                  (340000 euros Hors Honoraires) - Honoraires :{' '}
-                  {singleListing?.honoraires?.taux} % TTC à la charge{' '}
+                  ({separateThousands(prixSansHonoraires)} euros Hors
+                  Honoraires) - Honoraires : {singleListing?.honoraires?.taux} %
+                  - {separateThousands(coutTauxHonoraires)}
+                  {' € '}
+                  TTC à la charge{' '}
                   {singleListing?.honoraires?.aCharge === 'acheteur'
                     ? "de l'acquéreur"
                     : 'du vendeur'}
@@ -346,73 +353,97 @@ const SingleListing = ({
           <div className='flex flex-col gap-5 border-b pb-5'>
             <h3 className='font-bold'>L'essentiel</h3>
             <div className='flex flex-wrap gap-10'>
-              <p>{singleListing?.nbPieces} pièce(s)</p>
-              <p>Surface: {singleListing?.surfaceInt} m²</p>
+              {singleListing?.nbPieces > 0 && (
+                <p>{singleListing?.nbPieces} pièce(s)</p>
+              )}
+
+              {singleListing?.surfaceInt > 0 && (
+                <p>Surface: {singleListing?.surfaceInt} m²</p>
+              )}
 
               {singleListing?.nbChambres > 0 && (
                 <p>{singleListing?.nbChambres} chambre(s)</p>
               )}
 
-              <p>{singleListing?.nbSDB} salle(s) de bain/eau</p>
+              {singleListing?.nbSDB > 0 && (
+                <p>{singleListing?.nbSDB} salle(s) de bain/eau</p>
+              )}
               {singleListing?.surfaceExt > 0 && (
                 <p>Terrain {singleListing?.surfaceExt} m²</p>
               )}
             </div>
           </div>
           <div className='flex flex-col gap-5'>
-            <div className='flex flex-col gap-5 border-b pb-5'>
-              <h3 className='font-bold'>Interieur</h3>
-              <div className='flex flex-wrap gap-10'>
-                {listEquipementsInterieur.map((element) => {
-                  if (
-                    singleListing?.equipements?.interieur.includes(element.name)
-                  ) {
-                    return (
-                      <p key={element.id} className='capitalize'>
-                        {element.label}
-                      </p>
-                    );
-                  }
-                })}
+            {singleListing?.equipements?.interieur.length > 0 && (
+              <div className='flex flex-col gap-5 border-b pb-5'>
+                <h3 className='font-bold'>Interieur</h3>
+                <div className='flex flex-wrap gap-10'>
+                  {listEquipementsInterieur.map((element) => {
+                    if (
+                      singleListing?.equipements?.interieur.includes(
+                        element.name
+                      )
+                    ) {
+                      return (
+                        <p key={element.id} className='capitalize'>
+                          {element.label}
+                        </p>
+                      );
+                    }
+                  })}
+                </div>
               </div>
-            </div>
-            <div className='flex flex-col gap-5 border-b pb-5'>
-              <h3 className='font-bold'>Exterieur</h3>
-              <div className='flex flex-wrap gap-10'>
-                {listEquipementsExterieur.map((element) => {
-                  if (
-                    singleListing?.equipements?.exterieur.includes(element.name)
-                  ) {
-                    return (
-                      <p key={element.id} className='capitalize'>
-                        {element.label}
-                      </p>
-                    );
-                  }
-                })}
+            )}
+
+            {singleListing?.equipements?.exterieur.length > 0 && (
+              <div className='flex flex-col gap-5 border-b pb-5'>
+                <h3 className='font-bold'>Exterieur</h3>
+                <div className='flex flex-wrap gap-10'>
+                  {listEquipementsExterieur.map((element) => {
+                    if (
+                      singleListing?.equipements?.exterieur.includes(
+                        element.name
+                      )
+                    ) {
+                      return (
+                        <p key={element.id} className='capitalize'>
+                          {element.label}
+                        </p>
+                      );
+                    }
+                  })}
+                </div>
               </div>
-            </div>
-            <div className='flex flex-col gap-5 border-b pb-5'>
-              <h3 className='font-bold'>Autre</h3>
-              <div className='flex flex-wrap gap-10'>
-                {singleListing?.dateConstruction && (
-                  <p>Date de construction: {singleListing?.dateConstruction}</p>
-                )}
-                {singleListing?.nbEtages > 1 && (
-                  <p>Composé de {singleListing?.nbEtages} étages</p>
-                )}
-                {singleListing?.typeChauffage && (
-                  <p>
-                    Chauffage:{' '}
-                    {listTypeChauffage.map((element) => {
-                      if (element.name === singleListing?.typeChauffage) {
-                        return element.label;
-                      }
-                    })}
-                  </p>
-                )}
+            )}
+
+            {(singleListing?.dateConstruction > 0 ||
+              singleListing?.nbEtages > 0 ||
+              singleListing?.typeChauffage) && (
+              <div className='flex flex-col gap-5 border-b pb-5'>
+                <h3 className='font-bold'>Autre</h3>
+                <div className='flex flex-wrap gap-10'>
+                  {singleListing?.dateConstruction > 0 && (
+                    <p>
+                      Date de construction: {singleListing?.dateConstruction}
+                    </p>
+                  )}
+                  {singleListing?.nbEtages > 0 && (
+                    <p>Composé de {singleListing?.nbEtages} étages</p>
+                  )}
+                  {singleListing?.typeChauffage && (
+                    <p>
+                      Chauffage:{' '}
+                      {listTypeChauffage.map((element) => {
+                        if (element.name === singleListing?.typeChauffage) {
+                          return element.label;
+                        }
+                      })}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
+
             <div className='flex flex-col gap-5 border-b pb-5'>
               <h3 className='font-bold'>Description</h3>
               <p>{singleListing?.description}</p>
@@ -422,6 +453,7 @@ const SingleListing = ({
                 sont disponibles sur le site Géorisques : www.georisques.gouv.fr
               </p>
             </div>
+
             <div className='flex flex-col gap-5'>
               <h3 className='font-bold'>Bilan énergétique</h3>
               <div>
@@ -441,15 +473,16 @@ const SingleListing = ({
                         }>
                         {gradeRange.letter}
                       </div>
-                      {gradeRange.letter === displayNoteDPE && (
-                        <div className='flex flex-col items-center'>
-                          <p className='text-blue-500'>⬆︎</p>
-                          <p className='font-bold'>
-                            {singleListing?.consoEnergetique}
-                          </p>
-                          <p>kWh/m2.an</p>
-                        </div>
-                      )}
+                      {gradeRange.letter === displayNoteDPE &&
+                        singleListing?.consoEnergetique > 0 && (
+                          <div className='flex flex-col items-center'>
+                            <p className='text-blue-500'>⬆︎</p>
+                            <p className='font-bold'>
+                              {singleListing?.consoEnergetique}
+                            </p>
+                            <p>kWh/m2.an</p>
+                          </div>
+                        )}
                     </div>
                   ))}
                 </div>
@@ -472,13 +505,14 @@ const SingleListing = ({
                         }>
                         {gradeRange.letter}
                       </div>
-                      {gradeRange.letter === displayNoteGES && (
-                        <div className='flex flex-col items-center'>
-                          <p className='text-blue-500'>⬆︎</p>
-                          <p className='font-bold'>{singleListing?.ges}</p>
-                          <p>kgeqCO2/m².an</p>
-                        </div>
-                      )}
+                      {gradeRange.letter === displayNoteGES &&
+                        singleListing?.ges > 0 && (
+                          <div className='flex flex-col items-center'>
+                            <p className='text-blue-500'>⬆︎</p>
+                            <p className='font-bold'>{singleListing?.ges}</p>
+                            <p>kgeqCO2/m².an</p>
+                          </div>
+                        )}
                     </div>
                   ))}
                 </div>
