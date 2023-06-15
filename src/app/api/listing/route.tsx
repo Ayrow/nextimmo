@@ -7,11 +7,11 @@ export async function POST(request: NextRequest) {
   await connectDB();
   const { values, email } = await request.json();
   if (!email) {
-    throw new Error('You need an account to add listing');
+    throw new Error('Un compte est nécessaire pour ajouter une annonce');
   }
 
   if (!values) {
-    throw new Error('Please fill in all the mandatory fields');
+    throw new Error('Veuillez remplir les champs obligatoires');
   }
 
   const user = await User.findOne({ email });
@@ -19,9 +19,16 @@ export async function POST(request: NextRequest) {
   values.createdBy = user._id;
 
   if (user.role === 'user') {
-    throw new Error('Only admin or agent can add listing');
+    throw new Error('Seuls les admins et agents peuvent ajouter une annonce');
+  }
+
+  const listing = await Listing.create(values);
+  if (listing) {
+    return new NextResponse(JSON.stringify(listing), {
+      headers: { 'Content-Type': 'application/json' },
+    });
   } else {
-    await Listing.create(values);
+    throw new Error("L'annonce existe déjà");
   }
 }
 

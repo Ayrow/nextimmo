@@ -5,14 +5,29 @@ import { ModalCategories, useAppContext } from '../context/app/appContext';
 import { IListingDocument } from '../../types/listingTypes';
 import GridCard from './listings/GridCard';
 
-const FilteredFewListings = ({ sort, limit }) => {
+const FilteredFewListings = ({
+  sort,
+  limit,
+}: {
+  sort: string;
+  limit: number;
+}) => {
   const [allListings, setAllListings] = useState<IListingDocument[]>(null);
-  const { actions, state } = useAppContext();
+  const { actions } = useAppContext();
 
   const getAllListings = async (): Promise<void> => {
+    const typeDeBien = [
+      'maison',
+      'appartement',
+      'terrain',
+      'immeuble',
+      'parking',
+      'garage',
+      'bureau',
+    ];
     try {
       const res = await fetch(
-        `/api/allListings?sort=${sort}&page=1&limit=${limit}`,
+        `/api/allListings?typeDeBien=${typeDeBien}&sort=${sort}&page=1&limit=${limit}`,
         {
           method: 'GET',
           headers: {

@@ -15,7 +15,7 @@ const Contact = () => {
   const [contactData, setContactData] = useState(dataUser);
   const { updateListingsNumbers } = useListingsContext();
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setContactData((prevValues) => ({
       ...prevValues,
@@ -23,7 +23,7 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmitEmail = (e) => {
+  const handleSubmitEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       // Sending email

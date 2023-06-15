@@ -74,13 +74,17 @@ export async function GET(request: NextRequest) {
 
   const queryObject: QueryObjectType = {
     statut: { $in: ['disponible', 'bientôt'] },
-    typeDeBien: 'maison, appartement',
+    // typeDeBien: { $in: ['maison', 'appartement'] },
     transaction: 'vente',
     etat: 'publiée',
   };
 
   if (statut) {
     queryObject.statut = statut;
+  }
+
+  if (transaction) {
+    queryObject.transaction = transaction;
   }
 
   if (etat && etat !== 'tous les états') {
@@ -192,9 +196,9 @@ export async function GET(request: NextRequest) {
   let result = Listing.find(queryObject).lean();
 
   if (sort === 'plus récente') {
-    result = result.sort({ createdAt: 1 });
-  } else if (sort === 'plus ancienne') {
     result = result.sort({ createdAt: -1 });
+  } else if (sort === 'plus ancienne') {
+    result = result.sort({ createdAt: 1 });
   } else if (sort === 'prix croissant') {
     result = result.sort({ prix: 1 });
   } else if (sort === 'prix décroissant') {
