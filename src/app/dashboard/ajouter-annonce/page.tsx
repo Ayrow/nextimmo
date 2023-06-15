@@ -13,7 +13,7 @@ import {
   listTypeDeBien,
   listTypeChauffage,
 } from '../../../../utils/listingDetails';
-import { useListingsContext } from '../../../context/listings/listingsContext';
+
 import {
   ModalCategories,
   useAppContext,
@@ -318,9 +318,12 @@ const AddListing = () => {
       location,
       nbChambres,
       nbSDB,
-      etat,
+      surfaceExt,
     } = values;
-    if (transaction === 'vente') {
+    if (
+      transaction === 'vente' &&
+      typeDeBien === ('maison' || 'appartement' || 'immbeuble')
+    ) {
       if (
         !ref ||
         !prix ||
@@ -340,7 +343,10 @@ const AddListing = () => {
           addNewListing();
         }
       }
-    } else {
+    } else if (
+      transaction === 'location' &&
+      typeDeBien === ('maison' || 'appartement' || 'immbeuble')
+    ) {
       if (
         !ref ||
         !location.loyerMensuel ||
@@ -353,6 +359,16 @@ const AddListing = () => {
         !nbChambres ||
         !nbSDB
       ) {
+        alert('missing fields location');
+      } else {
+        if (state.isEditing) {
+          updateListing();
+        } else {
+          addNewListing();
+        }
+      }
+    } else {
+      if (!ref || !typeDeBien || !lieu.ville || !lieu.codePostal) {
         alert('missing fields location');
       } else {
         if (state.isEditing) {
@@ -531,68 +547,71 @@ const AddListing = () => {
           </div>
 
           <SectionWithTitle title='Details'>
-            <div className='sm:col-span-2'>
-              <BasicInputWithLabel
-                label='Date de construction'
-                placeholder=''
-                isRequired={false}
-                name='dateConstruction'
-                type='number'
-                handleChange={handleChange}
-                value={
-                  values.dateConstruction === undefined
-                    ? ''
-                    : values.dateConstruction
-                }
-              />
-            </div>
-            <div className='sm:col-span-2'>
-              <BasicInputWithLabel
-                label='Nombre de Pièces'
-                placeholder=''
-                isRequired={true}
-                name='nbPieces'
-                type='number'
-                handleChange={handleChange}
-                value={values.nbPieces}
-              />
-            </div>
-
-            <div className='sm:col-span-2'>
-              <BasicInputWithLabel
-                label='Nombre de Chambres'
-                placeholder=''
-                isRequired={true}
-                name='nbChambres'
-                type='number'
-                handleChange={handleChange}
-                value={values.nbChambres}
-              />
-            </div>
-
-            <div className='sm:col-span-2'>
-              <BasicInputWithLabel
-                label="Nombre de salle de bain / salle d'eau"
-                placeholder=''
-                isRequired={true}
-                name='nbSDB'
-                type='number'
-                handleChange={handleChange}
-                value={values.nbSDB}
-              />
-            </div>
-
-            <div className='sm:col-span-2'>
-              <BasicInputWithLabel
-                label="Nombre d'étages"
-                placeholder=''
-                isRequired={true}
-                name='nbEtages'
-                type='number'
-                handleChange={handleChange}
-                value={values.nbEtages}
-              />
-            </div>
+            {values.typeDeBien ===
+              ('maison' || 'appartement' || 'immeuble') && (
+              <>
+                {' '}
+                <div className='sm:col-span-2'>
+                  <BasicInputWithLabel
+                    label='Date de construction'
+                    placeholder=''
+                    isRequired={false}
+                    name='dateConstruction'
+                    type='number'
+                    handleChange={handleChange}
+                    value={
+                      values.dateConstruction === undefined
+                        ? ''
+                        : values.dateConstruction
+                    }
+                  />
+                </div>
+                <div className='sm:col-span-2'>
+                  <BasicInputWithLabel
+                    label='Nombre de Pièces'
+                    placeholder=''
+                    isRequired={true}
+                    name='nbPieces'
+                    type='number'
+                    handleChange={handleChange}
+                    value={values.nbPieces}
+                  />
+                </div>
+                <div className='sm:col-span-2'>
+                  <BasicInputWithLabel
+                    label='Nombre de Chambres'
+                    placeholder=''
+                    isRequired={true}
+                    name='nbChambres'
+                    type='number'
+                    handleChange={handleChange}
+                    value={values.nbChambres}
+                  />
+                </div>
+                <div className='sm:col-span-2'>
+                  <BasicInputWithLabel
+                    label="Nombre de salle de bain / salle d'eau"
+                    placeholder=''
+                    isRequired={true}
+                    name='nbSDB'
+                    type='number'
+                    handleChange={handleChange}
+                    value={values.nbSDB}
+                  />
+                </div>
+                <div className='sm:col-span-2'>
+                  <BasicInputWithLabel
+                    label="Nombre d'étages"
+                    placeholder=''
+                    isRequired={true}
+                    name='nbEtages'
+                    type='number'
+                    handleChange={handleChange}
+                    value={values.nbEtages}
+                  />
+                </div>
+              </>
+            )}
 
             <div className='sm:col-span-2'>
               <label className='block mb-2 text-sm font-medium text-white'>
@@ -608,81 +627,86 @@ const AddListing = () => {
             </div>
           </SectionWithTitle>
 
-          <SectionWithTitle title='Equipements Intérieurs'>
-            {listEquipementsInterieur.map((equip) => {
-              const { id, label, name } = equip;
-              return (
-                <div key={id} className='flex'>
-                  <input
-                    type='checkbox'
-                    onChange={handleChange}
-                    name={`interieur.${name}`}
-                    value={name}
-                    className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
-                  />
-                  <label className='ml-2 text-sm font-medium text-gray-300'>
-                    {label}
-                  </label>
-                </div>
-              );
-            })}
-
-            <div className='mt-5 sm:col-span-2'>
-              <BasicInputWithLabel
-                label='Surface intérieure'
-                placeholder=''
-                isRequired={true}
-                name='surfaceInt'
-                type='number'
-                handleChange={handleChange}
-                value={values.surfaceInt === undefined ? '' : values.surfaceInt}
-              />
-            </div>
-
-            <div className='sm:col-span-2'>
-              <label className='block mb-2 text-sm font-medium text-white'>
-                Type de chauffage
-              </label>
-              <select
-                onChange={handleChange}
-                name='typeChauffage'
-                value={
-                  values.typeChauffage
-                    ? values.typeChauffage
-                    : 'Sélectionnez le type de chauffage'
-                }
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option disabled>Sélectionnez le type de chauffage</option>
-                {listTypeChauffage.map((item) => {
-                  const { id, label, name } = item;
-                  return (
-                    <option key={id} value={name}>
+          {values.typeDeBien === ('maison' || 'appartement' || 'immeuble') && (
+            <SectionWithTitle title='Equipements Intérieurs'>
+              {listEquipementsInterieur.map((equip) => {
+                const { id, label, name } = equip;
+                return (
+                  <div key={id} className='flex'>
+                    <input
+                      type='checkbox'
+                      onChange={handleChange}
+                      name={`interieur.${name}`}
+                      value={name}
+                      className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
+                    />
+                    <label className='ml-2 text-sm font-medium text-gray-300'>
                       {label}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          </SectionWithTitle>
+                    </label>
+                  </div>
+                );
+              })}
+
+              <div className='mt-5 sm:col-span-2'>
+                <BasicInputWithLabel
+                  label='Surface intérieure'
+                  placeholder=''
+                  isRequired={true}
+                  name='surfaceInt'
+                  type='number'
+                  handleChange={handleChange}
+                  value={
+                    values.surfaceInt === undefined ? '' : values.surfaceInt
+                  }
+                />
+              </div>
+
+              <div className='sm:col-span-2'>
+                <label className='block mb-2 text-sm font-medium text-white'>
+                  Type de chauffage
+                </label>
+                <select
+                  onChange={handleChange}
+                  name='typeChauffage'
+                  value={
+                    values.typeChauffage
+                      ? values.typeChauffage
+                      : 'Sélectionnez le type de chauffage'
+                  }
+                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                  <option disabled>Sélectionnez le type de chauffage</option>
+                  {listTypeChauffage.map((item) => {
+                    const { id, label, name } = item;
+                    return (
+                      <option key={id} value={name}>
+                        {label}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </SectionWithTitle>
+          )}
 
           <SectionWithTitle title='Equipements Extérieurs'>
-            {listEquipementsExterieur.map((equip) => {
-              const { id, name, label } = equip;
-              return (
-                <div key={id} className='flex'>
-                  <input
-                    type='checkbox'
-                    onChange={handleChange}
-                    name={`exterieur.${name}`}
-                    value={name}
-                    className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
-                  />
-                  <label className='ml-2 text-sm font-medium text-gray-300'>
-                    {label}
-                  </label>
-                </div>
-              );
-            })}
+            {values.typeDeBien === ('maison' || 'appartement' || 'immeuble') &&
+              listEquipementsExterieur.map((equip) => {
+                const { id, name, label } = equip;
+                return (
+                  <div key={id} className='flex'>
+                    <input
+                      type='checkbox'
+                      onChange={handleChange}
+                      name={`exterieur.${name}`}
+                      value={name}
+                      className='w-4 h-4 text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600'
+                    />
+                    <label className='ml-2 text-sm font-medium text-gray-300'>
+                      {label}
+                    </label>
+                  </div>
+                );
+              })}
 
             <div className='sm:col-span-2'>
               <BasicInputWithLabel
@@ -696,64 +720,68 @@ const AddListing = () => {
               />
             </div>
 
-            <div className='sm:col-span-2'>
-              <label className='block mb-2 text-sm font-medium text-white'>
-                Exposition
-              </label>
-              <select
-                onChange={handleChange}
-                name='exposition'
-                value={
-                  values.exposition
-                    ? values.exposition
-                    : "Sélectionnez l'exposition"
-                }
-                className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
-                <option disabled>Sélectionnez l'exposition</option>
-                {listExpositionsBien.map((exposition) => {
-                  const { id, name, label } = exposition;
-                  return (
-                    <option key={id} value={name}>
-                      {label}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          </SectionWithTitle>
-
-          <SectionWithTitle title='Bilan Énergétique'>
-            <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
+            {values.typeDeBien ===
+              ('maison' || 'appartement' || 'immeuble') && (
               <div className='sm:col-span-2'>
-                <BasicInputWithLabel
-                  label='Consommation Enérgétique (en kWh/m2.an)'
-                  placeholder='500'
-                  isRequired={false}
-                  name='consoEnergetique'
-                  type='number'
-                  handleChange={handleChange}
+                <label className='block mb-2 text-sm font-medium text-white'>
+                  Exposition
+                </label>
+                <select
+                  onChange={handleChange}
+                  name='exposition'
                   value={
-                    values.consoEnergetique === undefined
-                      ? ''
-                      : values.consoEnergetique
+                    values.exposition
+                      ? values.exposition
+                      : "Sélectionnez l'exposition"
                   }
-                />
+                  className='border text-sm rounded-lg block w-full p-2.5 bg-gray-900 border-gray-900 placeholder-gray-400 text-white focus:ring-gray-500 focus:border-gray-500'>
+                  <option disabled>Sélectionnez l'exposition</option>
+                  {listExpositionsBien.map((exposition) => {
+                    const { id, name, label } = exposition;
+                    return (
+                      <option key={id} value={name}>
+                        {label}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
-
-              <div className='sm:col-span-2'>
-                <BasicInputWithLabel
-                  label='Emission de gaz (en kgeqCO2/m².an)'
-                  placeholder='50'
-                  isRequired={false}
-                  name='ges'
-                  type='number'
-                  handleChange={handleChange}
-                  value={values.ges === undefined ? '' : values.ges}
-                />
-              </div>
-            </div>
+            )}
           </SectionWithTitle>
 
+          {values.typeDeBien === ('maison' || 'appartement' || 'immeuble') && (
+            <SectionWithTitle title='Bilan Énergétique'>
+              <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
+                <div className='sm:col-span-2'>
+                  <BasicInputWithLabel
+                    label='Consommation Enérgétique (en kWh/m2.an)'
+                    placeholder='500'
+                    isRequired={false}
+                    name='consoEnergetique'
+                    type='number'
+                    handleChange={handleChange}
+                    value={
+                      values.consoEnergetique === undefined
+                        ? ''
+                        : values.consoEnergetique
+                    }
+                  />
+                </div>
+
+                <div className='sm:col-span-2'>
+                  <BasicInputWithLabel
+                    label='Emission de gaz (en kgeqCO2/m².an)'
+                    placeholder='50'
+                    isRequired={false}
+                    name='ges'
+                    type='number'
+                    handleChange={handleChange}
+                    value={values.ges === undefined ? '' : values.ges}
+                  />
+                </div>
+              </div>
+            </SectionWithTitle>
+          )}
           <SectionWithTitle title='Photos'>
             <AddPhotosForm
               values={values}
