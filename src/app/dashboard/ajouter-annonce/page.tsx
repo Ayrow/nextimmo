@@ -689,7 +689,8 @@ const AddListing = () => {
           )}
 
           <SectionWithTitle title='Equipements Extérieurs'>
-            {values.typeDeBien === ('maison' || 'appartement' || 'immeuble') &&
+            {values.typeDeBien ===
+              ('maison' || 'appartement' || 'immeuble' || 'bureau') &&
               listEquipementsExterieur.map((equip) => {
                 const { id, name, label } = equip;
                 return (
@@ -721,7 +722,7 @@ const AddListing = () => {
             </div>
 
             {values.typeDeBien ===
-              ('maison' || 'appartement' || 'immeuble') && (
+              ('maison' || 'appartement' || 'immeuble' || 'bureau') && (
               <div className='sm:col-span-2'>
                 <label className='block mb-2 text-sm font-medium text-white'>
                   Exposition
@@ -749,7 +750,8 @@ const AddListing = () => {
             )}
           </SectionWithTitle>
 
-          {values.typeDeBien === ('maison' || 'appartement' || 'immeuble') && (
+          {values.typeDeBien ===
+            ('maison' || 'appartement' || 'immeuble' || 'bureau') && (
             <SectionWithTitle title='Bilan Énergétique'>
               <div className='grid gap-4 sm:grid-cols-2 sm:gap-6'>
                 <div className='sm:col-span-2'>
