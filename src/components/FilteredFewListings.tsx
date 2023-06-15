@@ -11,12 +11,15 @@ const FilteredFewListings = ({ sort, limit }) => {
 
   const getAllListings = async (): Promise<void> => {
     try {
-      const res = await fetch(`/api/allListings?sort=${sort}t&limit=${limit}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const res = await fetch(
+        `/api/allListings?sort=${sort}&page=1&limit=${limit}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       const { allListings } = await res.json();
       if (allListings) {
         setAllListings(allListings);

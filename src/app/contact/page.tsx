@@ -2,6 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import { useListingsContext } from '../../context/listings/listingsContext';
 
 const Contact = () => {
   const params = Object.fromEntries(useSearchParams());
@@ -12,6 +13,7 @@ const Contact = () => {
     message: '',
   };
   const [contactData, setContactData] = useState(dataUser);
+  const { updateListingsNumbers } = useListingsContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,17 +23,21 @@ const Contact = () => {
     }));
   };
 
-  const updateNbContactListing = () => {
+  const handleSubmitEmail = (e) => {
+    e.preventDefault();
     try {
-      
+      // Sending email
+      if (contactData.ref) {
+        updateListingsNumbers({
+          listingId: contactData.ref,
+          toUpdate: 'contact',
+          valueChange: 'increment',
+        });
+      }
     } catch (error) {
-      
+      console.log('error', error);
     }
-  }
-
-  const handleSubmitEmail = () => {
-
-  }
+  };
 
   return (
     <section className=' bg-gray-900'>
@@ -43,7 +49,7 @@ const Contact = () => {
           Vous avez une question? Vous souhaitez plus de renseignements? Vous
           souhaitez vendre votre maison? Dites nous tout.
         </p>
-        <form action='#' className='space-y-8'>
+        <form onSubmit={handleSubmitEmail} className='space-y-8'>
           <div>
             <label className='block mb-2 text-sm font-medium text-gray-300'>
               Référence annonce

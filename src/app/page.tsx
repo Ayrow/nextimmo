@@ -17,7 +17,7 @@ const Home: React.FC = () => {
         <h2 className='mb-4 text-4xl font-bold text-white'>
           Dernières annonces
         </h2>
-        <FilteredFewListings sort='plus récente' limit={3} />
+        <FilteredFewListings sort='plus récente' limit={12} />
       </section>
     </main>
   );
