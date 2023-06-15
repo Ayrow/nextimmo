@@ -218,7 +218,6 @@ const AddListing = () => {
       console.log('not an agent or admin');
       //display error as agent/admin is not connected
     }
-    console.log('values', values);
   };
 
   const updateListing = async () => {
@@ -322,7 +321,6 @@ const AddListing = () => {
       etat,
     } = values;
     if (transaction === 'vente') {
-      console.log('etat', etat);
       if (
         !ref ||
         !prix ||

@@ -131,6 +131,15 @@ const ManageListings = () => {
     setValuesQueries((prevValues) => ({
       ...prevValues,
       etat: 'tous les états',
+      typeDeBien: [
+        'maison',
+        'appartement',
+        'terrain',
+        'immeuble',
+        'parking',
+        'garage',
+        'bureau',
+      ],
     }));
   }, []);
 

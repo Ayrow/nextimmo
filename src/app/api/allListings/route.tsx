@@ -17,7 +17,7 @@ type PiecesFilter = number | { $and: [{ $gte: number }, { $lte: number }] };
 
 type QueryObjectType = {
   ref?: RegexFilter;
-  transaction: string;
+  transaction?: string;
   statut: string | { $in: string[] };
   lieu?: {
     quartier?: any;
@@ -74,14 +74,9 @@ export async function GET(request: NextRequest) {
 
   const queryObject: QueryObjectType = {
     statut: { $in: ['disponible', 'bientôt'] },
-    // typeDeBien: { $in: ['maison', 'appartement'] },
-    transaction: 'vente',
+    // transaction: 'vente',
     etat: 'publiée',
   };
-
-  if (statut) {
-    queryObject.statut = statut;
-  }
 
   if (transaction) {
     queryObject.transaction = transaction;
@@ -121,12 +116,16 @@ export async function GET(request: NextRequest) {
     }
   };
 
+  if (statut) {
+    checkArrayIncludeElement(statut, 'statut');
+  }
+
   if (typeDeBien) {
-    checkArrayIncludeElement(typeDeBien, `typeDeBien`);
+    checkArrayIncludeElement(typeDeBien, 'typeDeBien');
   } else {
     checkArrayIncludeElement(
       'maison, appartement, terrain, immeuble, parking, garage, bureau',
-      `typeDeBien`
+      'typeDeBien'
     );
   }
 
@@ -206,15 +205,21 @@ export async function GET(request: NextRequest) {
   }
 
   const page = parseInt(searchParams.get('page')) || 1;
-  const limit = parseInt(searchParams.get('limit')) || 12;
+  const limit = parseInt(searchParams.get('limit'));
   const skip = (page - 1) * limit;
 
-  const allListings = (await result
-    .skip(skip)
-    .limit(limit)
-    .exec()) as IListingDocument[];
-  const totalListingsFound = await Listing.countDocuments(queryObject);
-  const numOfPages = Math.ceil(totalListingsFound / limit);
+  let allListings: IListingDocument[];
+  let totalListingsFound: number;
+  let numOfPages: number;
+
+  if (limit) {
+    allListings = await result.skip(skip).limit(limit).exec();
+    totalListingsFound = await Listing.countDocuments(queryObject);
+    numOfPages = Math.ceil(totalListingsFound / limit);
+  } else {
+    allListings = await result;
+    totalListingsFound = await Listing.countDocuments(queryObject);
+  }
 
   if (allListings) {
     return new NextResponse(
