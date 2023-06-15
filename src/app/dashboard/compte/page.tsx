@@ -40,7 +40,7 @@ const Page = () => {
   };
 
   return (
-    <div className='relative'>
+    <div className='relative bg-sky-950'>
       <div className='p-7'>
         <div className='mt-10 sm:mt-0'>
           <div className='md:grid md:grid-cols-3 md:gap-6'>
@@ -56,12 +56,12 @@ const Page = () => {
             <div className='mt-5 md:col-span-2 md:mt-0'>
               <form>
                 <div className='overflow-hidden shadow rounded-md'>
-                  <div className='bg-white px-4 py-5 sm:p-6'>
+                  <div className='bg-gray-900 px-4 py-5 sm:p-6'>
                     <div className='grid grid-cols-6 gap-6'>
                       <div className='col-span-6 sm:col-span-4'>
                         <label
                           htmlFor='username'
-                          className='block text-sm font-medium text-gray-700'>
+                          className='block text-sm font-medium text-gray-100'>
                           Nom d'utilisateur
                         </label>
                         <div className='mt-1 flex rounded-md shadow-sm '>
@@ -80,7 +80,7 @@ const Page = () => {
                       <div className='col-span-6 sm:col-span-4'>
                         <label
                           htmlFor='email-address'
-                          className='block text-sm font-medium text-gray-700'>
+                          className='block text-sm font-medium text-gray-100'>
                           Adresse email
                         </label>
                         <input
@@ -97,7 +97,7 @@ const Page = () => {
                       <div className='col-span-6 sm:col-span-4'>
                         <label
                           htmlFor='password'
-                          className='block text-sm font-medium text-gray-700'>
+                          className='block text-sm font-medium text-gray-100'>
                           Nouveau mot de passe
                         </label>
                         <div className='flex relative '>
@@ -125,7 +125,7 @@ const Page = () => {
                       <div className='col-span-6 sm:col-span-4'>
                         <label
                           htmlFor='delete-account'
-                          className='block text-sm font-medium text-gray-700'>
+                          className='block text-sm font-medium text-gray-100'>
                           Supprimer mon compte et mes données
                         </label>
                         <button
@@ -136,7 +136,7 @@ const Page = () => {
                       </div>
                     </div>
                   </div>
-                  <div className='bg-gray-50 px-4 py-3 text-right sm:px-6 flex justify-end gap-2'>
+                  <div className='bg-gray-800 px-4 py-3 text-right sm:px-6 flex justify-end gap-2'>
                     <button
                       type='submit'
                       className='inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'>
