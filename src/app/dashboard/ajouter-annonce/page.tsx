@@ -142,6 +142,10 @@ const AddListing = () => {
           [typeOfEquipement]: newArray,
         },
       };
+    } else if (
+      name === 'typeDeBien' && ['bureau', 'parking', 'terrain', 'garage']
+    ) {
+      data = { ...initialState, [name]: value };
     } else {
       data = { ...data, [name]: value };
     }

@@ -136,9 +136,17 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
 
       <div className='p-5'>
         <div className='flex flex-wrap justify-between'>
-          <p className='capitalize'>
-            {typeDeBien} - {nbPieces} pièces - {surfaceInt}m2
-          </p>
+          <div className='flex flex-col flex-wrap'>
+            <p className='capitalize'>
+              {typeDeBien}
+              {nbPieces !== 0 && ` - ${nbPieces} pièces`}
+            </p>
+            <p>
+              {['maison', 'appartement', 'immeuble', 'bureau'].includes(
+                typeDeBien
+              ) && `${surfaceInt} m2`}
+            </p>
+          </div>
           <p className='text-red-500 font-bold'>
             {transaction === 'vente' && prix && `${separateThousands(prix)} €`}
             {transaction === 'location' &&
@@ -148,7 +156,8 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
         </div>
 
         <p className='mt-5'>
-          {lieu.quartier}, {lieu.codePostal} {lieu.ville}
+          {lieu.quartier && `${lieu.quartier}, `}
+          {lieu.codePostal} {lieu.ville}
         </p>
 
         <p>ref: {ref}</p>
