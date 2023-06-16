@@ -1,6 +1,6 @@
 'use client';
 
-import { FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaPen, FaTrash } from 'react-icons/fa';
 import { ModalCategories, useAppContext } from '../../context/app/appContext';
 import { useState } from 'react';
 import { useAuthContext } from '../../context/user/authContext';
@@ -34,7 +34,12 @@ const PasswordVerificationAccountModal = ({
       className='bg-gray-500 bg-opacity-80 fixed z-50 inset-0'>
       <div className='relative p-4 max-w-md md:h-auto top-1/3 left-16 sm:left-1/4 sm:right-1/2 sm:top-1/4 lg:top-1/4 lg:left-1/3'>
         <div className='relative p-4 text-center rounded-lg shadow-xl shadow-black bg-gray-800 sm:p-5'>
-          <FaTrash className='text-center text-3xl flex justify-center my-5' />
+          {modalCategory === ModalCategories.Delete ? (
+            <FaTrash className='text-center text-3xl flex justify-center my-5 text-red-500' />
+          ) : (
+            <FaPen className='text-center text-3xl flex justify-center my-5 text-orange-500' />
+          )}
+
           <div className='mb-5 text-xl'>{modalTitle}</div>
           <button
             type='button'
