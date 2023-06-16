@@ -30,7 +30,7 @@ type AuthContextType = {
   firebaseUser: User;
   signInWithEmail: (email: string, password: string) => void;
   registerUserWithEmail: (email: string, password: string) => void;
-  connectWithGoogle: () => void;
+  // connectWithGoogle: () => void;
   sendPasswordReset: (email: string) => void;
   updateCurrentUser: (newUserData: UserFromDB) => void;
   signOutUser: () => void;
@@ -143,10 +143,20 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  {
+    /* 
+
   const connectWithGoogle = async () => {
     try {
       const googleProvider = new GoogleAuthProvider();
-      await signInWithPopup(auth, googleProvider);
+      googleProvider.addScope('https://www.googleapis.com/auth/userinfo.email');
+      googleProvider.addScope(
+        'https://www.googleapis.com/auth/userinfo.profile'
+      );
+      const result = await signInWithPopup(auth, googleProvider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      console.log('credential', credential);
+
       const user = auth.currentUser;
       const username = user.displayName;
       const email = user.email;
@@ -183,12 +193,16 @@ const AuthProvider = ({ children }) => {
         msg: 'You are signed in!',
       });
     } catch (error) {
+      console.log('error', error);
       displayAlert({
         category: AlertCategories.Error,
         msg: 'Failed to connect with Google',
       });
     }
   };
+
+  */
+  }
 
   const signInWithEmail = async (email: string, password: string) => {
     try {
@@ -262,7 +276,6 @@ const AuthProvider = ({ children }) => {
         sendPasswordReset,
         signOutUser,
         signInWithEmail,
-        connectWithGoogle,
         updateCurrentUser,
       }}>
       {children}

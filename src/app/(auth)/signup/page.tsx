@@ -22,7 +22,7 @@ const initialCredentials = {
 };
 
 const Signin = () => {
-  const { registerUserWithEmail, connectWithGoogle } = useAuthContext();
+  const { registerUserWithEmail } = useAuthContext();
   const { state, actions } = useAppContext();
   const { displayAlert } = actions;
   const { showAlert } = state.alert;
@@ -131,7 +131,7 @@ const Signin = () => {
                 </Link>
               </p>
             </form>
-
+            {/* 
             <div className='px-6 sm:px-0 max-w-sm'>
               <button
                 type='button'
@@ -155,6 +155,8 @@ const Signin = () => {
                 </div>
               </button>
             </div>
+
+            */}
           </div>
         </div>
       </div>

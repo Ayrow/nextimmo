@@ -25,7 +25,7 @@ const Signin = () => {
   const { state, actions } = useAppContext();
   const { displayAlert } = actions;
   const { alert } = state;
-  const { signInWithEmail, connectWithGoogle } = useAuthContext();
+  const { signInWithEmail } = useAuthContext();
   const [values, setValues] = useState<Data>(initialCredentials);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,7 +129,7 @@ const Signin = () => {
                 </Link>
               </p>
             </form>
-
+            {/* 
             <div className='px-6 sm:px-0 max-w-sm'>
               <button
                 type='button'
@@ -153,6 +153,8 @@ const Signin = () => {
                 </div>
               </button>
             </div>
+
+            */}
           </div>
         </div>
       </div>
