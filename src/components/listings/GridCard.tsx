@@ -33,6 +33,7 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
   const [listOfAlreadySeenListings, setListOfAlreadySeenListings] = useState(
     []
   );
+  const [listFavoritesListings, setListFavoritesListings] = useState([]);
 
   const slug = `annonce-${listing.transaction}-${typeDeBien}-${listing.lieu.ville}`;
 
@@ -72,9 +73,9 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
     const listingId = listing._id;
     try {
       const res = await fetch(
-        `/api/user?userId=${user._id}&update=nbAjoutFavoris`,
+        `/api/user/savedListings?userId=${user._id}&listingId=${listingId}`,
         {
-          method: 'PATCH',
+          method: 'POST',
           body: JSON.stringify({ listingId }),
           headers: {
             'Content-Type': 'application/json',
@@ -82,8 +83,19 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
         }
       );
       const data: UserFromDB = await res.json();
-      if (data) {
-        updateCurrentUser(data);
+      updateCurrentUser(data);
+      if (data?.saved.includes(listingId)) {
+        updateListingsNumbers({
+          listingId: listingId,
+          valueChange: 'increment',
+          toUpdate: 'favorites',
+        });
+      } else {
+        updateListingsNumbers({
+          listingId: listingId,
+          valueChange: 'decrement',
+          toUpdate: 'favorites',
+        });
       }
     } catch (error) {
       console.log('error', error);
@@ -94,6 +106,10 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
     if (state.seenListings) {
       setListOfAlreadySeenListings(state.seenListings);
     }
+  }, []);
+
+  useEffect(() => {
+    console.log('user.saved', user.saved);
   }, []);
 
   return (

@@ -43,8 +43,7 @@ const SavedListings = () => {
               <Link
                 className='text-xl border rounded-lg px-2 py-1'
                 href={'/annonces'}>
-                {' '}
-                Voir les annonces{' '}
+                Voir les annonces
               </Link>
             </div>
           </div>

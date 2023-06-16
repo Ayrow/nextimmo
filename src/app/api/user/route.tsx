@@ -75,37 +75,18 @@ export async function PATCH(request: NextRequest) {
     user.username = username;
     user.role = role;
 
-    user.save();
+    await user.save();
     return new NextResponse(JSON.stringify(user), {
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  const updateListingsArray = async ({ type }) => {
-    const listing = await Listing.findOne({ _id: listingId });
-    if (user[type].includes(listing._id)) {
-      user[type].pull(listing._id);
-      await user.save();
-      //  listing[update] -= 1;
-      //  await listing.save();
-    } else {
-      user[type].addToSet(listing._id);
-      await user.save();
-      //listing[update] += 1;
-      // await listing.save();
-    }
-  };
-
-  if (listingId && update === 'nbAjoutFavoris') {
-    updateListingsArray({ type: 'saved' });
-  } else if (update === 'nbVues') {
+  if (update === 'nbVues') {
     if (listingId) {
       const listing = await Listing.findOne({ _id: listingId });
       if (!user.alreadySeen.includes(listing._id)) {
         user.alreadySeen.addToSet(listing._id);
         await user.save();
-        //   listing[update] += 1;
-        //   await listing.save();
       }
     } else if (combinedSeenListingsArray) {
       user.alreadySeen = combinedSeenListingsArray;

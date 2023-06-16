@@ -154,9 +154,9 @@ const SingleListing = ({
     const listingId = singleListing._id;
     try {
       const res = await fetch(
-        `/api/user?userId=${user._id}&update=nbAjoutFavoris`,
+        `/api/user/savedListings?userId=${user._id}&listingId=${listingId}`,
         {
-          method: 'PATCH',
+          method: 'POST',
           body: JSON.stringify({ listingId }),
           headers: {
             'Content-Type': 'application/json',
@@ -164,19 +164,19 @@ const SingleListing = ({
         }
       );
       const data: UserFromDB = await res.json();
-      if (data) {
-        updateCurrentUser(data);
-        data.alreadySeen.includes(listingId)
-          ? updateListingsNumbers({
-              listingId: listingId,
-              toUpdate: 'favorites',
-              valueChange: 'increment',
-            })
-          : updateListingsNumbers({
-              listingId: listingId,
-              toUpdate: 'favorites',
-              valueChange: 'decrement',
-            });
+      updateCurrentUser(data);
+      if (data?.saved.includes(listingId)) {
+        updateListingsNumbers({
+          listingId: listingId,
+          valueChange: 'increment',
+          toUpdate: 'favorites',
+        });
+      } else {
+        updateListingsNumbers({
+          listingId: listingId,
+          valueChange: 'decrement',
+          toUpdate: 'favorites',
+        });
       }
     } catch (error) {
       console.log('error', error);
