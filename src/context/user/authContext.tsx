@@ -18,7 +18,11 @@ import {
   signOut,
 } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { AlertCategories, useAppContext } from '../app/appContext';
+import {
+  AlertCategories,
+  ModalCategories,
+  useAppContext,
+} from '../app/appContext';
 import { ObjectId } from 'mongoose';
 
 export type UserFromDB = {
@@ -40,6 +44,13 @@ type AuthContextType = {
   sendPasswordReset: (email: string) => void;
   updateCurrentUser: (newUserData: UserFromDB) => void;
   signOutUser: () => void;
+  updateAccount: (
+    newEmail: string,
+    password: string,
+    newPassword: string,
+    newUsername: string
+  ) => void;
+  deleteAccount: (password: string) => void;
 };
 
 const AuthContext = createContext<AuthContextType>(null);
@@ -274,11 +285,15 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateEmailFirebaseUser = async ({ newEmail, password }) => {
+  const updateEmailFirebaseUser = async (
+    newEmail: string,
+    password: string
+  ) => {
     try {
       await verifyAccount(password);
       await updateEmail(auth.currentUser, newEmail);
     } catch (error) {
+      actions.closeModal();
       console.log('error', error);
     }
   };
@@ -295,9 +310,101 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const deleteFirebaseUser = async (user) => {
+  const updateAccount = async (
+    newEmail: string,
+    password: string,
+    newPassword: string,
+    newUsername: string
+  ) => {
     try {
-      await deleteUser(user);
+      if ((newUsername && !newPassword) || (newEmail && !newPassword)) {
+        const newUserData = {
+          username: newUsername || user.username,
+          role: user.role,
+          email: newEmail || user.email,
+        };
+        const res = await fetch(`/api/user?userId=${user._id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ newUserData }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        actions.closeModal();
+        const data = await res.json();
+        if (data) {
+          updateCurrentUser(data);
+        }
+        updateEmailFirebaseUser(newEmail, password);
+      } else if ((newUsername && newPassword) || (newEmail && newPassword)) {
+        const newUserData = {
+          username: newUsername || user.username,
+          role: user.role,
+          email: newEmail || user.email,
+        };
+        const res = await fetch(`/api/user?userId=${user._id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ newUserData }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await res.json();
+        if (data) {
+          updateCurrentUser(data);
+        }
+        updatePasswordFirebaseUser(newPassword, password);
+      } else if (newPassword && !newEmail && !newUsername) {
+        updatePasswordFirebaseUser(newPassword, password);
+      }
+      actions.displayModal({
+        modalTitle: 'Succès',
+        modalCategory: ModalCategories.Success,
+        modalMsg: `Votre compte a été mis à jour.`,
+      });
+    } catch (error) {
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement ou contactez l'administrateur si l'erreur persiste.`,
+      });
+    }
+  };
+
+  const deleteAccount = async (password: string) => {
+    try {
+      await fetch(`/api/user?email=${auth.currentUser.email}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      deleteFirebaseUser(password);
+      signOutUser();
+      actions.displayModal({
+        modalTitle: 'Succès',
+        modalCategory: ModalCategories.Success,
+        modalMsg: `Votre compte a été supprimé.`,
+      });
+    } catch (error) {
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg: `Une erreur est survenue, veuillez réessayer ultérieurement ou contactez l'administrateur si l'erreur persiste.`,
+      });
+    }
+  };
+
+  const deleteFirebaseUser = async (password: string) => {
+    try {
+      await verifyAccount(password);
+      await deleteUser(auth.currentUser);
+      actions.displayModal({
+        modalTitle: 'Succès',
+        modalCategory: ModalCategories.Success,
+        modalMsg: `Votre compte a été supprimé.`,
+      });
     } catch (error) {
       console.log('error', error);
     }
@@ -325,6 +432,8 @@ const AuthProvider = ({ children }) => {
         signOutUser,
         signInWithEmail,
         updateCurrentUser,
+        updateAccount,
+        deleteAccount,
       }}>
       {children}
     </AuthContext.Provider>

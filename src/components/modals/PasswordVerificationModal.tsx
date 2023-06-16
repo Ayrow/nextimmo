@@ -1,13 +1,19 @@
 'use client';
 
-import { FaTrash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa';
 import { ModalCategories, useAppContext } from '../../context/app/appContext';
 import { useState } from 'react';
+import { useAuthContext } from '../../context/user/authContext';
 
-const PasswordVerificationModal = () => {
+const PasswordVerificationAccountModal = ({
+  needPasswordVerification,
+  newEmail,
+  newPassword,
+  newUsername,
+}) => {
   const { state, actions } = useAppContext();
-  const { modalCategory, modalMsg, modalTitle, refItem, modalFunction } =
-    state.modal;
+  const { updateAccount, deleteAccount } = useAuthContext();
+  const { modalCategory, modalMsg, modalTitle, refItem } = state.modal;
 
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState('');
@@ -52,6 +58,34 @@ const PasswordVerificationModal = () => {
           <p className='mb-5 text-gray-300'>
             {modalMsg} <span className=' font-bold italic'>{refItem}</span> ?
           </p>
+
+          {needPasswordVerification && (
+            <div className='flex flex-col mt-4 mb-4'>
+              <label className='block text-sm font-semibold text-white'>
+                Veuillez entrer mot de passe actuel pour vérification.
+              </label>
+              <div className='flex relative '>
+                <input
+                  required
+                  type={showPassword ? 'text' : 'password'}
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  autoComplete='new-password'
+                  className=' relative block w-full px-4 py-2 mt-2 text-orange-700 bg-white border rounded-md focus:border-orange-400 focus:ring-orange-300 focus:outline-none focus:ring focus:ring-opacity-40 '
+                  name='password'
+                />
+                <div className='absolute inset-y-0 right-0 flex items-center'>
+                  <button
+                    type='button'
+                    onClick={() => setShowPassword(!showPassword)}
+                    className=' pr-4 text-black text-xl'>
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className='flex justify-center items-center space-x-4'>
             <button
               data-modal-toggle='deleteModal'
@@ -60,12 +94,24 @@ const PasswordVerificationModal = () => {
               className='py-2 px-3 text-sm font-medium rounded-lg border focus:ring-4 focus:outline-none focus:ring-primary-300 focus:z-10 bg-gray-700 text-gray-300 border-gray-500 hover:text-white hover:bg-gray-600 focus:ring-gray-600'>
               {cancelText}
             </button>
-            <button
-              type='button'
-              onClick={() => modalFunction(refItem)}
-              className={`${colorVariants[modalCategory]} py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none`}>
-              {confirmationText}
-            </button>
+
+            {modalCategory === ModalCategories.Delete ? (
+              <button
+                type='button'
+                onClick={() => deleteAccount(password)}
+                className={`${colorVariants[modalCategory]} py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none`}>
+                Supprimer
+              </button>
+            ) : (
+              <button
+                type='button'
+                onClick={() =>
+                  updateAccount(newEmail, password, newPassword, newUsername)
+                }
+                className={`${colorVariants[modalCategory]} py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none`}>
+                Mettre à jour
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -73,4 +119,4 @@ const PasswordVerificationModal = () => {
   );
 };
 
-export default PasswordVerificationModal;
+export default PasswordVerificationAccountModal;
