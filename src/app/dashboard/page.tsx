@@ -4,9 +4,11 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { IListingDocument } from '../../../types/listingTypes';
 import Link from 'next/link';
+import { useAuthContext } from '../../context/user/authContext';
 
 const Dashboard = () => {
   const [allFetchedListings, setAllFetchedListings] = useState([]);
+  const { user } = useAuthContext();
   const [totalListings, setTotalListings] = useState(0);
 
   const getAllListings = async () => {
@@ -74,41 +76,43 @@ const Dashboard = () => {
     getAllListings();
   }, []);
 
-  return (
-    <div className='m-5'>
-      <h2 className='text-xl text-center my-10'>Statistiques</h2>
-      <div className='flex gap-5 flex-wrap justify-center'>
-        <div className='p-4 flex flex-col gap-2 border rounded-xl'>
-          <p className='text-lg font-bold'>
-            Nombre total d'annonces: {totalListings ?? 0}
-          </p>
-          <p>
-            Nombre d'annonces publiées:{' '}
-            {nbListings({ toFilter: 'etat', basedOn: 'publiée' }).length}
-          </p>
-          <p>
-            Nombre d'annonces en brouillon:{' '}
-            {nbListings({ toFilter: 'etat', basedOn: 'brouillon' }).length}
-          </p>
-        </div>
-        <div className='p-4 flex flex-col gap-2 border rounded-xl'>
-          {toCheckForMost.map((value) => {
-            filteredListingWithMost(value.name);
-            return (
-              <p className=''>
-                Annonce avec le plus de {value.label} :{' '}
-                <Link
-                  className='italic'
-                  href={`/annonces/${slug}/${listingWithMost?.ref}`}>
-                  {listingWithMost?.ref || ''}
-                </Link>
-              </p>
-            );
-          })}
+  if (user && user.role !== 'user') {
+    return (
+      <div className='m-5'>
+        <h2 className='text-xl text-center my-10'>Statistiques</h2>
+        <div className='flex gap-5 flex-wrap justify-center'>
+          <div className='p-4 flex flex-col gap-2 border rounded-xl'>
+            <p className='text-lg font-bold'>
+              Nombre total d'annonces: {totalListings ?? 0}
+            </p>
+            <p>
+              Nombre d'annonces publiées:{' '}
+              {nbListings({ toFilter: 'etat', basedOn: 'publiée' }).length}
+            </p>
+            <p>
+              Nombre d'annonces en brouillon:{' '}
+              {nbListings({ toFilter: 'etat', basedOn: 'brouillon' }).length}
+            </p>
+          </div>
+          <div className='p-4 flex flex-col gap-2 border rounded-xl'>
+            {toCheckForMost.map((value) => {
+              filteredListingWithMost(value.name);
+              return (
+                <p className=''>
+                  Annonce avec le plus de {value.label} :{' '}
+                  <Link
+                    className='italic'
+                    href={`/annonces/${slug}/${listingWithMost?.ref}`}>
+                    {listingWithMost?.ref || ''}
+                  </Link>
+                </p>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Dashboard;

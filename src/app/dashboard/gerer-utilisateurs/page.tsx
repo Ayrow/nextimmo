@@ -7,7 +7,7 @@ import {
   ModalCategories,
   useAppContext,
 } from '../../../context/app/appContext';
-import { UserFromDB } from '../../../context/user/authContext';
+import { UserFromDB, useAuthContext } from '../../../context/user/authContext';
 import FiltersUsers from '../../../components/filters/FiltersUsers';
 import { useCloseOnOutsideClick } from '../../../hooks/useCloseOnOutsideClick';
 import {
@@ -30,6 +30,7 @@ const sortOptions = ['A-Z', 'Z-A', 'plus récent', 'plus ancien'];
 
 const Utilisateurs = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const { user } = useAuthContext();
   const { state, actions } = useAppContext();
   const [allUsers, setAllUsers] = useState<UserFromDB[]>(null);
   const [newUserData, setNewUserData] = useState<UserFromDB>(null);
@@ -189,56 +190,60 @@ const Utilisateurs = () => {
     };
   }, [valuesQueries]);
 
-  return (
-    <div className='p-10 bg-gray-900 w-full'>
-      {state.modal.showModal &&
-        state.modal.modalCategory === ModalCategories.Delete && <ActionModal />}
+  if (user && user.role === 'admin') {
+    return (
+      <div className='p-10 bg-gray-900 w-full'>
+        {state.modal.showModal &&
+          state.modal.modalCategory === ModalCategories.Delete && (
+            <ActionModal />
+          )}
 
-      {state.modal.showModal &&
-        state.modal.modalCategory !== ModalCategories.Error &&
-        state.modal.modalCategory !== ModalCategories.Delete && (
-          <NotificationModal />
+        {state.modal.showModal &&
+          state.modal.modalCategory !== ModalCategories.Error &&
+          state.modal.modalCategory !== ModalCategories.Delete && (
+            <NotificationModal />
+          )}
+        <h2 className='text-center text-xl font-bold'>Manage Users</h2>
+        <div className='flex items-center md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
+          <FiltersUsers
+            valuesQueries={valuesQueries}
+            handleFilterChange={handleFilterChange}
+            sortOptions={sortOptions}
+          />
+          <DropdownButtons
+            displayName={`tri: ${valuesQueries.sort}`}
+            name='sort'
+            handleFilterChange={handleFilterChange}
+            options={sortOptions}
+          />
+        </div>
+
+        <p className='font-bold text-center my-5'>
+          {totalNumberUsers}{' '}
+          {totalNumberUsers > 1 ? 'utilisateurs trouvés' : 'utilisateur trouvé'}
+        </p>
+        <ManageUsers
+          allUsers={allUsers}
+          isEditing={state.isEditing}
+          newUserData={newUserData}
+          handleUserChange={handleUserChange}
+          stopEditingItem={actions.stopEditingItem}
+          displayModal={actions.displayModal}
+          editUser={editUser}
+          updateUser={updateUser}
+          deleteUser={deleteUser}
+        />
+
+        {totalPages > 0 && (
+          <PageBtnContainer
+            numOfPages={totalPages}
+            page={valuesQueries.page}
+            handleInputChange={handleFilterChange}
+          />
         )}
-      <h2 className='text-center text-xl font-bold'>Manage Users</h2>
-      <div className='flex items-center md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
-        <FiltersUsers
-          valuesQueries={valuesQueries}
-          handleFilterChange={handleFilterChange}
-          sortOptions={sortOptions}
-        />
-        <DropdownButtons
-          displayName={`tri: ${valuesQueries.sort}`}
-          name='sort'
-          handleFilterChange={handleFilterChange}
-          options={sortOptions}
-        />
       </div>
-
-      <p className='font-bold text-center my-5'>
-        {totalNumberUsers}{' '}
-        {totalNumberUsers > 1 ? 'utilisateurs trouvés' : 'utilisateur trouvé'}
-      </p>
-      <ManageUsers
-        allUsers={allUsers}
-        isEditing={state.isEditing}
-        newUserData={newUserData}
-        handleUserChange={handleUserChange}
-        stopEditingItem={actions.stopEditingItem}
-        displayModal={actions.displayModal}
-        editUser={editUser}
-        updateUser={updateUser}
-        deleteUser={deleteUser}
-      />
-
-      {totalPages > 0 && (
-        <PageBtnContainer
-          numOfPages={totalPages}
-          page={valuesQueries.page}
-          handleInputChange={handleFilterChange}
-        />
-      )}
-    </div>
-  );
+    );
+  }
 };
 
 export default Utilisateurs;

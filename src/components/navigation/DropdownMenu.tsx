@@ -3,6 +3,7 @@
 import { Dispatch, SetStateAction, useRef } from 'react';
 import NavLink from './NavLink';
 import { LinksTypes } from '../../../utils/links';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   signOutUser: () => void;
@@ -19,6 +20,7 @@ const DropdownMenu = ({
 }: Props) => {
   const ref = useRef();
 
+  const router = useRouter();
   const toggleDropdown = (e: MouseEvent) => {
     if (ref.current && isDropdownOpen) {
       setIsDropdownOpen(false);
@@ -28,6 +30,7 @@ const DropdownMenu = ({
   document.addEventListener('click', toggleDropdown);
 
   const logOut = () => {
+    router.push('/');
     signOutUser();
     setIsDropdownOpen(false);
   };

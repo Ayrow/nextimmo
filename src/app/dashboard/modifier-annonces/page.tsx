@@ -23,9 +23,11 @@ import { useCloseOnOutsideClick } from '../../../hooks/useCloseOnOutsideClick';
 import DropdownButtons from '../../../components/buttons/DropdownButtons';
 import NotificationModal from '../../../components/modals/NotificationModal';
 import { IListingDocument } from '../../../../types/listingTypes';
+import { useAuthContext } from '../../../context/user/authContext';
 
 const ManageListings = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const { user } = useAuthContext();
   const [allListings, setAllListings] = useState<IListingDocument[]>(null);
   const [valuesQueries, setValuesQueries] = useState(queryParams);
   const { state, actions } = useAppContext();
@@ -165,67 +167,71 @@ const ManageListings = () => {
     };
   }, [valuesQueries]);
 
-  return (
-    <div className='p-10 bg-gray-900 w-full'>
-      {state.modal.showModal &&
-        state.modal.modalCategory !== ModalCategories.Error && <ActionModal />}
+  if (user && user.role !== 'user') {
+    return (
+      <div className='p-10 bg-gray-900 w-full'>
+        {state.modal.showModal &&
+          state.modal.modalCategory !== ModalCategories.Error && (
+            <ActionModal />
+          )}
 
-      {state.modal.showModal &&
-        state.modal.modalCategory === ModalCategories.Error && (
-          <NotificationModal />
-        )}
+        {state.modal.showModal &&
+          state.modal.modalCategory === ModalCategories.Error && (
+            <NotificationModal />
+          )}
 
-      <h2 className='text-center text-xl font-bold'>Manage Listings</h2>
+        <h2 className='text-center text-xl font-bold'>Manage Listings</h2>
 
-      <div className='flex items-center flex-wrap md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
-        <FiltersListingPage
-          sortOptions={sortOptions}
-          isSortingDropdownOpen={isSortingDropdownOpen}
-          setIsSortingDropdownOpen={setIsSortingDropdownOpen}
-          valuesQueries={valuesQueries}
-          handleInputChange={handleInputChange}
-        />
-        <div className='flex flex-wrap justify-center gap-5'>
-          <DropdownButtons
-            displayName={`etat: ${valuesQueries.etat}`}
-            options={etatsAnnonceOptions}
-            handleFilterChange={handleInputChange}
-            name='etat'
+        <div className='flex items-center flex-wrap md:flex-col gap-5 md:gap-1 md:items-center justify-center'>
+          <FiltersListingPage
+            sortOptions={sortOptions}
+            isSortingDropdownOpen={isSortingDropdownOpen}
+            setIsSortingDropdownOpen={setIsSortingDropdownOpen}
+            valuesQueries={valuesQueries}
+            handleInputChange={handleInputChange}
           />
-          <DropdownButtons
-            displayName={`statut: ${valuesQueries.statut}`}
-            options={statutOptions}
-            handleFilterChange={handleInputChange}
-            name='statut'
-          />
-          <DropdownButtons
-            displayName={`tri: ${valuesQueries.sort}`}
-            options={sortOptions}
-            handleFilterChange={handleInputChange}
-            name='sort'
-          />
+          <div className='flex flex-wrap justify-center gap-5'>
+            <DropdownButtons
+              displayName={`etat: ${valuesQueries.etat}`}
+              options={etatsAnnonceOptions}
+              handleFilterChange={handleInputChange}
+              name='etat'
+            />
+            <DropdownButtons
+              displayName={`statut: ${valuesQueries.statut}`}
+              options={statutOptions}
+              handleFilterChange={handleInputChange}
+              name='statut'
+            />
+            <DropdownButtons
+              displayName={`tri: ${valuesQueries.sort}`}
+              options={sortOptions}
+              handleFilterChange={handleInputChange}
+              name='sort'
+            />
+          </div>
         </div>
+        <p className='font-bold text-center my-5'>
+          {totalNumberListings}{' '}
+          {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvée'}
+        </p>
+        <div className='flex flex-col gap-5 mt-10'>
+          {allListings &&
+            allListings?.map((listing) => {
+              const { ref } = listing;
+              return <ListCard key={ref} listing={listing} />;
+            })}
+        </div>
+        {totalPages > 0 && (
+          <PageBtnContainer
+            numOfPages={totalPages}
+            page={valuesQueries.page}
+            handleInputChange={handleInputChange}
+          />
+        )}
       </div>
-      <p className='font-bold text-center my-5'>
-        {totalNumberListings}{' '}
-        {totalNumberListings > 1 ? 'annonces trouvées' : 'annonce trouvée'}
-      </p>
-      <div className='flex flex-col gap-5 mt-10'>
-        {allListings &&
-          allListings?.map((listing) => {
-            const { ref } = listing;
-            return <ListCard key={ref} listing={listing} />;
-          })}
-      </div>
-      {totalPages > 0 && (
-        <PageBtnContainer
-          numOfPages={totalPages}
-          page={valuesQueries.page}
-          handleInputChange={handleInputChange}
-        />
-      )}
-    </div>
-  );
+    );
+  }
 };
 
 export default ManageListings;

@@ -79,10 +79,8 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unregisterAuthObserver = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
-        console.log('user is signed in');
         setFirebaseUser(authUser);
       } else {
-        console.log('user is signed out');
         setFirebaseUser(null);
         setUser(null);
         removeUserFromSessionStorage();
