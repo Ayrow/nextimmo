@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User } from 'firebase/auth';
+import { User, reauthenticateWithCredential } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import {
   GoogleAuthProvider,
@@ -252,6 +252,15 @@ const AuthProvider = ({ children }) => {
         category: AlertCategories.Error,
         msg: 'Failed to to send reset password email',
       });
+    }
+  };
+
+  const verifyAccount = async (credential) => {
+    const firebaseUser = auth.currentUser;
+    try {
+      await reauthenticateWithCredential(firebaseUser, credential);
+    } catch (error) {
+      console.log('error', error);
     }
   };
 

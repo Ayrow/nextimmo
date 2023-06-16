@@ -1,10 +1,15 @@
 'use client';
 import { useState } from 'react';
-import { useAuthContext } from '../../../context/user/authContext';
+import { UserFromDB, useAuthContext } from '../../../context/user/authContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import {
+  ModalCategories,
+  useAppContext,
+} from '../../../context/app/appContext';
 
 const Page = () => {
-  const { user } = useAuthContext();
+  const { user, updateCurrentUser } = useAuthContext();
+  const { state, actions } = useAppContext();
   const initialState = {
     username: user?.username,
     email: user?.email,
@@ -17,7 +22,35 @@ const Page = () => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
 
-  const updateUser = () => {};
+  const updateUser = async () => {
+    try {
+      const res = await fetch(`/api/user?userId=${user._id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ value }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data: UserFromDB = await res.json();
+      if (data) {
+        updateCurrentUser(data);
+        actions.displayModal({
+          modalTitle: 'Succès',
+          modalCategory: ModalCategories.Success,
+          modalMsg: `L'utilisateur ${data.username} a été mis à jour.`,
+        });
+      }
+    } catch (error) {
+      actions.displayModal({
+        modalTitle: 'Erreur',
+        modalCategory: ModalCategories.Error,
+        modalMsg:
+          "Erreur pour modifier l'utilisateur, veuillez réessayer ultérieurement.",
+      });
+    }
+    actions.stopEditingItem();
+  };
 
   const saveSettings = (e) => {
     const { email, password, username } = value;
