@@ -1,7 +1,13 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, deleteUser, reauthenticateWithCredential } from 'firebase/auth';
+import {
+  EmailAuthProvider,
+  User,
+  deleteUser,
+  reauthenticateWithCredential,
+  updateEmail,
+} from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import {
   GoogleAuthProvider,
@@ -255,7 +261,11 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const verifyAccount = async (credential) => {
+  const verifyAccount = async (password: string) => {
+    const credential = EmailAuthProvider.credential(
+      auth.currentUser.email,
+      password
+    );
     const firebaseUser = auth.currentUser;
     try {
       await reauthenticateWithCredential(firebaseUser, credential);
@@ -264,7 +274,26 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateFirebaseUser = async () => {};
+  const updateEmailFirebaseUser = async ({ newEmail, password }) => {
+    try {
+      await verifyAccount(password);
+      await updateEmail(auth.currentUser, newEmail);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const updatePasswordFirebaseUser = async (
+    newPasword: string,
+    password: string
+  ) => {
+    try {
+      await verifyAccount(password);
+      await updateEmail(auth.currentUser, newPasword);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   const deleteFirebaseUser = async (user) => {
     try {

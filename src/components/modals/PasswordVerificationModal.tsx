@@ -4,7 +4,7 @@ import { FaTrash } from 'react-icons/fa';
 import { ModalCategories, useAppContext } from '../../context/app/appContext';
 import { useState } from 'react';
 
-const ActionModal = () => {
+const PasswordVerificationModal = () => {
   const { state, actions } = useAppContext();
   const { modalCategory, modalMsg, modalTitle, refItem, modalFunction } =
     state.modal;
@@ -73,4 +73,4 @@ const ActionModal = () => {
   );
 };
 
-export default ActionModal;
+export default PasswordVerificationModal;
