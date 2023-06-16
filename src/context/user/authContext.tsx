@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, reauthenticateWithCredential } from 'firebase/auth';
+import { User, deleteUser, reauthenticateWithCredential } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import {
   GoogleAuthProvider,
@@ -259,6 +259,16 @@ const AuthProvider = ({ children }) => {
     const firebaseUser = auth.currentUser;
     try {
       await reauthenticateWithCredential(firebaseUser, credential);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const updateFirebaseUser = async () => {};
+
+  const deleteFirebaseUser = async (user) => {
+    try {
+      await deleteUser(user);
     } catch (error) {
       console.log('error', error);
     }
