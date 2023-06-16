@@ -1,4 +1,5 @@
-import { useAppContext } from '../../context/app/appContext';
+import { FaBan, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import { ModalCategories, useAppContext } from '../../context/app/appContext';
 
 const NotificationModal = () => {
   const { state, actions } = useAppContext();
@@ -40,17 +41,16 @@ const NotificationModal = () => {
           </button>
 
           <div className='w-12 h-12 rounded-full bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5'>
-            <svg
-              aria-hidden='true'
-              className={`w-8 h-8 ${colorVariants[modalCategory]}`}
-              fill='currentColor'
-              viewBox='0 0 20 20'
-              xmlns='http://www.w3.org/2000/svg'>
-              <path
-                fillRule='evenodd'
-                d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                clipRule='evenodd'></path>
-            </svg>
+            {modalCategory === ModalCategories.Success && (
+              <FaCheckCircle className='text-center text-3xl flex justify-center my-5 text-green-500' />
+            )}
+            {modalCategory === ModalCategories.Error && (
+              <FaBan className='text-center text-3xl flex justify-center my-5 text-red-500' />
+            )}
+
+            {modalCategory === ModalCategories.Notification && (
+              <FaExclamationCircle className='text-center text-3xl flex justify-center my-5 text-blue-500' />
+            )}
             <span className='sr-only'>{modalTitle}</span>
           </div>
           <p className='mb-4 text-lg font-semibold text-white'>{modalMsg}</p>
