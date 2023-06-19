@@ -149,7 +149,7 @@ const Footer: React.FC = () => {
         </p>
         <ul className='flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white'>
           <li>
-            <Link href='#' className='mr-4 hover:underline md:mr-6 '>
+            <Link href='/' className='mr-4 hover:underline md:mr-6 '>
               A Propos
             </Link>
           </li>
@@ -159,13 +159,15 @@ const Footer: React.FC = () => {
             </Link>
           </li>
           <li>
-            <Link href='#' className='mr-4 hover:underline md:mr-6'>
-              FAQ
+            <Link href='/contact' className='mr-4 hover:underline md:mr-6'>
+              Contact
             </Link>
           </li>
           <li>
-            <Link href='#' className='mr-4 hover:underline md:mr-6'>
-              Contact
+            <Link
+              href='https://github.com/Ayrow/nextimmo'
+              className='mr-4 hover:underline md:mr-6'>
+              Github
             </Link>
           </li>
         </ul>

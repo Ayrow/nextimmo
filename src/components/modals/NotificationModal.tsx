@@ -40,7 +40,7 @@ const NotificationModal = () => {
             <span className='sr-only'>Close modal</span>
           </button>
 
-          <div className='w-12 h-12 rounded-full bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5'>
+          <div className='w-12 h-12 rounded-full p-2 flex items-center justify-center mx-auto mb-3.5'>
             {modalCategory === ModalCategories.Success && (
               <FaCheckCircle className='text-center text-3xl flex justify-center my-5 text-green-500' />
             )}

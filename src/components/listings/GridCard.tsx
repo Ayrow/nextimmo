@@ -108,10 +108,6 @@ const GridCard = ({ listing }: { listing: IListingDocument }) => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log('user.saved', user.saved);
-  }, []);
-
   return (
     <div
       className='relative border rounded-2xl cursor-pointer'
